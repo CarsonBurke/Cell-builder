@@ -3,21 +3,34 @@ import { env } from './env/env'
 import * as THREE from 'three'
 
 env.init()
-env.run()
+
+main()
 
 function main() {
 
+    runUPS()
     runFPS()
 }
 
 function runFPS() {
 
-    requestAnimationFrame(runFPS())
+    requestAnimationFrame(runFPS)
+
+    env.runFPS()
 }
 
-function runUPS() {
+async function runUPS() {
 
+    while (true) {
 
+        env.runUPS()
+
+        await new Promise((resolve, reject) => {
+            setTimeout(function() {
+                resolve()
+            }, MAX_RUNNER_SPEED / env.speed)
+        })
+    }
 }
 
 document.getElementById('changeSpeed').addEventListener('click', changeSpeed)

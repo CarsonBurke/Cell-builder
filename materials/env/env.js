@@ -1,5 +1,6 @@
 import { Game } from "../game/game"
 import * as THREE from 'three'
+import { MAX_RUNNER_SPEED } from "../constants";
 
 class Env {
     scene = new THREE.Scene()
@@ -18,8 +19,12 @@ class Env {
         this.width = this.graphSize * this.coordSize
         this.height = this.graphSize * this.coordSize
         this.lastReset = 0
+        this.lastFrameTime = new Date()
+        this.lastUpdateTime = new Date()
 
         this.tick = 0
+        this.fps = '0'
+        this.ups = '0'
         this.roundTick = 0
         this.speed = 1
         this.bestTotalScore = 0
@@ -29,6 +34,8 @@ class Env {
             'tick',
             'roundTick',
             'speed',
+            'fps',
+            'ups',
             'bestTotalScore',
             'bestGenScore',
         ]
@@ -54,29 +61,13 @@ class Env {
         return this.IDIndex++
     }
 
-    run() {
-        console.log('i')
-
-        this.runFPS()
-        
-        const date = new Date()
-
-        let i = 0
-        while (i !== date.getTime()) {
-    
-            this.runUPS()
-            break
-        }
-    }
-
     runFPS() {
 
-        console.log('f')
+        this.fps += 1
     
         for (const gameID in this.games) {
     
             const game = this.games[gameID]
-            if (game.running) runningGames += 1
     
             game.visualize()
         }
@@ -85,12 +76,13 @@ class Env {
     
             document.getElementById(statType).innerText = this[statType]
         }
+
+        const thisFrameTime = new Date()
+        this.fps = (MAX_RUNNER_SPEED / (thisFrameTime - this.lastFrameTime)).toFixed(2)
+        this.lastFrameTime = new Date()
     }
 
     runUPS() {
-
-        
-        console.log('u') 
         
         this.tick += 1
         this.roundTick += 1
@@ -116,6 +108,10 @@ class Env {
     
             this.reset()
         }
+
+        const thisUpdateTime = new Date()
+        this.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
+        this.lastUpdateTime = new Date()
     }
     
     reset() {
