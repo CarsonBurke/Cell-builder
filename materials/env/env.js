@@ -1,11 +1,11 @@
 import { Game } from "../game/game"
-import * as THREE from 'three'
 import { MAX_RUNNER_SPEED } from "../constants";
+import * as PIXI from 'pixi.js';
 
 class Env {
-    scene = new THREE.Scene()
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     gamesAmount = 1
+
+    app = new PIXI.Application({ background: '#1099bb' })
 
     constructor() {
 
@@ -41,6 +41,8 @@ class Env {
         ]
     }
     init() {
+
+        document.body.appendChild(app.view);
 
         this.initGames()
     }

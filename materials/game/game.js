@@ -31,12 +31,5 @@ Game.prototype.init = function() {
 
 Game.prototype.visualize = function() {
 
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    const cube = new THREE.Mesh( geometry, material );
-    env.scene.add( cube );
     
-    env.camera.position.z = 5;
-
-    /* renderer.render(env.scene, env.camera) */
 }
