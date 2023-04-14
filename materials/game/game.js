@@ -28,8 +28,6 @@ Game.prototype.init = function() {
 
 Game.prototype.visualize = function() {
 
-    const texture = PIXI.Texture.from("sprites/player.png")
-    const sprite = new PIXI.Sprite(texture);
-
-    env.app.stage.addChild(sprite)
+    const player = new Player()
+    player.render()
 }
