@@ -1,1 +1,1 @@
-export const MAX_RUNNER_SPEED = 1000
+const MAX_RUNNER_SPEED = 1000

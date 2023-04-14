@@ -1,14 +1,14 @@
-export function packCoord(coord) {
+function packCoord(coord) {
 
     return coord.x * env.graphSize + coord.y
 }
 
-export function packXY(x, y) {
+function packXY(x, y) {
 
     return x * env.graphSize + y
 }
 
-export function unpackCoord(packedCoord) {
+function unpackCoord(packedCoord) {
 
     return {
         x: Math.floor(packedCoord / env.graphSize),
@@ -19,7 +19,7 @@ export function unpackCoord(packedCoord) {
 /**
  * Takes a rectange and returns the positions inside of it in an array
  */
- export function findCoordsInsideRect(x1, y1, x2, y2) {
+ function findCoordsInsideRect(x1, y1, x2, y2) {
     const positions = []
 
     for (let x = x1; x <= x2; x += 1) {
@@ -37,7 +37,7 @@ export function unpackCoord(packedCoord) {
     return positions
 }
 
-export function isXYInGraph(x, y) {
+function isXYInGraph(x, y) {
 
     return x >= 0 && x < env.graphSize && y >= 0 && y < env.graphSize
 }
@@ -49,17 +49,17 @@ export function isXYInGraph(x, y) {
  * @param x2 the second position's x
  * @param y2 the second position's y
  */
-export function getRange(x1, x2, y1, y2) {
+function getRange(x1, x2, y1, y2) {
     // Find the range using Chebyshev's formula
 
     return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1))
 }
 
-export function getRangeOfCoords(coord1, coord2) {
+function getRangeOfCoords(coord1, coord2) {
     return getRange(coord1.x, coord2.x, coord1.y, coord2.y)
 }
 
-export function findLowestCost(origin, iter) {
+function findLowestCost(origin, iter) {
 
     let lowestCost = Infinity
 
@@ -75,7 +75,7 @@ export function findLowestCost(origin, iter) {
     return lowestCost
 }
 
-export function forAdjacentCoords(startCoord, f) {
+function forAdjacentCoords(startCoord, f) {
     for (let x = startCoord.x - 1; x <= startCoord.x + 1; x += 1) {
         for (let y = startCoord.y - 1; y <= startCoord.y + 1; y += 1) {
             if (x === startCoord.x && y === startCoord.y) continue
@@ -86,17 +86,17 @@ export function forAdjacentCoords(startCoord, f) {
     }
 }
 
-export function randomBool() {
+function randomBool() {
 
     return Math.floor(Math.random() * 2)
 }
 
-export function randomOnesOffset() {
+function randomOnesOffset() {
 
     return randomBool() ? 1 : -1
 }
 
-export function randomOffsetFor(coord) {
+function randomOffsetFor(coord) {
 
     const offsetCoord = {
         x: -1,

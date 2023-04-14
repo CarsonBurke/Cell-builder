@@ -1,4 +1,4 @@
-export const adjacentOffsets = [
+const adjacentOffsets = [
     {
         x: -1,
         y: -1,

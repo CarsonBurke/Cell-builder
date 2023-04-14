@@ -1,6 +1,4 @@
-import { Game } from "../game/game"
-import { MAX_RUNNER_SPEED } from "../constants";
-import * as PIXI from 'pixi.js';
+
 
 class Env {
     gamesAmount = 1
@@ -42,7 +40,7 @@ class Env {
     }
     init() {
 
-        document.body.appendChild(app.view);
+        document.body.appendChild(this.app.view);
 
         this.initGames()
     }
@@ -132,4 +130,4 @@ class Env {
     }
 }
 
-export const env = new Env()
+const env = new Env()

@@ -1,7 +1,4 @@
-import { env } from '../env/env'
-import * as THREE from 'three'
-
-export class Game {
+class Game {
     
     running = false
     graph = new Uint8Array()
