@@ -38,13 +38,23 @@ class Env {
     }
     init() {
 
-        this.app = new PIXI.Application({ background: '#1099bb', width: this.width, height: this.height })
+        this.app = new PIXI.Application({ 
+            background: '#1099bb', 
+            width: this.width, 
+            height: this.height,
+        })
         this.app.view.classList.add('env')
         document.getElementById('envParent').appendChild(this.app.view)
 
+        this.initTextures()
         this.initGames()
     }
     
+    initTextures() {
+
+        
+    }
+
     initGames() {
     
         //
