@@ -3,8 +3,6 @@
 class Env {
     gamesAmount = 1
 
-    app = new PIXI.Application({ background: '#1099bb' })
-
     constructor() {
 
         this.games = {}
@@ -40,7 +38,9 @@ class Env {
     }
     init() {
 
-        document.body.appendChild(this.app.view);
+        this.app = new PIXI.Application({ background: '#1099bb', width: this.width, height: this.height })
+        this.app.view.classList.add('env')
+        document.getElementById('envParent').appendChild(this.app.view)
 
         this.initGames()
     }
