@@ -179,6 +179,23 @@ div {
     box-shadow: rgba(0, 0, 0, 0.3) 0 12px 20px 0;
 }
 
+.resetButton {
+    border-radius: 30px;
+    background-color: var(--secondaryShade);
+    padding: 8px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.resetButton:hover {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 4px 20px 0;
+}
+
+.resetButton:focus {
+    box-shadow: rgba(0, 0, 0, 0.3) 0 12px 20px 0;
+}
+
 .changeButton {
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;

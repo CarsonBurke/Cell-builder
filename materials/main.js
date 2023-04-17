@@ -39,7 +39,18 @@ function changeSpeed() {
     env.speed = parseInt(document.getElementById('newSpeed').value) || env.speed
 }
 
-document.getElementById('speedForm').addEventListener('submit', stopRefresh)
+document.getElementById('reset').addEventListener('click', resetGames)
+
+function resetGames() {
+
+    env.reset()
+}
+
+const elements = document.getElementsByTagName('form')
+for (const el of elements) {
+
+    el.addEventListener('submit', stopRefresh)
+}
 
 function stopRefresh(event) {
 

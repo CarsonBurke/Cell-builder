@@ -2,6 +2,8 @@ class Game {
     
     running = false
     graph = new Uint8Array()
+    gameObjects
+    static gameObjectTypes = ['player']
 
     constructor() {
 
@@ -9,25 +11,43 @@ class Game {
 
         env.games[this.ID] = this
     }
-    run() {
-        
-        
+    init() {
+
+        this.running = true
+        this.graph = new Uint8Array(env.graphLength)
+    
+        this.gameObjects = {}
+        for (const type of Game.gameObjectTypes) this.gameObjects[type] = {}
+    
+        new Player(this)
     }
     reset() {
 
+        for (const type of Game.gameObjectTypes) {
+
+            for (const ID in this.gameObjects[type]) {
+
+                const object = this.gameObjects[type][ID]
+
+                env.app.stage.removeChild(object.sprite)
+            }
+        }
+
         this.init()
     }
-}
+    run() {
+        
+        const players = this.gameObjects.player
 
-Game.prototype.init = function() {
+        for (const ID in players) {
 
-    this.running = true
+            const player = players[ID]
 
-    this.graph = new Uint8Array(env.graphLength)
-}
+            player.sprite.x += 1
+        }
+    }
+    visualize() {
 
-Game.prototype.visualize = function() {
 
-    const player = new Player()
-    player.render()
+    }
 }
