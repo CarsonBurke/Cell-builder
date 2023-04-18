@@ -6,7 +6,7 @@ main()
 function main() {
 
     runUPS()
-    runFPS()
+    /* runFPS() */
 }
 
 function runFPS() {

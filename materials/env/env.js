@@ -1,6 +1,8 @@
 
 
 class Env {
+    app
+    graphics
     gamesAmount = 1
 
     constructor() {
@@ -40,7 +42,7 @@ class Env {
 
         this.initApp()
         this.initContainer()
-        this.initTextures()
+        this.initGraphics()
         this.initGames()
     }
 
@@ -62,9 +64,10 @@ class Env {
         this.app.stage.addChild(this.container)
     }
     
-    initTextures() {
+    initGraphics() {
 
-        
+        this.graphics = new PIXI.Graphics()
+        this.container.addChild(this.graphics)
     }
 
     initGames() {
@@ -91,7 +94,6 @@ class Env {
     
             const game = this.games[gameID]
     
-            game.visualize()
         }
     
         for (const statType of this.stats) {

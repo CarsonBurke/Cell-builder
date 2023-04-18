@@ -3,7 +3,7 @@ class Game {
     running = false
     graph = new Uint8Array()
     gameObjects
-    static gameObjectTypes = ['player']
+    static gameObjectTypes = ['player', 'gridCoord', 'cursor']
 
     constructor() {
 
@@ -19,6 +19,14 @@ class Game {
         this.gameObjects = {}
         for (const type of Game.gameObjectTypes) this.gameObjects[type] = {}
     
+        for (let x = 0; x < env.graphSize; x++) {
+            for (let y = 0; y < env.graphSize; y++) {
+
+                new GridCoord(this, {}, { x: x * env.coordSize, y: y * env.coordSize })
+            }
+        }
+
+        new Cursor(this)
         new Player(this)
     }
     reset() {
@@ -42,9 +50,7 @@ class Game {
             const player = players[ID]
             player.move()
         }
-    }
-    visualize() {
 
-
+        
     }
 }
