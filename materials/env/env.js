@@ -38,16 +38,28 @@ class Env {
     }
     init() {
 
+        this.initApp()
+        this.initContainer()
+        this.initTextures()
+        this.initGames()
+    }
+
+    initApp() {
+
         this.app = new PIXI.Application({ 
             background: '#1099bb', 
             width: this.width, 
             height: this.height,
         })
         this.app.view.classList.add('env')
+        this.app.view.id = 'env'
         document.getElementById('envParent').appendChild(this.app.view)
+    }
 
-        this.initTextures()
-        this.initGames()
+    initContainer() {
+
+        this.container = new PIXI.Container()
+        this.app.stage.addChild(this.container)
     }
     
     initTextures() {
@@ -137,6 +149,9 @@ class Env {
             game.reset()
             game.init()
         }
+
+        this.container.destroy()
+        this.initContainer()
     }
 }
 

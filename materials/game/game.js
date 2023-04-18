@@ -27,12 +27,10 @@ class Game {
 
             for (const ID in this.gameObjects[type]) {
 
-                const object = this.gameObjects[type][ID]
-
-                env.app.stage.removeChild(object.sprite)
+                delete this.gameObjects[type][ID]
             }
         }
-
+        console.log(this.gameObjects)
         this.init()
     }
     run() {
@@ -42,8 +40,7 @@ class Game {
         for (const ID in players) {
 
             const player = players[ID]
-
-            player.sprite.x += 1
+            player.move()
         }
     }
     visualize() {
