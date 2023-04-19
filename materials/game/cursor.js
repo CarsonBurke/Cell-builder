@@ -1,9 +1,11 @@
 class Cursor {
-    static Texture = PIXI.Texture.from('sprites/cursor.png')
+    static texture = PIXI.Texture.from('sprites/cursor.png')
     game
+    ID
+    sprite
     type = 'cursor'
     
-    constructor(game, opts = {}) {
+    constructor(game, opts, spriteOpts) {
 
         this.game = game
         this.ID = env.newID()
@@ -11,23 +13,18 @@ class Cursor {
 
         game.gameObjects[this.type][this.ID] = this
 
-        this.sprite = new PIXI.Sprite(Player.texture)
+        this.sprite = new PIXI.Sprite(Cursor.texture)
         Object.assign(this.sprite, spriteOpts)
 
         this.render()
     }
 
-    move() {
-
-        const event = window.event
-        console.log(event, event.clientX, event.clientY)
-
-        this.sprite.x = event.clientX
-        this.sprite.y = event.clientY
-    }
-
     render() {
 
-        env.container.addChild(this.sprite)
+        const defaultIcon = "url('sprites/cursor.png'),auto"
+        const hoverIcon = "url('sprites/cursor.png'),auto"
+
+        env.app.renderer.events.cursorStyles.default = defaultIcon
+        env.app.renderer.events.cursorStyles.hover = hoverIcon
     }
 }

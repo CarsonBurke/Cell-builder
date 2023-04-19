@@ -49,13 +49,17 @@ class Env {
     initApp() {
 
         this.app = new PIXI.Application({ 
-            background: '#1099bb', 
+            backgroundAlpha: 0,
+            /* antialias: true, */
             width: this.width, 
             height: this.height,
         })
         this.app.view.classList.add('env')
         this.app.view.id = 'env'
         document.getElementById('envParent').appendChild(this.app.view)
+
+        this.app.autoDensity = true
+        
     }
 
     initContainer() {

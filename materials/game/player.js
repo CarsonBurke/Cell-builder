@@ -27,8 +27,9 @@ class Player {
     type = 'player'
     game
     sprite
+    ID
 
-    constructor(game, opts = {}, spriteOpts = {}) {
+    constructor(game, opts, spriteOpts) {
 
         this.game = game
         this.ID = env.newID()

@@ -1,8 +1,10 @@
 class GridCoord {
     static texture = PIXI.Texture.from('sprites/grass.png')
     game
+    ID
+    sprite
     type = 'gridCoord'
-    constructor(game, opts = {}, spriteOpts = {}) {
+    constructor(game, opts, spriteOpts) {
 
         this.game = game
         this.ID = env.newID()

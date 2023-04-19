@@ -50,12 +50,5 @@ class Game {
             const player = players[ID]
             player.move()
         }
-
-        const cursors = this.gameObjects.cursors
-
-        for (cosnt ID in cursors) {
-
-            const cursor = cursors[ID]
-        }
     }
 }
