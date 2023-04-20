@@ -1,5 +1,6 @@
 class GridCoord {
     static texture = PIXI.Texture.from('sprites/grass.png')
+    static hoverTexture = PIXI.Texture.from('sprites/grassHover.png')
     game
     ID
     sprite
@@ -21,7 +22,22 @@ class GridCoord {
 
     initInteractions() {
 
+        this.sprite.cursor = 'hover'
+        this.sprite.eventMode = 'dynamic'
 
+        const instance = this
+        this.sprite.on('pointerover', function() { instance.hoverOn() })
+        this.sprite.on('pointerout', function() { instance.hoverOff() })
+    }
+
+    hoverOn() {
+
+        this.sprite.texture = GridCoord.hoverTexture
+    }
+
+    hoverOff() {
+
+        this.sprite.texture = GridCoord.texture
     }
 
     render() {

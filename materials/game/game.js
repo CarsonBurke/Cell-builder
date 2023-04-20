@@ -3,7 +3,7 @@ class Game {
     running = false
     graph = new Uint8Array()
     gameObjects
-    static gameObjectTypes = ['player', 'gridCoord', 'cursor']
+    static gameObjectTypes = ['player', 'gridCoord', 'cursor', 'structure']
 
     constructor() {
 
@@ -28,6 +28,7 @@ class Game {
 
         new Cursor(this)
         new Player(this)
+        new House(this)
     }
     reset() {
 

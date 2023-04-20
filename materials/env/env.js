@@ -59,7 +59,7 @@ class Env {
         document.getElementById('envParent').appendChild(this.app.view)
 
         this.app.autoDensity = true
-        
+        this.app.stage.eventMode = 'dynamic'
     }
 
     initContainer() {

@@ -82,6 +82,9 @@ class Player {
 
     initSprite() {
         
+        this.sprite.width = env.coordSize
+        this.sprite.height = env.coordSize
+        
         env.container.addChild(this.sprite)
     }
 }
