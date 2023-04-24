@@ -4,6 +4,7 @@ class Env {
     app
     graphics
     gamesAmount = 1
+    contextMenu = document.getElementById('contextMenu')
 
     constructor() {
 
@@ -158,6 +159,34 @@ class Env {
 
         this.container.destroy()
         this.initContainer()
+    }
+
+    keyManager(event) {
+
+
+    }
+
+    clickManager(event) {
+
+        const targetEl = event.target
+        console.log(targetEl)
+        if (targetEl.classList.contains('contextMenuPart')) {
+
+            return
+        }
+
+        this.contextMenu.classList.add('spaceHidden')
+    }
+
+    onContextMenu(event) {
+
+        event.preventDefault()
+
+        console.log(event.clientX, event.clientY, document.body.getBoundingClientRect().top)
+
+        this.contextMenu.classList.remove('spaceHidden')
+        this.contextMenu.style.top = event.clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'
+        this.contextMenu.style.left = event.clientX + 'px'
     }
 }
 

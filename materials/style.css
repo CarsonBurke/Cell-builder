@@ -55,12 +55,17 @@ div {
     display: block;
 }
 
-
-/* Game */
-
-.sprite {
+.voidHidden {
     display: none;
 }
+
+.spaceHidden {
+    opacity: 0;
+    user-select: none;
+}
+
+
+/* Game */
 
 
 /* Content */
@@ -326,4 +331,32 @@ div {
 
 .linesParent line {
     stroke-width: 2px;
+}
+
+/* Context menu */
+
+.contextMenu {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 10px 15px 0;
+    position: absolute;
+    background-color: white;
+    z-index: 1000;
+    border-radius: 4px;
+    user-select: none;
+    transition: opacity 0.2s;
+}
+
+.contextMenuChild {
+    transition: all 0.2s;
+    padding: 10px 20px;
+    font-weight: 400;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+}
+
+.contextMenuChild:hover {
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0 0 0 10000px;
 }

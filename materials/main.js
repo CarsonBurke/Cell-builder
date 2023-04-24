@@ -56,3 +56,6 @@ function stopRefresh(event) {
 
     event.preventDefault()
 }
+
+document.addEventListener('click', event => { env.clickManager(event) })
+document.addEventListener('contextmenu', event => { env.onContextMenu(event) })
