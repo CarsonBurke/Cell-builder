@@ -169,7 +169,6 @@ class Env {
     clickManager(event) {
 
         const targetEl = event.target
-        console.log(targetEl)
         if (targetEl.classList.contains('contextMenuPart')) {
 
             return
@@ -181,8 +180,6 @@ class Env {
     onContextMenu(event) {
 
         event.preventDefault()
-
-        console.log(event.clientX, event.clientY, document.body.getBoundingClientRect().top)
 
         this.contextMenu.classList.remove('spaceHidden')
         this.contextMenu.style.top = event.clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'

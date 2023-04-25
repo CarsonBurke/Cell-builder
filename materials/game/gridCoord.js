@@ -1,10 +1,13 @@
 class GridCoord {
     static texture = PIXI.Texture.from('sprites/grass.png')
     static hoverTexture = PIXI.Texture.from('sprites/grassHover.png')
+
+    type = 'gridCoord'
+    energy = 0
+
     game
     ID
     sprite
-    type = 'gridCoord'
     constructor(game, opts, spriteOpts) {
 
         this.game = game

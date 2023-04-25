@@ -2,8 +2,9 @@ class Game {
     
     running = false
     graph = new Uint8Array()
-    gameObjects
-    static gameObjectTypes = ['player', 'gridCoord', 'cursor', 'structure']
+    static gameObjectTypes = ['gridCoord', 'organism', ...CELL_TYPES]
+
+    gameObjects = {}
 
     constructor() {
 
@@ -16,8 +17,10 @@ class Game {
         this.running = true
         this.graph = new Uint8Array(env.graphLength)
     
-        this.gameObjects = {}
-        for (const type of Game.gameObjectTypes) this.gameObjects[type] = {}
+        for (const type of Game.gameObjectTypes) {
+
+            this.gameObjects[type] = {}
+        }
     
         for (let x = 0; x < env.graphSize; x++) {
             for (let y = 0; y < env.graphSize; y++) {
@@ -26,9 +29,17 @@ class Game {
             }
         }
 
-        new Cursor(this)
-        new Player(this)
-        new House(this)
+        const organism = new Organism({
+            game: this,
+        })
+        const cell = new SolarCell({
+            game: this,
+            organism: organism,
+        },
+        {
+            x: env.coordSize,
+            y: env.coordSize,
+        })
     }
     reset() {
 
@@ -39,17 +50,16 @@ class Game {
                 delete this.gameObjects[type][ID]
             }
         }
-        console.log(this.gameObjects)
+        console.log('reset', this.gameObjects)
         this.init()
     }
     run() {
         
-        const players = this.gameObjects.player
+        for (const ID in this.gameObjects.organism) {
 
-        for (const ID in players) {
-
-            const player = players[ID]
-            player.move()
+            const organism = this.gameObjects.organism[ID]
+            console.log(organism)
+            organism.run()
         }
     }
 }
