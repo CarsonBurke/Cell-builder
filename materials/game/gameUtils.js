@@ -86,6 +86,37 @@ function forAdjacentCoords(startCoord, f) {
     }
 }
 
+/**
+ * Excludes center around range
+ */
+function forCoordsAroundRange(startCoord, range, f) {
+    for (let x = startCoord.x - range; x <= startCoord.x + range; x += 1) {
+        for (let y = startCoord.y - range; y <= startCoord.y + range; y += 1) {
+            if (x == startCoord.x && y === startCoord.y) continue
+            // Iterate if the pos doesn't map onto a room
+
+            if (x < 0 || x >= roomDimensions || y < 0 || y >= roomDimensions) continue
+
+            f({ x, y })
+        }
+    }
+}
+
+/**
+ * includes center around range
+ */
+function forCoordsInRange(startCoord, range, f) {
+    for (let x = startCoord.x - range; x <= startCoord.x + range; x += 1) {
+        for (let y = startCoord.y - range; y <= startCoord.y + range; y += 1) {
+            // Iterate if the pos doesn't map onto a room
+
+            if (x < 0 || x >= roomDimensions || y < 0 || y >= roomDimensions) continue
+
+            f({ x, y })
+        }
+    }
+}
+
 function randomBool() {
 
     return Math.floor(Math.random() * 2)

@@ -1,10 +1,12 @@
 class Game {
+    static gameObjectTypes = ['gridCoord', 'organism', ...CELL_TYPES]
     
     running = false
     graph = new Uint8Array()
-    static gameObjectTypes = ['gridCoord', 'organism', ...CELL_TYPES]
-
     gameObjects = {}
+
+    graph = new Uint8Array()
+    cells = new Uint8Array()
 
     constructor() {
 
@@ -16,6 +18,7 @@ class Game {
 
         this.running = true
         this.graph = new Uint8Array(env.graphLength)
+        this.cells = {}
     
         for (const type of Game.gameObjectTypes) {
 
@@ -84,7 +87,14 @@ class Game {
 
             const organism = this.gameObjects.organism[ID]
             console.log(organism)
-            organism.run()
+            organism.runCells()
+        }
+
+        for (const ID in this.gameObjects.organism) {
+
+            const organism = this.gameObjects.organism[ID]
+            console.log(organism)
+            organism.runExpansion()
         }
     }
 }

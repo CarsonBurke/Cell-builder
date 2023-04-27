@@ -3,8 +3,8 @@ class SolarCell {
     static energyGenerationRate = 1
 
     type = 'solarCell'
-    ID = env.newID()
 
+    ID 
     game
     organism
     ID
@@ -17,11 +17,16 @@ class SolarCell {
      */
     constructor(opts, spriteOpts) {
 
+        this.ID = env.newID()
+
         Object.assign(this, opts)
-        this.game.gameObjects[this.type][this.ID] = this
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)
+
+        this.game.gameObjects[this.type][this.ID] = this
+        this.game.cells[this.packedPos] = this
+        this.organism.cells[this.type][this.ID] = this
     }
     initSprite() {
 
@@ -31,5 +36,26 @@ class SolarCell {
     run() {
 
         this.organism.energy += SolarCell.energyGenerationRate
+    }
+
+    get pos() {
+
+        return {
+            x: this.sprite.x / env.coordSize,
+            y: this.sprite.y / env.coordSize,
+        }
+    }
+
+    set pos(newPos) {
+
+        this.sprite.x = newPos.x * env.coordSize
+        this.sprite.y = newPos.y * env.coordSize
+
+        this.game.cells[this.packedPos] = this
+    }
+
+    get packedPos() {
+
+        return packCoord(this.pos)
     }
 }
