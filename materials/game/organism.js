@@ -42,14 +42,23 @@ class Organism {
     }
     runExpansion() {
 
+        const CELL_CLASSES = {
+            'solarCell': SolarCell,
+            'collectorCell': CollectorCell,
+            'attackerCell': AttackerCell,
+            'cellMembrane': CellMembrane,
+        }
+
         for (const packedCoord of this.expansionCoords) {
-            console.log('cell', this.game.cells[packedCoord])
+
+            if (this.energy <= 0) break
             if (this.game.cells[packedCoord]) continue
 
             const coord = unpackCoord(packedCoord)
 
-            const type = Math.floor(Math.random() * CELL_TYPES.length - 1)
-            const cell = new CellMembrane({
+            const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))]
+            console.log(type)
+            const cell = new /* CELL_CLASSES[type] */SolarCell({
                 game: this.game,
                 organism: this,
             }, 

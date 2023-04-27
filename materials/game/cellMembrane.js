@@ -1,9 +1,9 @@
 class CellMembrane {
     static texture = PIXI.Texture.from('sprites/cellMembrane.png')
-    static energyGenerationRate = 1
 
     type = 'cellMembrane'
     energy = 0
+    cost = 4
 
     ID
     game
@@ -28,6 +28,8 @@ class CellMembrane {
         this.game.gameObjects[this.type][this.ID] = this
         this.game.cells[this.packedPos] = this
         this.organism.cells[this.type][this.ID] = this
+
+        this.organism.energy -= this.cost
     }
     initSprite() {
 
@@ -36,8 +38,7 @@ class CellMembrane {
     }
     run() {
 
-        if (this.game.gameObjects)
-        this.organism.energy += CellMembrane.energyGenerationRate
+        
     }
 
     get pos() {

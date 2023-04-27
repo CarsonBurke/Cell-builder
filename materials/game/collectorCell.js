@@ -1,8 +1,8 @@
 class CollectorCell {
     static texture = PIXI.Texture.from('sprites/collectorCell.png')
-    static energyGenerationRate = 1
 
     type = 'collectorCell'
+    cost = 22
 
     ID
     game
@@ -27,6 +27,8 @@ class CollectorCell {
         this.game.gameObjects[this.type][this.ID] = this
         this.game.cells[this.packedPos] = this
         this.organism.cells[this.type][this.ID] = this
+
+        this.organism.energy -= this.cost
     }
     initSprite() {
 
@@ -35,7 +37,7 @@ class CollectorCell {
     }
     run() {
 
-        this.organism.energy += CollectorCell.energyGenerationRate
+        
     }
 
     get pos() {

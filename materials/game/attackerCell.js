@@ -4,6 +4,8 @@ class AttackerCell {
 
     type = 'attackerCell'
     energy = 0
+    cost = 45
+    attackCost = 2
 
     ID
     range
@@ -29,6 +31,8 @@ class AttackerCell {
         this.game.gameObjects[this.type][this.ID] = this
         this.game.cells[this.packedPos] = this
         this.organism.cells[this.type][this.ID] = this
+
+        this.organism.energy -= this.cost
     }
     initSprite() {
 
@@ -41,8 +45,6 @@ class AttackerCell {
         this.energy = 0
 
         
-
-        this.organism.energy += AttackerCell.energyGenerationRate
     }
 
     get pos() {

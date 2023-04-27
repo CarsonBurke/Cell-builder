@@ -9,7 +9,7 @@ class Env {
     constructor() {
 
         this.games = {}
-        this.graphSize = 20
+        this.graphSize = 50
         this.graphLength = this.graphSize * this.graphSize
         this.coordSize = 64
         this.searchCount = 1

@@ -3,6 +3,7 @@ class SolarCell {
     static energyGenerationRate = 1
 
     type = 'solarCell'
+    cost = 15
 
     ID 
     game
@@ -27,6 +28,8 @@ class SolarCell {
         this.game.gameObjects[this.type][this.ID] = this
         this.game.cells[this.packedPos] = this
         this.organism.cells[this.type][this.ID] = this
+
+        this.organism.energy -= this.cost
     }
     initSprite() {
 
