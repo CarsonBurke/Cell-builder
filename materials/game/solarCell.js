@@ -1,4 +1,4 @@
-class SolarCell {
+class SolarCell extends Cell {
     static texture = PIXI.Texture.from('sprites/solarCell.png')
     static energyGenerationRate = 1
 
@@ -6,9 +6,6 @@ class SolarCell {
     cost = 15
 
     ID 
-    game
-    organism
-    ID
     sprite
 
     /**
@@ -17,19 +14,12 @@ class SolarCell {
      * @param {*} spriteOpts must contain an x and y
      */
     constructor(opts, spriteOpts) {
-
-        this.ID = env.newID()
-
-        Object.assign(this, opts)
+        super(opts)
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)
 
-        this.game.gameObjects[this.type][this.ID] = this
-        this.game.cells[this.packedPos] = this
-        this.organism.cells[this.type][this.ID] = this
-
-        this.organism.energy -= this.cost
+        this.assign()
     }
     initSprite() {
 
@@ -39,26 +29,5 @@ class SolarCell {
     run() {
 
         this.organism.energy += SolarCell.energyGenerationRate
-    }
-
-    get pos() {
-
-        return {
-            x: this.sprite.x / env.coordSize,
-            y: this.sprite.y / env.coordSize,
-        }
-    }
-
-    set pos(newPos) {
-
-        this.sprite.x = newPos.x * env.coordSize
-        this.sprite.y = newPos.y * env.coordSize
-
-        this.game.cells[this.packedPos] = this
-    }
-
-    get packedPos() {
-
-        return packCoord(this.pos)
     }
 }

@@ -1,4 +1,4 @@
-class AttackerCell {
+class AttackerCell extends Cell {
     static texture = PIXI.Texture.from('sprites/attackerCell.png')
     static energyGenerationRate = 1
 
@@ -9,9 +9,6 @@ class AttackerCell {
 
     ID
     range
-    game
-    organism
-    ID
     sprite
 
     /**
@@ -20,19 +17,12 @@ class AttackerCell {
      * @param {*} spriteOpts must contain an x and y
      */
     constructor(opts, spriteOpts) {
-
-        this.ID = env.newID()
-
-        Object.assign(this, opts)
+        super(opts)
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)
 
-        this.game.gameObjects[this.type][this.ID] = this
-        this.game.cells[this.packedPos] = this
-        this.organism.cells[this.type][this.ID] = this
-
-        this.organism.energy -= this.cost
+        this.assign()
     }
     initSprite() {
 
@@ -44,27 +34,14 @@ class AttackerCell {
         this.range = Math.floor(Math.pow(this.energy, 1.5))
         this.energy = 0
 
-        
-    }
+        forCoordsAroundRange(this.pos, this.range, coord => {
+            console.log(coord)
+            const packedCoord = packCoord(coord)
 
-    get pos() {
+            const cell = this.game.cells[packedCoord]
+            if (!this.cell) return
 
-        return {
-            x: this.sprite.x / env.coordSize,
-            y: this.sprite.y / env.coordSize,
-        }
-    }
-
-    set pos(newPos) {
-
-        this.sprite.x = newPos.x * env.coordSize
-        this.sprite.y = newPos.y * env.coordSize
-
-        this.game.cells[this.packedPos] = this
-    }
-
-    get packedPos() {
-
-        return packCoord(this.pos)
+            cell.kill()
+        })
     }
 }

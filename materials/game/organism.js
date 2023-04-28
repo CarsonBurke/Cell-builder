@@ -1,6 +1,6 @@
 class Organism {
     cells = {}
-    energy = 0
+    energy = 100
     type = 'organism'
     ID = env.newID()
 
@@ -35,7 +35,7 @@ class Organism {
                 forAdjacentCoords(cell.pos, 
                 coord => {
 
-                    this.expansionCoords.add(packXY(coord.x, coord.y)) 
+                    this.expansionCoords.add(packCoord(coord)) 
                 })
             }
         }
@@ -58,7 +58,7 @@ class Organism {
 
             const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))]
             console.log(type)
-            const cell = new /* CELL_CLASSES[type] */SolarCell({
+            const cell = new CELL_CLASSES[type]({
                 game: this.game,
                 organism: this,
             }, 
