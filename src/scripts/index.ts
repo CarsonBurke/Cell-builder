@@ -1,68 +1,56 @@
-import { Input, NeuralNetwork, Output } from "./neuralNetwork/network"
-import { networkManager } from "./neuralNetwork/networkManager"
+import { MAX_RUNNER_SPEED } from "./constants"
+import { env } from "./env/env"
 
-export function init() {
+env.init()
 
-    window.addEventListener('load', main)
-}
+main()
 
 function main() {
 
-    networkManager.initVisuals()
-
-    const inputs = [
-        new Input(
-            'X', 
-            [
-                10,
-            ],
-            [
-                '1'
-            ],
-        ),
-        new Input(
-            'Y', 
-            [
-                8,
-            ],
-            [
-                '2'
-            ],
-        ),
-        ],
-        outputs = [
-            new Output('Z'),
-            new Output('X'),
-        ]
-    
-    startNetworks(inputs, outputs)
-    setInterval(() => { runNetworks(inputs) }, 1000)
+    runUPS()
 }
 
-function startNetworks(inputs: Input[], outputs: Output[]) {
-    
-    const firstNetwork = new NeuralNetwork()
-    firstNetwork.clone()
+async function runUPS() {
 
-    for (const ID in networkManager.networks) {
+    while (true) {
 
-        const network = networkManager.networks[ID]
+        env.runUPS()
 
-        network.init(inputs, outputs.length)
-        network.createVisuals(inputs, outputs)
+        await new Promise((resolve, reject) => {
+            setTimeout(function() {
+                resolve(() => {})
+            }, MAX_RUNNER_SPEED / env.speed)
+        })
     }
 }
 
-function runNetworks(inputs: Input[]) {
+document.getElementById('changeSpeed').addEventListener('click', changeSpeed)
 
-    for (const networkID in networkManager.networks) {
+changeSpeed()
 
-        const network = networkManager.networks[networkID]
+function changeSpeed() {
 
-        network.forwardPropagate(inputs)
-
-        network.updateVisuals(inputs)
-
-        network.mutate()
-    }
+    const speedInput = document.getElementById('newSpeed') as HTMLInputElement
+    env.speed = parseInt(speedInput.value) || env.speed
 }
+
+document.getElementById('reset').addEventListener('click', resetGames)
+
+function resetGames() {
+
+    env.reset()
+}
+
+const elements = document.getElementsByTagName('form')
+for (const el of elements) {
+
+    el.addEventListener('submit', stopRefresh)
+}
+
+function stopRefresh(event: Event) {
+
+    event.preventDefault()
+}
+
+document.addEventListener('click', event => { env.clickManager(event) })
+document.addEventListener('contextmenu', event => { env.onContextMenu(event) })
