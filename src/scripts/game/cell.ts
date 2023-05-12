@@ -1,8 +1,14 @@
-class Cell {
+import { env } from "../env/env"
+import { Game } from "./game"
+import { packCoord } from "./gameUtils"
+import { Organism } from "./organism"
 
-    ID
-    game
-    organism
+
+export class Cell {
+
+    ID: string
+    game: Game
+    organism: Organism
     sprite
 
     /**

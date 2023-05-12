@@ -1,4 +1,4 @@
-class Organism {
+export class Organism {
     cells = {}
     energy = 100
     type = 'organism'

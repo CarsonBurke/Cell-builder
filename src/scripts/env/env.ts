@@ -1,47 +1,44 @@
-
+import { MAX_RUNNER_SPEED } from '../constants.js'
+import * as PIXI from '../pixi.min.js'
+import { Application } from '../pixi.min.js'
 
 class Env {
-    app: unknown
     graphics: unknown
     gamesAmount = 1
+    speed = 1
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
     graphSize = 50
     graphLength = this.graphSize * this.graphSize
+    coordSize = 64
+    IDIndex = 0
+    width = this.graphSize * this.coordSize
+    height = this.graphSize * this.coordSize
+    lastReset = 0
+    lastFrameTime = new Date()
+    lastUpdateTime = new Date()
+    app = new PIXI.Application({ 
+        backgroundAlpha: 0,
+        /* antialias: true, */
+        width: this.width, 
+        height: this.height,
+    })
+    container = new PIXI.Container()
+
+    stats = {
+        tick: 0,
+        fps: '0',
+        ups: '0',
+        roundTick: 0,
+        speed: 1,
+        bestTotalScore: 0,
+        bestGenScore: 0
+    }
 
     constructor() {
 
-        this.games = {}
-        this.graphSize = 50
-        this.graphLength = this.graphSize * this.graphSize
-        this.coordSize = 64
-        this.searchCount = 1
-        this.generationsQuota = 100
-        this.IDIndex = 0
-        this.width = this.graphSize * this.coordSize
-        this.height = this.graphSize * this.coordSize
-        this.lastReset = 0
-        this.lastFrameTime = new Date()
-        this.lastUpdateTime = new Date()
 
-        this.tick = 0
-        this.fps = '0'
-        this.ups = '0'
-        this.roundTick = 0
-        this.speed = 1
-        this.bestTotalScore = 0
-        this.bestGenScore = 0
-
-        this.stats = [
-            'tick',
-            'roundTick',
-            'speed',
-            'fps',
-            'ups',
-            'bestTotalScore',
-            'bestGenScore',
-        ]
     }
     init() {
 
@@ -53,23 +50,17 @@ class Env {
 
     initApp() {
 
-        this.app = new PIXI.Application({ 
-            backgroundAlpha: 0,
-            /* antialias: true, */
-            width: this.width, 
-            height: this.height,
-        })
+        
         this.app.view.classList.add('env')
         this.app.view.id = 'env'
         document.getElementById('envParent').appendChild(this.app.view)
 
-        this.app.autoDensity = true
         this.app.stage.eventMode = 'dynamic'
     }
 
     initContainer() {
 
-        this.container = new PIXI.Container()
+        
         this.app.stage.addChild(this.container)
     }
     
@@ -92,12 +83,13 @@ class Env {
     
     newID() {
     
-        return this.IDIndex++
+        this.IDIndex += 1
+        return this.IDIndex.toString()
     }
 
     runFPS() {
 
-        this.fps += 1
+        this.stats.fps += 1
     
         for (const gameID in this.games) {
     
@@ -105,20 +97,20 @@ class Env {
     
         }
     
-        for (const statType of this.stats) {
+        for (const statName in this.stats) {
     
-            document.getElementById(statType).innerText = this[statType]
+            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
         }
 
         const thisFrameTime = new Date()
-        this.fps = (MAX_RUNNER_SPEED / (thisFrameTime - this.lastFrameTime)).toFixed(2)
+        this.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime.getTime() - this.lastFrameTime.getTime())).toFixed(2)
         this.lastFrameTime = new Date()
     }
 
     runUPS() {
         
-        this.tick += 1
-        this.roundTick += 1
+        this.stats.tick += 1
+        this.stats.roundTick += 1
     
         let runningGames = 0
     
@@ -130,9 +122,9 @@ class Env {
             game.run()
         }
     
-        for (const statType of this.stats) {
+        for (const statName in this.stats) {
     
-            document.getElementById(statType).innerText = this[statType]
+            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
         }
     
         //
@@ -143,15 +135,14 @@ class Env {
         }
 
         const thisUpdateTime = new Date()
-        this.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
+        this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime.getTime() - this.lastUpdateTime.getTime())).toFixed(2)
         this.lastUpdateTime = new Date()
     }
     
     reset() {
     
-        this.lastReset = this.tick
-        this.roundTick = 0
-        this.generation += 1
+        this.lastReset = this.stats.tick
+        this.stats.roundTick = 0
     
         for (const gameID in this.games) {
     
@@ -165,14 +156,14 @@ class Env {
         this.initContainer()
     }
 
-    keyManager(event) {
+    keyManager(event: Event) {
 
 
     }
 
-    clickManager(event) {
+    clickManager(event: Event) {
 
-        const targetEl = event.target
+        const targetEl = event.target as HTMLElement
         if (targetEl.classList.contains('contextMenuPart')) {
 
             return
@@ -181,13 +172,13 @@ class Env {
         this.contextMenu.classList.add('spaceHidden')
     }
 
-    onContextMenu(event) {
+    onContextMenu(event: Event) {
 
         event.preventDefault()
 
         this.contextMenu.classList.remove('spaceHidden')
-        this.contextMenu.style.top = event.clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'
-        this.contextMenu.style.left = event.clientX + 'px'
+        this.contextMenu.style.top = (event as any).clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'
+        this.contextMenu.style.left = (event as any).clientX + 'px'
     }
 }
 

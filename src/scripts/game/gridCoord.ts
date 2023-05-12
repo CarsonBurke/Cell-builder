@@ -1,4 +1,4 @@
-class GridCoord {
+export class GridCoord {
     static texture = PIXI.Texture.from('sprites/grass.png')
     static hoverTexture = PIXI.Texture.from('sprites/grassHover.png')
 

@@ -1,11 +1,12 @@
-class SolarCell extends Cell {
+import * as PIXI from '../pixi.min.js'
+
+export class SolarCell extends Cell {
     static texture = PIXI.Texture.from('sprites/solarCell.png')
     static energyGenerationRate = 1
 
     type = 'solarCell'
     cost = 15
 
-    ID 
     sprite
 
     /**
@@ -13,7 +14,7 @@ class SolarCell extends Cell {
      * @param {*} opts must contiain a game and an organism parent
      * @param {*} spriteOpts must contain an x and y
      */
-    constructor(opts, spriteOpts) {
+    constructor(opts: any, spriteOpts) {
         super(opts)
 
         this.initSprite()

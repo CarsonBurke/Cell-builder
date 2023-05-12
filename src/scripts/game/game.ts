@@ -1,24 +1,27 @@
-class Game {
-    static gameObjectTypes = ['gridCoord', 'organism', ...CELL_TYPES]
-    
-    running = false
-    graph = new Uint8Array()
-    gameObjects = {}
+import { CELL_TYPES } from "../constants"
+import { env } from "../env/env"
+import { Cell } from "./cell"
+import { packXY } from "./gameUtils"
+import { GridCoord } from "./gridCoord"
+import { Organism } from "./organism"
+import { SolarCell } from "./solarCell"
 
-    graph = new Uint8Array()
-    cells = new Uint8Array()
+export class Game {
+    ID = env.newID()
+    running = false
+    graph: GridCoord[] = []
+    cellGraph: Cell[]/* {[cellType: string]: {[ID: string]: Cell} } */
+    organisms: {[ID: string]: Organism}
+    cell: {[ID: string]: Cell}
 
     constructor() {
-
-        this.ID = env.newID()
 
         env.games[this.ID] = this
     }
     init() {
 
         this.running = true
-        this.graph = new Uint8Array(env.graphLength)
-        this.cells = {}
+        this.cellGraph = {}
     
         for (const type of Game.gameObjectTypes) {
 
