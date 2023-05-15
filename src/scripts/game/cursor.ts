@@ -1,17 +1,19 @@
-class Cursor {
+import { env } from "../env/env"
+import { Game } from "./game"
+import * as PIXI from '../pixi.min.js'
+
+export class Cursor {
     static texture = PIXI.Texture.from('sprites/cursor.png')
     game
     ID
     sprite
     type = 'cursor'
     
-    constructor(game, opts, spriteOpts) {
+    constructor(game: Game, opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
 
         this.game = game
         this.ID = env.newID()
         Object.assign(this, opts)
-
-        game.gameObjects[this.type][this.ID] = this
 
         this.sprite = new PIXI.Sprite(Cursor.texture)
         Object.assign(this.sprite, spriteOpts)

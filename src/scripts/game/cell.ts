@@ -1,56 +1,65 @@
+import { CellTypes } from "../constants"
 import { env } from "../env/env"
+import { Sprite } from "../pixi.min"
 import { Game } from "./game"
-import { packCoord } from "./gameUtils"
+import { packPos } from "./gameUtils"
 import { Organism } from "./organism"
 
 
 export class Cell {
 
+    type: CellTypes
     ID: string
     game: Game
     organism: Organism
-    sprite
+    sprite: Sprite
+    cost: number
 
     /**
      * 
      * @param {*} opts must contiain a game and an organism parent=
      */
-    constructor(opts) {
+    constructor(opts: {[key: string]: any}) {
         Object.assign(this, opts)
 
         this.ID = env.newID()
     }
     assign() {
 
-        this.game.gameObjects[this.type][this.ID] = this
-        this.game.cells[this.packedPos] = this
-        this.organism.cells[this.type][this.ID] = this
+        this.game.cells[this.type][this.ID] = this
+        this.game.cellGraph[this.packedPos] = this
 
         this.organism.energy -= this.cost
     }
     kill() {
 
-        this.game.graph[this.pos]
+        this.game.cellGraph[this.pos.x]
+    }
+    run() {
+
+        console.log('default run')
     }
 
     get pos() {
 
         return {
-            x: this.sprite.x / env.coordSize,
-            y: this.sprite.y / env.coordSize,
+            x: this.sprite.x / env.posSize,
+            y: this.sprite.y / env.posSize,
         }
     }
 
     set pos(newPos) {
 
-        this.sprite.x = newPos.x * env.coordSize
-        this.sprite.y = newPos.y * env.coordSize
+        this.game.cellGraph[this.packedPos] = undefined
 
-        this.game.cells[this.packedPos] = this
+        this.sprite.x = newPos.x * env.posSize
+        this.sprite.y = newPos.y * env.posSize
+
+        this.game.cellGraph[this.packedPos] = this
     }
 
     get packedPos() {
 
-        return packCoord(this.pos)
+        return packPos(this.pos)
     }
 }

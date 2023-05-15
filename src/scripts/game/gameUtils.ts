@@ -1,9 +1,10 @@
 import { env } from "../env/env"
+import { Pos } from "./types"
 
 
-export function packCoord(coord: Coord) {
+export function packPos(pos: Pos) {
 
-    return coord.x * env.graphSize + coord.y
+    return pos.x * env.graphSize + pos.y
 }
 
 export function packXY(x: number, y: number) {
@@ -11,18 +12,18 @@ export function packXY(x: number, y: number) {
     return x * env.graphSize + y
 }
 
-export function unpackCoord(packedCoord: number) {
+export function unpackPos(packedPos: number) {
 
     return {
-        x: Math.floor(packedCoord / env.graphSize),
-        y: Math.floor(packedCoord % env.graphSize),
+        x: Math.floor(packedPos / env.graphSize),
+        y: Math.floor(packedPos % env.graphSize),
     }
 }
 
 /**
  * Takes a rectange and returns the positions inside of it in an array
  */
-export function findCoordsInsideRect(x1: number, y1: number, x2: number, y2: number) {
+export function findPositionsInsideRect(x1: number, y1: number, x2: number, y2: number) {
     const positions = []
 
     for (let x = x1; x <= x2; x += 1) {
@@ -58,14 +59,14 @@ export function getRange(x1: number, x2: number, y1: number, y2: number) {
     return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1))
 }
 
-export function getRangeOfCoords(coord1: Coord, coord2: Coord) {
-    return getRange(coord1.x, coord2.x, coord1.y, coord2.y)
+export function getRangeOfPositions(pos1: Pos, pos2: Pos) {
+    return getRange(pos1.x, pos2.x, pos1.y, pos2.y)
 }
 
-export function forAdjacentCoords(startCoord: Coord, f: (coord: Coord) => boolean) {
-    for (let x = startCoord.x - 1; x <= startCoord.x + 1; x += 1) {
-        for (let y = startCoord.y - 1; y <= startCoord.y + 1; y += 1) {
-            if (x === startCoord.x && y === startCoord.y) continue
+export function forAdjacentPositions(startPos: Pos, f: (pos: Pos) => void) {
+    for (let x = startPos.x - 1; x <= startPos.x + 1; x += 1) {
+        for (let y = startPos.y - 1; y <= startPos.y + 1; y += 1) {
+            if (x === startPos.x && y === startPos.y) continue
             if (!isXYInGraph(x, y)) continue
 
             f({ x, y })
@@ -76,10 +77,10 @@ export function forAdjacentCoords(startCoord: Coord, f: (coord: Coord) => boolea
 /**
  * Excludes center around range
  */
-export function forCoordsAroundRange(startCoord: Coord, range: number, f: (coord: Coord) => boolean) {
-    for (let x = startCoord.x - range; x <= startCoord.x + range; x += 1) {
-        for (let y = startCoord.y - range; y <= startCoord.y + range; y += 1) {
-            if (x == startCoord.x && y === startCoord.y) continue
+export function forPositionsAroundRange(startPos: Pos, range: number, f: (pos: Pos) => void) {
+    for (let x = startPos.x - range; x <= startPos.x + range; x += 1) {
+        for (let y = startPos.y - range; y <= startPos.y + range; y += 1) {
+            if (x == startPos.x && y === startPos.y) continue
             // Iterate if the pos doesn't map onto a room
 
             if (x < 0 || x >= env.graphLength || y < 0 || y >= env.graphLength) continue
@@ -92,9 +93,9 @@ export function forCoordsAroundRange(startCoord: Coord, range: number, f: (coord
 /**
  * includes center around range
  */
-export function forCoordsInRange(startCoord: Coord, range: number, f: (coord: Coord) => boolean) {
-    for (let x = startCoord.x - range; x <= startCoord.x + range; x += 1) {
-        for (let y = startCoord.y - range; y <= startCoord.y + range; y += 1) {
+export function forPositionsInRange(startPos: Pos, range: number, f: (pos: Pos) => void) {
+    for (let x = startPos.x - range; x <= startPos.x + range; x += 1) {
+        for (let y = startPos.y - range; y <= startPos.y + range; y += 1) {
             // Iterate if the pos doesn't map onto a room
 
             if (x < 0 || x >= env.graphLength || y < 0 || y >= env.graphLength) continue
@@ -114,24 +115,24 @@ export function randomOnesOffset() {
     return randomBool() ? 1 : -1
 }
 
-export function randomOffsetFor(coord: Coord) {
+export function randomOffsetFor(pos: Pos) {
 
-    const offsetCoord = {
+    const offsetPos = {
         x: -1,
         y: -1,
     }
 
-    for (const key in offsetCoord) {
+    for (const key in offsetPos) {
 
-        let coordVal = offsetCoord[key as keyof Coord]
+        let posVal = offsetPos[key as keyof Pos]
 
-        while (coordVal < 0 || coordVal > env.graphSize) {
+        while (posVal < 0 || posVal > env.graphSize) {
 
-            coordVal = coord[key as keyof Coord] + randomOnesOffset()
+            posVal = pos[key as keyof Pos] + randomOnesOffset()
         }
 
-        offsetCoord[key as keyof Coord] = coordVal
+        offsetPos[key as keyof Pos] = posVal
     }
 
-    return offsetCoord
+    return offsetPos
 }

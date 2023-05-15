@@ -1,6 +1,6 @@
 import { MAX_RUNNER_SPEED } from '../constants.js'
+import { Game } from '../game/game.js'
 import * as PIXI from '../pixi.min.js'
-import { Application } from '../pixi.min.js'
 
 class Env {
     graphics: unknown
@@ -11,10 +11,10 @@ class Env {
     games: {[ID: string]: Game } = {}
     graphSize = 50
     graphLength = this.graphSize * this.graphSize
-    coordSize = 64
+    posSize = 64
     IDIndex = 0
-    width = this.graphSize * this.coordSize
-    height = this.graphSize * this.coordSize
+    width = this.graphSize * this.posSize
+    height = this.graphSize * this.posSize
     lastReset = 0
     lastFrameTime = new Date()
     lastUpdateTime = new Date()

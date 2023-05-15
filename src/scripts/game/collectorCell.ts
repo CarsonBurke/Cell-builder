@@ -1,19 +1,22 @@
-class CollectorCell extends Cell {
+import { CellTypes } from '../constants.js'
+import { env } from '../env/env.js'
+import * as PIXI from '../pixi.min.js'
+import { Cell } from './cell.js'
+
+export class CollectorCell extends Cell {
     static texture = PIXI.Texture.from('sprites/collectorCell.png')
 
-    type = 'collectorCell'
     cost = 22
-
-    ID
-    sprite
 
     /**
      * 
      * @param {*} opts must contiain a game and an organism parent
      * @param {*} spriteOpts must contain an x and y
      */
-    constructor(opts, spriteOpts) {
+    constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
         super(opts)
+
+        this.type = 'collectorCell'
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)

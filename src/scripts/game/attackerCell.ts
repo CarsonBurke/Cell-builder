@@ -1,23 +1,26 @@
-class AttackerCell extends Cell {
+import { env } from "../env/env"
+import { Cell } from "./cell"
+import * as PIXI from '../pixi.min.js'
+import { forPositionsAroundRange, packPos } from "./gameUtils"
+
+export class AttackerCell extends Cell {
     static texture = PIXI.Texture.from('sprites/attackerCell.png')
     static energyGenerationRate = 1
 
-    type = 'attackerCell'
     energy = 0
     cost = 45
     attackCost = 2
-
-    ID
-    range
-    sprite
+    range = 0
 
     /**
      * 
      * @param {*} opts must contiain a game and an organism parent
      * @param {*} spriteOpts must contain an x and y
      */
-    constructor(opts, spriteOpts) {
+    constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
         super(opts)
+
+        this.type = 'attackerCell'
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)
@@ -34,12 +37,12 @@ class AttackerCell extends Cell {
         this.range = Math.floor(Math.pow(this.energy, 1.5))
         this.energy = 0
 
-        forCoordsAroundRange(this.pos, this.range, coord => {
-            console.log(coord)
-            const packedCoord = packCoord(coord)
+        forPositionsAroundRange(this.pos, this.range, pos => {
+            console.log(pos)
+            const packedPos = packPos(pos)
 
-            const cell = this.game.cells[packedCoord]
-            if (!this.cell) return
+            const cell = this.game.cellGraph[packedPos]
+            if (!cell) return
 
             cell.kill()
         })

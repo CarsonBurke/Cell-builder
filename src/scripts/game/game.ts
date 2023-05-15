@@ -1,18 +1,22 @@
-import { CELL_TYPES } from "../constants"
+import { CellTypes, CELL_TYPES } from "../constants"
 import { env } from "../env/env"
+import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
+import { CellMembrane } from "./cellMembrane"
+import { CollectorCell } from "./collectorCell"
 import { packXY } from "./gameUtils"
-import { GridCoord } from "./gridCoord"
+import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
+import { Cells } from "./types"
 
 export class Game {
     ID = env.newID()
     running = false
-    graph: GridCoord[] = []
+    graph: GridPos[] = []
     cellGraph: Cell[]/* {[cellType: string]: {[ID: string]: Cell} } */
     organisms: {[ID: string]: Organism}
-    cell: {[ID: string]: Cell}
+    cells: Cells
 
     constructor() {
 
@@ -21,18 +25,12 @@ export class Game {
     init() {
 
         this.running = true
-        this.cellGraph = {}
-    
-        for (const type of Game.gameObjectTypes) {
-
-            this.gameObjects[type] = {}
-        }
     
         for (let x = 0; x < env.graphSize; x++) {
             for (let y = 0; y < env.graphSize; y++) {
 
-                const gridCoord = new GridCoord(this, {}, { x: x * env.coordSize, y: y * env.coordSize })
-                this.graph[packXY( x, y)] = gridCoord
+                const gridPos = new GridPos(this, {}, { x: x * env.posSize, y: y * env.posSize })
+                this.graph[packXY( x, y)] = gridPos
             }
         }
 
@@ -44,59 +42,51 @@ export class Game {
             organism: organism,
         },
         {
-            x: env.coordSize,
-            y: env.coordSize,
+            x: env.posSize,
+            y: env.posSize,
         })
         const collectorCell = new CollectorCell({
             game: this,
             organism: organism,
         },
         {
-            x: 2 * env.coordSize,
-            y: 2 * env.coordSize,
+            x: 2 * env.posSize,
+            y: 2 * env.posSize,
         })
         const attackerCell = new AttackerCell({
             game: this,
             organism: organism,
         },
         {
-            x: 3 * env.coordSize,
-            y: 3 * env.coordSize,
+            x: 3 * env.posSize,
+            y: 3 * env.posSize,
         })
         const cellMembrane = new CellMembrane({
             game: this,
             organism: organism,
         },
         {
-            x: 4 * env.coordSize,
-            y: 4 * env.coordSize,
+            x: 4 * env.posSize,
+            y: 4 * env.posSize,
         })
     }
     reset() {
 
-        for (const type of Game.gameObjectTypes) {
-
-            for (const ID in this.gameObjects[type]) {
-
-                delete this.gameObjects[type][ID]
-            }
-        }
-        console.log('reset', this.gameObjects)
         this.init()
     }
     run() {
-        
-        for (const ID in this.gameObjects.organism) {
 
-            const organism = this.gameObjects.organism[ID]
-            console.log(organism)
+        for (const ID in this.organisms) {
+
+            const organism = this.organisms[ID]
+
             organism.runCells()
         }
 
-        for (const ID in this.gameObjects.organism) {
+        for (const ID in this.organisms) {
 
-            const organism = this.gameObjects.organism[ID]
-            console.log(organism)
+            const organism = this.organisms[ID]
+
             organism.runExpansion()
         }
     }

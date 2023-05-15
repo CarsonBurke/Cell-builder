@@ -1,20 +1,22 @@
-class CellMembrane extends Cell {
+import { Cell } from "./cell"
+import * as PIXI from '../pixi.min.js'
+import { env } from "../env/env"
+
+export class CellMembrane extends Cell {
     static texture = PIXI.Texture.from('sprites/cellMembrane.png')
 
-    type = 'cellMembrane'
     energy = 0
     cost = 4
-
-    ID
-    sprite
 
     /**
      * 
      * @param {*} opts must contiain a game and an organism parent
      * @param {*} spriteOpts must contain an x and y
      */
-    constructor(opts, spriteOpts) {
+     constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
         super(opts)
+
+        this.type = 'cellMembrane'
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)

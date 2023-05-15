@@ -1,21 +1,22 @@
+import { env } from '../env/env.js'
 import * as PIXI from '../pixi.min.js'
+import { Cell } from './cell.js'
 
 export class SolarCell extends Cell {
     static texture = PIXI.Texture.from('sprites/solarCell.png')
     static energyGenerationRate = 1
 
-    type = 'solarCell'
     cost = 15
-
-    sprite
 
     /**
      * 
      * @param {*} opts must contiain a game and an organism parent
      * @param {*} spriteOpts must contain an x and y
      */
-    constructor(opts: any, spriteOpts) {
+     constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
         super(opts)
+
+        this.type = 'solarCell'
 
         this.initSprite()
         Object.assign(this.sprite, spriteOpts)

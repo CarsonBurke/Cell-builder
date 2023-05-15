@@ -1,16 +1,27 @@
+import { CellTypes, CELL_TYPES } from "../constants"
+import { env } from "../env/env"
+import { AttackerCell } from "./attackerCell"
+import { CellMembrane } from "./cellMembrane"
+import { CollectorCell } from "./collectorCell"
+import { Game } from "./game"
+import { forAdjacentPositions, packPos, unpackPos } from "./gameUtils"
+import { SolarCell } from "./solarCell"
+import { Cells } from "./types"
+
 export class Organism {
-    cells = {}
+    cells: Partial<Cells> = {}
     energy = 100
     type = 'organism'
     ID = env.newID()
+    game: Game
 
-    expansionCoords = new Set()
+    expansionPositions: Set<number> = new Set()
 
     /**
      * 
      * @param {*} opts Must include a game
      */
-    constructor(opts) {
+    constructor(opts: {[key: string]: any}) {
 
         
         for (const cellType of CELL_TYPES) {
@@ -19,23 +30,24 @@ export class Organism {
         }
 
         Object.assign(this, opts)
-        this.game.gameObjects[this.type][this.ID] = this
+        this.game.organisms[this.ID] = this
     }
     runCells() {
 
-        this.expansionCoords = new Set()
+        this.expansionPositions = new Set()
 
-        for (const cellType in this.cells) {
+        for (const key in this.cells) {
+            const cellType = key as CellTypes
 
             for (const ID in this.cells[cellType]) {
 
                 const cell = this.cells[cellType][ID]
                 cell.run()
 
-                forAdjacentCoords(cell.pos, 
-                coord => {
+                forAdjacentPositions(cell.pos, 
+                pos => {
 
-                    this.expansionCoords.add(packCoord(coord)) 
+                    this.expansionPositions.add(packPos(pos)) 
                 })
             }
         }
@@ -49,22 +61,22 @@ export class Organism {
             'cellMembrane': CellMembrane,
         }
 
-        for (const packedCoord of this.expansionCoords) {
+        for (const packedPos of this.expansionPositions) {
 
             if (this.energy <= 0) break
-            if (this.game.cells[packedCoord]) continue
+            if (this.game.cellGraph[packedPos]) continue
 
-            const coord = unpackCoord(packedCoord)
+            const pos = unpackPos(packedPos)
 
-            const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))]
+            const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
             console.log(type)
             const cell = new CELL_CLASSES[type]({
                 game: this.game,
                 organism: this,
             }, 
             {
-                x: coord.x * env.coordSize,
-                y: coord.y * env.coordSize,
+                x: pos.x * env.posSize,
+                y: pos.y * env.posSize,
             })
         }
     }
