@@ -10,9 +10,9 @@ export class GridPos {
     type = 'gridPos'
     energy = 0
 
-    game
-    ID
-    sprite
+    game: Game
+    ID: string
+    sprite: PIXI.Sprite
     constructor(game: Game, opts: any, spriteOpts: any) {
 
         this.game = game

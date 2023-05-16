@@ -5,6 +5,7 @@ import './index.css'
 import './tags.css'
 import reportWebVitals from './reportWebVitals'
 import { animateEls } from './scroller/scroller'
+
  
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement) 
 

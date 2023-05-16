@@ -3,7 +3,7 @@ import { Game } from '../game/game.js'
 import * as PIXI from '../pixi.min.js'
 
 class Env {
-    graphics: unknown
+
     gamesAmount = 1
     speed = 1
     contextMenu = document.getElementById('contextMenu')
@@ -25,6 +25,7 @@ class Env {
         height: this.height,
     })
     container = new PIXI.Container()
+    graphics = new PIXI.Graphics()
 
     stats = {
         tick: 0,
@@ -66,7 +67,6 @@ class Env {
     
     initGraphics() {
 
-        this.graphics = new PIXI.Graphics()
         this.container.addChild(this.graphics)
     }
 

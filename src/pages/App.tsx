@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react'
-import './app.css'
+import { main } from '../scripts'
 import { NetworkFrame } from '../scripts/neuralNetwork/networkFrame'
-import { init } from '../scripts'
+import './app.css'
 
-init()
+
+
+main()
 
 export default function App() {
 
