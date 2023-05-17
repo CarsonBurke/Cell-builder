@@ -1,9 +1,9 @@
 import { env } from "../env/env"
 import { Game } from "./game"
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 
 export class Cursor {
-    static texture = PIXI.Texture.from('sprites/cursor.png')
+    static texture = Texture.from('sprites/cursor.png')
     game
     ID
     sprite
@@ -15,7 +15,7 @@ export class Cursor {
         this.ID = env.newID()
         Object.assign(this, opts)
 
-        this.sprite = new PIXI.Sprite(Cursor.texture)
+        this.sprite = new Sprite(Cursor.texture)
         Object.assign(this.sprite, spriteOpts)
 
         this.render()

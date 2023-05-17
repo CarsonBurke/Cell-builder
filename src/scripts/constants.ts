@@ -1,3 +1,5 @@
+console.log('hi')
+
 export const MAX_RUNNER_SPEED = 1000
 export type CellTypes = 'solarCell' | 'collectorCell' | 'attackerCell' | 'cellMembrane'
 export const CELL_TYPES: CellTypes[] = ['solarCell', 'collectorCell', 'attackerCell', 'cellMembrane']

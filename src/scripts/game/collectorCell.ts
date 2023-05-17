@@ -1,10 +1,10 @@
 import { CellTypes } from '../constants.js'
 import { env } from '../env/env.js'
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 import { Cell } from './cell.js'
 
 export class CollectorCell extends Cell {
-    static texture = PIXI.Texture.from('sprites/collectorCell.png')
+    static texture = Texture.from('sprites/collectorCell.png')
 
     cost = 22
 
@@ -25,7 +25,7 @@ export class CollectorCell extends Cell {
     }
     initSprite() {
 
-        this.sprite = new PIXI.Sprite(CollectorCell.texture)
+        this.sprite = new Sprite(CollectorCell.texture)
         env.container.addChild(this.sprite)
     }
     run() {

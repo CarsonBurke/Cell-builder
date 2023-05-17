@@ -1,18 +1,18 @@
 import { Game } from "./game"
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 import { env } from "../env/env"
 import { packPos } from "./gameUtils"
 
 export class GridPos {
-    static texture = PIXI.Texture.from('sprites/grass.png')
-    static hoverTexture = PIXI.Texture.from('sprites/grassHover.png')
+    static texture = Texture.from('sprites/grass.png')
+    static hoverTexture = Texture.from('sprites/grassHover.png')
 
     type = 'gridPos'
     energy = 0
 
     game: Game
     ID: string
-    sprite: PIXI.Sprite
+    sprite: Sprite
     constructor(game: Game, opts: any, spriteOpts: any) {
 
         this.game = game
@@ -21,7 +21,7 @@ export class GridPos {
 
         game.graph[this.packedPos] = this
 
-        this.sprite = new PIXI.Sprite(GridPos.texture)
+        this.sprite = new Sprite(GridPos.texture)
         Object.assign(this.sprite, spriteOpts)
 
         this.initInteractions()

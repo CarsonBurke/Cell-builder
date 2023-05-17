@@ -1,6 +1,6 @@
 import { MAX_RUNNER_SPEED } from '../constants.js'
 import { Game } from '../game/game.js'
-import * as PIXI from '../pixi.min.js'
+import { Application, Container, Graphics } from 'pixi.js'
 
 class Env {
 
@@ -18,14 +18,14 @@ class Env {
     lastReset = 0
     lastFrameTime = new Date()
     lastUpdateTime = new Date()
-    app = new PIXI.Application({ 
+    app = new Application({ 
         backgroundAlpha: 0,
         /* antialias: true, */
         width: this.width, 
         height: this.height,
-    })
-    container = new PIXI.Container()
-    graphics = new PIXI.Graphics()
+    }) as any
+    container = new Container()
+    graphics = new Graphics()
 
     stats = {
         tick: 0,

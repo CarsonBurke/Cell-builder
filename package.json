@@ -5,6 +5,7 @@
     "private": false,
     "description": "An improvement in efficacy on my previous neural network, improving speed and adding backpropagation",
     "dependencies": {
+        "@pixi/react": "^7.1.0",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.3.0",
         "@testing-library/user-event": "^13.5.0",
@@ -13,6 +14,7 @@
         "@types/react": "^18.2.6",
         "@types/react-dom": "^18.2.4",
         "gh-pages": "^4.0.0",
+        "pixi.js": "^7.2.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-scripts": "5.0.1",

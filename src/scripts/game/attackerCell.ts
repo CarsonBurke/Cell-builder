@@ -1,10 +1,10 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 import { forPositionsAroundRange, packPos } from "./gameUtils"
 
 export class AttackerCell extends Cell {
-    static texture = PIXI.Texture.from('sprites/attackerCell.png')
+    static texture = Texture.from('sprites/attackerCell.png')
     static energyGenerationRate = 1
 
     energy = 0
@@ -29,7 +29,7 @@ export class AttackerCell extends Cell {
     }
     initSprite() {
 
-        this.sprite = new PIXI.Sprite(AttackerCell.texture)
+        this.sprite = new Sprite(AttackerCell.texture)
         env.container.addChild(this.sprite)
     }
     run() {

@@ -1,9 +1,9 @@
 import { Cell } from "./cell"
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 import { env } from "../env/env"
 
 export class CellMembrane extends Cell {
-    static texture = PIXI.Texture.from('sprites/cellMembrane.png')
+    static texture = Texture.from('sprites/cellMembrane.png')
 
     energy = 0
     cost = 4
@@ -25,7 +25,7 @@ export class CellMembrane extends Cell {
     }
     initSprite() {
 
-        this.sprite = new PIXI.Sprite(CellMembrane.texture)
+        this.sprite = new Sprite(CellMembrane.texture)
         env.container.addChild(this.sprite)
     }
     run() {

@@ -1,6 +1,6 @@
 import { CellTypes } from "../constants"
 import { env } from "../env/env"
-import { Sprite } from "../pixi.min"
+import { Sprite } from 'pixi.js'
 import { Game } from "./game"
 import { packPos } from "./gameUtils"
 import { Organism } from "./organism"

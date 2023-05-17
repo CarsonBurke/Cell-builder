@@ -1,9 +1,9 @@
 import { env } from '../env/env.js'
-import * as PIXI from '../pixi.min.js'
+import { Texture, Sprite } from 'pixi.js'
 import { Cell } from './cell.js'
 
 export class SolarCell extends Cell {
-    static texture = PIXI.Texture.from('sprites/solarCell.png')
+    static texture = Texture.from('sprites/solarCell.png')
     static energyGenerationRate = 1
 
     cost = 15
@@ -25,7 +25,7 @@ export class SolarCell extends Cell {
     }
     initSprite() {
 
-        this.sprite = new PIXI.Sprite(SolarCell.texture)
+        this.sprite = new Sprite(SolarCell.texture)
         env.container.addChild(this.sprite)
     }
     run() {
