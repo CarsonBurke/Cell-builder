@@ -1,5 +1,5 @@
-import { MAX_RUNNER_SPEED } from '../constants.js'
-import { Game } from '../game/game.js'
+import { MAX_RUNNER_SPEED } from '../constants'
+import { Game } from '../game/game'
 import { Application, Container, Graphics } from 'pixi.js'
 
 class Env {
@@ -51,7 +51,6 @@ class Env {
 
     initApp() {
 
-        
         this.app.view.classList.add('env')
         this.app.view.id = 'env'
         document.getElementById('envParent').appendChild(this.app.view)
@@ -162,6 +161,7 @@ class Env {
     }
 
     clickManager(event: Event) {
+        return
 
         const targetEl = event.target as HTMLElement
         if (targetEl.classList.contains('contextMenuPart')) {
@@ -173,6 +173,7 @@ class Env {
     }
 
     onContextMenu(event: Event) {
+        return
 
         event.preventDefault()
 

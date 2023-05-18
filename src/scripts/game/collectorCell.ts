@@ -1,7 +1,7 @@
-import { CellTypes } from '../constants.js'
-import { env } from '../env/env.js'
+import { CellTypes } from '../constants'
+import { env } from '../env/env'
 import { Texture, Sprite } from 'pixi.js'
-import { Cell } from './cell.js'
+import { Cell } from './cell'
 
 export class CollectorCell extends Cell {
     static texture = Texture.from('sprites/collectorCell.png')

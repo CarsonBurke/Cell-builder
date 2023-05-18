@@ -19,10 +19,10 @@ export class GridPos {
         this.ID = env.newID()
         Object.assign(this, opts)
 
-        game.graph[this.packedPos] = this
-
         this.sprite = new Sprite(GridPos.texture)
         Object.assign(this.sprite, spriteOpts)
+
+        game.graph[this.packedPos] = this
 
         this.initInteractions()
         this.render()

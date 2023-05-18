@@ -15,23 +15,26 @@ class NetworkManager {
 
     constructor() {
 
-        const networkManager = this
-
-        networkManager.networks = {}
-        networkManager.IDIndex = 0
+        this.networks = {}
+        this.IDIndex = 0
     }
-    newID() {
 
-        networkManager.IDIndex += 1
-        return networkManager.IDIndex.toString()
+    init() {
+
+        this.initVisuals()
     }
-    
-    initVisuals() {
-    
-        networkManager.visualsParent = document.getElementById('networkManagerParent')
-    
+
+    private initVisuals() {
+        this.visualsParent = document.getElementById('networkManagerParent')
+
         document.getElementById('colorGuideActivation').style.background = networkManager.activationColor;
         document.getElementById('colorGuideNegative').style.background = networkManager.negativeColor
+    }
+
+    newID() {
+
+        this.IDIndex += 1
+        return this.IDIndex.toString()
     }
 }
 

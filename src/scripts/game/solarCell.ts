@@ -1,6 +1,6 @@
-import { env } from '../env/env.js'
+import { env } from '../env/env'
 import { Texture, Sprite } from 'pixi.js'
-import { Cell } from './cell.js'
+import { Cell } from './cell'
 
 export class SolarCell extends Cell {
     static texture = Texture.from('sprites/solarCell.png')

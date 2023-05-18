@@ -13,10 +13,10 @@ import { Cells } from "./types"
 export class Game {
     ID = env.newID()
     running = false
-    graph: GridPos[] = []
-    cellGraph: Cell[]/* {[cellType: string]: {[ID: string]: Cell} } */
+    graph: GridPos[]
     organisms: {[ID: string]: Organism}
     cells: Cells
+    cellGraph: Cell[]
 
     constructor() {
 
@@ -25,6 +25,14 @@ export class Game {
     init() {
 
         this.running = true
+        this.graph = []
+        this.organisms = {}
+        this.cells = {}
+        for (const type of CELL_TYPES) {
+
+            this.cells[type] = {}
+        }
+        this.cellGraph = []
     
         for (let x = 0; x < env.graphSize; x++) {
             for (let y = 0; y < env.graphSize; y++) {

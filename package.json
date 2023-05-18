@@ -1,7 +1,7 @@
 {
-    "name": "neural-network-typescript",
+    "name": "cell-builder",
     "version": "0.1.0",
-    "homepage": "https://carsonburke.github.io/neural-network-typescript",
+    "homepage": "https://carsonburke.github.io/cell-builder",
     "private": false,
     "description": "An improvement in efficacy on my previous neural network, improving speed and adding backpropagation",
     "dependencies": {

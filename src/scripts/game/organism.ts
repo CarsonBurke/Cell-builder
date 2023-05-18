@@ -30,6 +30,7 @@ export class Organism {
         }
 
         Object.assign(this, opts)
+
         this.game.organisms[this.ID] = this
     }
     runCells() {
