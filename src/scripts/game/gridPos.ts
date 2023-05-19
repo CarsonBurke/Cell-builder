@@ -1,5 +1,5 @@
 import { Game } from "./game"
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite } from '../pixi.js'
 import { env } from "../env/env"
 import { packPos } from "./gameUtils"
 

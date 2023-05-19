@@ -1,5 +1,5 @@
 import { Cell } from "./cell"
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite } from '../pixi.js'
 import { env } from "../env/env"
 
 export class CellMembrane extends Cell {

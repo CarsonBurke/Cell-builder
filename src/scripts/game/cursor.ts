@@ -1,6 +1,6 @@
 import { env } from "../env/env"
 import { Game } from "./game"
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite } from '../pixi.js'
 
 export class Cursor {
     static texture = Texture.from('sprites/cursor.png')

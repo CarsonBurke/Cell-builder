@@ -1,7 +1,6 @@
 import { networkManager } from "./networkManager"
 import { mutateDelta, relu } from "./networkUtils"
 
-
 export class Input {
     name: string
     values: number[]

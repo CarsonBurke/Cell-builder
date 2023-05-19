@@ -1,6 +1,6 @@
 import { CellTypes } from '../constants'
 import { env } from '../env/env'
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite } from '../pixi.js'
 import { Cell } from './cell'
 
 export class CollectorCell extends Cell {

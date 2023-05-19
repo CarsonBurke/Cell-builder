@@ -1,6 +1,6 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite } from '../pixi.js'
 import { forPositionsAroundRange, packPos } from "./gameUtils"
 
 export class AttackerCell extends Cell {

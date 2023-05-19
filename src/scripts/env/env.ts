@@ -1,6 +1,6 @@
 import { MAX_RUNNER_SPEED } from '../constants'
 import { Game } from '../game/game'
-import { Application, Container, Graphics } from 'pixi.js'
+import { Application, Container, Graphics } from '../pixi.js'
 
 class Env {
 
