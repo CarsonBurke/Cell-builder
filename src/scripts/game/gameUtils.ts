@@ -83,7 +83,7 @@ export function forPositionsAroundRange(startPos: Pos, range: number, f: (pos: P
             if (x == startPos.x && y === startPos.y) continue
             // Iterate if the pos doesn't map onto a room
 
-            if (x < 0 || x >= env.graphLength || y < 0 || y >= env.graphLength) continue
+            if (x < 0 || x >= env.graphSize || y < 0 || y >= env.graphSize) continue
 
             f({ x, y })
         }
@@ -98,7 +98,7 @@ export function forPositionsInRange(startPos: Pos, range: number, f: (pos: Pos) 
         for (let y = startPos.y - range; y <= startPos.y + range; y += 1) {
             // Iterate if the pos doesn't map onto a room
 
-            if (x < 0 || x >= env.graphLength || y < 0 || y >= env.graphLength) continue
+            if (x < 0 || x >= env.graphSize || y < 0 || y >= env.graphSize) continue
 
             f({ x, y })
         }
@@ -135,4 +135,20 @@ export function randomOffsetFor(pos: Pos) {
     }
 
     return offsetPos
+}
+
+export function randomChance(chance: number) {
+
+    return Math.floor(Math.random() * chance) % chance === 0
+}
+
+export function randomFloat(min: number, max: number) {
+    return min + Math.random() * (max - min);
+}
+
+export function randomHSL() {
+    var h = randomFloat(1, 360);
+    var s = randomFloat(0, 100);
+    var l = randomFloat(0, 100);
+    return 'hsl(' + h + ',' + s + '%,' + l + '%)';
 }

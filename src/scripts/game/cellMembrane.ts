@@ -6,7 +6,6 @@ import { CellTypes } from "../constants"
 export class CellMembrane extends Cell {
 
     energy = 0
-    cost = 4
 
     /**
      * 
@@ -20,7 +19,7 @@ export class CellMembrane extends Cell {
 
         this.init(opts, spriteOpts)
     }
-    run() {
+    customInitialRun() {
 
         
     }

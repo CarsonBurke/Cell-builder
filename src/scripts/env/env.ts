@@ -10,9 +10,9 @@ class Env {
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 10
+    graphSize = 100
     graphLength = this.graphSize * this.graphSize
-    posSize = 64
+    posSize = 8
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
@@ -128,10 +128,10 @@ class Env {
     }
 
     async runUPS() {
-        
+
         this.stats.tick += 1
         this.stats.roundTick += 1
-    
+        console.log('tick', this.stats.tick)
         let runningGames = 0
     
         for (const gameID in this.games) {
