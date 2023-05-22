@@ -1,7 +1,7 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
 import { Texture, Sprite, Assets } from 'pixi.js'
-import { forPositionsAroundRange, packPos, randomFloat } from "./gameUtils"
+import { forPositionsAroundRange, getRange, getRangeOfPositions, packPos, randomFloat } from "./gameUtils"
 import { CellTypes } from "../constants"
 
 export class AttackerCell extends Cell {
@@ -37,6 +37,13 @@ export class AttackerCell extends Cell {
             if (cell.organism.ID === this.organism.ID) return
 
             cell.kill()
+
+            env.graphics.beginFill('rgb(255, 0, 0)')
+            .lineStyle(2, 'rgb(255, 0, 0)', 1)
+            .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
+            .lineTo(cell.sprite.position.x + env.posSize / 2, cell.sprite.position.y + env.posSize / 2)
+            .closePath()
+            .endFill()
         })
     }
 }

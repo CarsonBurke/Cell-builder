@@ -82,6 +82,7 @@ class Env {
     
     private initGraphics() {
 
+        this.graphics.zIndex = 1
         this.container.addChild(this.graphics)
     }
 
@@ -133,6 +134,8 @@ class Env {
         this.stats.roundTick += 1
         console.log('tick', this.stats.tick)
         let runningGames = 0
+
+        env.graphics.clear()
     
         for (const gameID in this.games) {
     

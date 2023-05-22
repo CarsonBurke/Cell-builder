@@ -40,7 +40,7 @@ export class Game {
                 const gridPos = new GridPos(this, {}, { x: x * env.posSize, y: y * env.posSize })
                 this.graph[packXY( x, y)] = gridPos
 
-                if (randomChance(10)) {
+                if (randomChance(2)) {
 
                     const organism = new Organism({
                         game: this,

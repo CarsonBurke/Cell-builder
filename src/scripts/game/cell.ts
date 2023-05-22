@@ -32,7 +32,7 @@ export class Cell {
         Object.assign(this.sprite, spriteOpts)
     }
     private assign() {
-        this.sprite.zIndex = 1
+        this.sprite.zIndex = 2
 
         this.organism.cells[this.type][this.ID] = this
         this.game.cells[this.type][this.ID] = this
@@ -67,12 +67,17 @@ export class Cell {
     }
     run() {
 
+        // Find expansion coords
+
         forAdjacentPositions(this.pos, 
             pos => {
                 if (this.game.cellGraph[packPos(pos)]) return
 
                 this.organism.expansionPositions.add(packPos(pos)) 
             })
+        
+        // Gr
+        
 
         this.customRun()
     }
