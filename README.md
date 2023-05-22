@@ -9,3 +9,9 @@ initialize - ensure you have node installed
 ```shell
 npm i
 ```
+
+start the local server
+
+```shell
+npm run start
+```
