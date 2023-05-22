@@ -66,6 +66,10 @@ export class Game {
         for (const ID in this.organisms) {
 
             const organism = this.organisms[ID]
+
+            env.stats.organisms += 1
+            if (organism.cellCount > env.stats.bestCells) env.stats.bestCells = organism.cellCount
+
             organism.run()
         }
     }

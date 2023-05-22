@@ -55,7 +55,7 @@ export class Cell {
 
         this.organism.energy -= CELLS[this.type].upkeep
         this.organism.income -= CELLS[this.type].upkeep
-
+        
         this.customInitialRun()
     }
     /**

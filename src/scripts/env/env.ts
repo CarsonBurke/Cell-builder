@@ -34,8 +34,8 @@ class Env {
         ups: '0',
         roundTick: 0,
         speed: 1,
-        bestTotalScore: 0,
-        bestGenScore: 0
+        bestCells: 0,
+        organisms: 0,
     }
 
     sprites: Textures
@@ -135,7 +135,9 @@ class Env {
         console.log('tick', this.stats.tick)
         let runningGames = 0
 
-        env.graphics.clear()
+        this.graphics.clear()
+        this.stats.organisms = 0
+        this.stats.bestCells = 0
     
         for (const gameID in this.games) {
     

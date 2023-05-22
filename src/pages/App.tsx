@@ -49,14 +49,14 @@ export default function App() {
                     </div>
                     <div className="statsChild">
 
-                        <h3 className="statsHeader">Best Total Score: </h3>
-                        <h3 className="statsAmount" id="bestTotalScore">0</h3>
+                        <h3 className="statsHeader">Best Cells: </h3>
+                        <h3 className="statsAmount" id="bestCells">0</h3>
 
                     </div>
                     <div className="statsChild">
 
-                        <h3 className="statsHeader">Best Gen Score: </h3>
-                        <h3 className="statsAmount" id="bestGenScore">0</h3>
+                    <h3 className="statsHeader">Organisms: </h3>
+                    <h3 className="statsAmount" id="organisms">0</h3>
 
                     </div>
                 </div>
