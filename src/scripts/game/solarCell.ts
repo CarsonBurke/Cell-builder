@@ -6,7 +6,6 @@ import { CellTypes } from '../constants'
 export class SolarCell extends Cell {
 
     energyGenerationRate = 1
-    cost = 15
 
     /**
      * 
@@ -20,8 +19,9 @@ export class SolarCell extends Cell {
 
         this.init(opts, spriteOpts)
     }
-    run() {
+    customInitialRun() {
 
+        this.organism.income += this.energyGenerationRate
         this.organism.energy += this.energyGenerationRate
     }
 }

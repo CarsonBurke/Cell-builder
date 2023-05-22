@@ -17,12 +17,13 @@
 
 .envParent {
     display: flex;
-    justify-content: center;
     padding: 20px 0;
     min-height: calc(100vh - 40px);
     background-color: var(--primary);
     gap: 20px;
-    position: relative;
+    justify-content: center;
+    position: absolute;
+    min-width: 100%;
 }
 
 .env {

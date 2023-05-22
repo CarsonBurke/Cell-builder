@@ -1,19 +1,22 @@
-import { CellTypes, CELL_TYPES } from "../constants"
+import { CellTypes, CELL_TYPES, CELLS } from "../constants"
 import { env } from "../env/env"
 import { AttackerCell } from "./attackerCell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
 import { Game } from "./game"
-import { forAdjacentPositions, packPos, unpackPos } from "./gameUtils"
+import { forAdjacentPositions, packPos, randomHSL, unpackPos } from "./gameUtils"
 import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
 
 export class Organism {
     cells: Partial<Cells> = {}
-    energy = 100
+    energy = 15
+    income = 0
+    cellCount = 0
     type = 'organism'
     ID = env.newID()
     game: Game
+    hue = randomHSL()
 
     expansionPositions: Set<number> = new Set()
 
@@ -34,9 +37,28 @@ export class Organism {
         this.game.organisms[this.ID] = this
     }
     run() {
+/*         console.log('run', this.energy.toFixed(2), this.income.toFixed(2)) */
+        this.income = 0
+        this.cellCount = 0
+
+        this.initialRunCells()
+        if (this.energy < 0) this.kill(true)
+        if (this.cellCount === 0) this.kill()
 
         this.runCells()
         this.runExpansion()
+    }
+    private initialRunCells() {
+
+        for (const key in this.cells) {
+            const cellType = key as CellTypes
+
+            for (const ID in this.cells[cellType]) {
+
+                const cell = this.cells[cellType][ID]
+                cell.initialRun()
+            }
+        }
     }
     private runCells() {
 
@@ -49,18 +71,11 @@ export class Organism {
 
                 const cell = this.cells[cellType][ID]
                 cell.run()
-
-                forAdjacentPositions(cell.pos, 
-                pos => {
-                    if (this.game.cellGraph[packPos(pos)]) return
-
-                    this.expansionPositions.add(packPos(pos)) 
-                })
             }
         }
     }
     private runExpansion() {
-        console.log(this)
+
         const CELL_CLASSES = {
             'solarCell': SolarCell,
             'collectorCell': CollectorCell,
@@ -76,6 +91,8 @@ export class Organism {
             const pos = unpackPos(packedPos)
             const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
 
+            /* if (CELLS[type].cost > this.energy) continue */
+
             const cell = new CELL_CLASSES[type]({
                 game: this.game,
                 organism: this,
@@ -84,6 +101,28 @@ export class Organism {
                 x: pos.x * env.posSize,
                 y: pos.y * env.posSize,
             })
+
+            this.energy = Math.max(0, this.energy)
+        }
+    }
+    private kill(hasCells?: boolean) {
+
+        console.log('kill')
+
+        if (hasCells) this.killCells()
+
+        delete this.game.organisms[this.ID]
+    }
+    private killCells() {
+
+        for (const key in this.cells) {
+            const cellType = key as CellTypes
+
+            for (const ID in this.cells[cellType]) {
+
+                const cell = this.cells[cellType][ID]
+                cell.kill()
+            }
         }
     }
 }

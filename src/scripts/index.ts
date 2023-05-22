@@ -13,13 +13,13 @@ export async function main() {
     
         while (true) {
     
-            await env.runUPS()
-    
             await new Promise((resolve, reject) => {
                 setTimeout(function() {
                     resolve(() => {})
                 }, MAX_RUNNER_SPEED / env.speed)
             })
+
+            await env.runUPS()
         }
     }
     

@@ -4,7 +4,7 @@ import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
-import { packXY } from "./gameUtils"
+import { packXY, randomChance } from "./gameUtils"
 import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
@@ -39,44 +39,23 @@ export class Game {
 
                 const gridPos = new GridPos(this, {}, { x: x * env.posSize, y: y * env.posSize })
                 this.graph[packXY( x, y)] = gridPos
+
+                if (randomChance(2)) {
+
+                    const organism = new Organism({
+                        game: this,
+                    })
+                    const solarCell = new SolarCell({
+                        game: this,
+                        organism: organism,
+                    },
+                    {
+                        x: x * env.posSize,
+                        y: y * env.posSize,
+                    })
+                }
             }
         }
-
-        const organism = new Organism({
-            game: this,
-        })
-        const solarCell = new SolarCell({
-            game: this,
-            organism: organism,
-        },
-        {
-            x: env.posSize,
-            y: env.posSize,
-        })
-        const collectorCell = new CollectorCell({
-            game: this,
-            organism: organism,
-        },
-        {
-            x: 2 * env.posSize,
-            y: 2 * env.posSize,
-        })
-        const attackerCell = new AttackerCell({
-            game: this,
-            organism: organism,
-        },
-        {
-            x: 3 * env.posSize,
-            y: 3 * env.posSize,
-        })
-        const cellMembrane = new CellMembrane({
-            game: this,
-            organism: organism,
-        },
-        {
-            x: 4 * env.posSize,
-            y: 4 * env.posSize,
-        })
     }
     reset() {
 

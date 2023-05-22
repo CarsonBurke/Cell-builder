@@ -65,7 +65,7 @@
     font-weight: 400;
     font-size: 13px;
     border: 2px solid transparent;
-    overflow: show;
+    overflow: visible;
 }
 
 .inputLayer {

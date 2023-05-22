@@ -1,13 +1,12 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
 import { Texture, Sprite, Assets } from 'pixi.js'
-import { forPositionsAroundRange, packPos } from "./gameUtils"
+import { forPositionsAroundRange, getRange, getRangeOfPositions, packPos, randomFloat } from "./gameUtils"
 import { CellTypes } from "../constants"
 
 export class AttackerCell extends Cell {
 
     energy = 0
-    cost = 45
     attackCost = 2
     range = 0
 
@@ -23,19 +22,28 @@ export class AttackerCell extends Cell {
 
         this.init(opts, spriteOpts)
     }
-    run() {
+    customInitialRun() {
+        if (this.organism.energy === 0) return
 
-        this.range = Math.floor(Math.pow(this.energy, 1.5))
+        this.range = /* Math.floor(Math.pow(this.energy, 1.5)) */ 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
         this.energy = 0
 
         forPositionsAroundRange(this.pos, this.range, pos => {
-            console.log(pos)
+
             const packedPos = packPos(pos)
 
             const cell = this.game.cellGraph[packedPos]
             if (!cell) return
+            if (cell.organism.ID === this.organism.ID) return
 
             cell.kill()
+
+            env.graphics.beginFill('rgb(255, 0, 0)')
+            .lineStyle(2, 'rgb(255, 0, 0)', 1)
+            .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
+            .lineTo(cell.sprite.position.x + env.posSize / 2, cell.sprite.position.y + env.posSize / 2)
+            .closePath()
+            .endFill()
         })
     }
 }
