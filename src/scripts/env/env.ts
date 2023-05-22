@@ -1,6 +1,7 @@
 import { MAX_RUNNER_SPEED } from '../constants'
 import { Game } from '../game/game'
-import { Application, Container, Graphics } from '../pixi.js'
+import { Application, Assets, Container, Graphics } from 'pixi.js'
+import { Textures } from '../types'
 
 class Env {
 
@@ -9,15 +10,15 @@ class Env {
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 50
+    graphSize = 10
     graphLength = this.graphSize * this.graphSize
     posSize = 64
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
     lastReset = 0
-    lastFrameTime = new Date()
-    lastUpdateTime = new Date()
+    lastFrameTime = new Date().getTime()
+    lastUpdateTime = new Date().getTime()
     app = new Application({ 
         backgroundAlpha: 0,
         /* antialias: true, */
@@ -37,19 +38,34 @@ class Env {
         bestGenScore: 0
     }
 
+    sprites: Textures
+
     constructor() {
 
 
     }
-    init() {
+    async init() {
 
+        await this.initSprites()
         this.initApp()
         this.initContainer()
         this.initGraphics()
         this.initGames()
+
+        this.app.ticker.add(this.runFPS)
     }
 
-    initApp() {
+    private async initSprites() {
+
+        this.sprites = {
+            'cellMembrane': await Assets.load('sprites/cellMembrane.png'),
+            'solarCell': await Assets.load('sprites/solarCell.png'),
+            'collectorCell': await Assets.load('sprites/collectorCell.png'),
+            'attackerCell': await Assets.load('sprites/attackerCell.png'),
+        }
+    }
+
+    private initApp() {
 
         this.app.view.classList.add('env')
         this.app.view.id = 'env'
@@ -58,18 +74,18 @@ class Env {
         this.app.stage.eventMode = 'dynamic'
     }
 
-    initContainer() {
+    private initContainer() {
 
         
         this.app.stage.addChild(this.container)
     }
     
-    initGraphics() {
+    private initGraphics() {
 
         this.container.addChild(this.graphics)
     }
 
-    initGames() {
+    private initGames() {
     
         //
     
@@ -86,27 +102,32 @@ class Env {
         return this.IDIndex.toString()
     }
 
-    runFPS() {
+    private runFPS() {
+        
+        if (env.lastUpdateTime < env.lastFrameTime) {
 
-        this.stats.fps += 1
+            return
+        }
+
+        env.container.children.sort((a, b) => a.zIndex - b.zIndex)
     
-        for (const gameID in this.games) {
+        for (const gameID in env.games) {
     
-            const game = this.games[gameID]
+            const game = env.games[gameID]
     
         }
     
-        for (const statName in this.stats) {
+        for (const statName in env.stats) {
     
-            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
+            document.getElementById(statName).innerText = env.stats[statName as keyof typeof env.stats].toString()
         }
 
-        const thisFrameTime = new Date()
-        this.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime.getTime() - this.lastFrameTime.getTime())).toFixed(2)
-        this.lastFrameTime = new Date()
+        const thisFrameTime = new Date().getTime()
+        env.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime - env.lastFrameTime)).toFixed(2)
+        env.lastFrameTime = new Date().getTime()
     }
 
-    runUPS() {
+    async runUPS() {
         
         this.stats.tick += 1
         this.stats.roundTick += 1
@@ -133,9 +154,9 @@ class Env {
             this.reset()
         }
 
-        const thisUpdateTime = new Date()
-        this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime.getTime() - this.lastUpdateTime.getTime())).toFixed(2)
-        this.lastUpdateTime = new Date()
+        const thisUpdateTime = new Date().getTime()
+        this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
+        this.lastUpdateTime = new Date().getTime()
     }
     
     reset() {

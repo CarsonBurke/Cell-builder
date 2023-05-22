@@ -1,12 +1,12 @@
 import { env } from "../env/env"
 import { Game } from "./game"
-import { Texture, Sprite } from '../pixi.js'
+import { Texture, Sprite, Assets } from 'pixi.js'
 
 export class Cursor {
-    static texture = Texture.from('sprites/cursor.png')
+    static texture = Assets.load('sprites/cursor.png')
     game
     ID
-    sprite
+    sprite: Sprite
     type = 'cursor'
     
     constructor(game: Game, opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
@@ -14,10 +14,10 @@ export class Cursor {
         this.game = game
         this.ID = env.newID()
         Object.assign(this, opts)
-
-        this.sprite = new Sprite(Cursor.texture)
+/* 
+        this.sprite = new Sprite(await Cursor.texture)
         Object.assign(this.sprite, spriteOpts)
-
+ */
         this.render()
     }
 

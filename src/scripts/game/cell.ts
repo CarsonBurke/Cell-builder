@@ -1,6 +1,6 @@
 import { CellTypes } from "../constants"
 import { env } from "../env/env"
-import { Sprite } from '../pixi.js'
+import { Sprite } from 'pixi.js'
 import { Game } from "./game"
 import { packPos } from "./gameUtils"
 import { Organism } from "./organism"
@@ -15,17 +15,27 @@ export class Cell {
     sprite: Sprite
     cost: number
 
-    /**
-     * 
-     * @param {*} opts must contiain a game and an organism parent=
-     */
-    constructor(opts: {[key: string]: any}) {
+    constructor() {}
+    init(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
+
         Object.assign(this, opts)
 
         this.ID = env.newID()
-    }
-    assign() {
 
+        this.initSprite(spriteOpts)
+        this.assign()
+    }
+    private initSprite(spriteOpts: {[key: string]: any}) {
+
+        this.sprite = new Sprite(env.sprites[this.type])
+        env.container.addChild(this.sprite)
+
+        Object.assign(this.sprite, spriteOpts)
+    }
+    private assign() {
+        this.sprite.zIndex = 1
+
+        this.organism.cells[this.type][this.ID] = this
         this.game.cells[this.type][this.ID] = this
         this.game.cellGraph[this.packedPos] = this
 

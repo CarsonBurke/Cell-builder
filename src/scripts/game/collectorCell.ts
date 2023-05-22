@@ -1,11 +1,11 @@
 import { CellTypes } from '../constants'
 import { env } from '../env/env'
-import { Texture, Sprite } from '../pixi.js'
+import { Texture, Sprite, Assets } from 'pixi.js'
 import { Cell } from './cell'
 
 export class CollectorCell extends Cell {
-    static texture = Texture.from('sprites/collectorCell.png')
 
+    range = 3
     cost = 22
 
     /**
@@ -14,19 +14,11 @@ export class CollectorCell extends Cell {
      * @param {*} spriteOpts must contain an x and y
      */
     constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
-        super(opts)
 
+        super()
         this.type = 'collectorCell'
 
-        this.initSprite()
-        Object.assign(this.sprite, spriteOpts)
-
-        this.assign()
-    }
-    initSprite() {
-
-        this.sprite = new Sprite(CollectorCell.texture)
-        env.container.addChild(this.sprite)
+        this.init(opts, spriteOpts)
     }
     run() {
 

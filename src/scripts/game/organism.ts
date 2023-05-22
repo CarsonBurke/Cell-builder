@@ -6,7 +6,7 @@ import { CollectorCell } from "./collectorCell"
 import { Game } from "./game"
 import { forAdjacentPositions, packPos, unpackPos } from "./gameUtils"
 import { SolarCell } from "./solarCell"
-import { Cells } from "./types"
+import { Cells } from "../types"
 
 export class Organism {
     cells: Partial<Cells> = {}
@@ -33,7 +33,12 @@ export class Organism {
 
         this.game.organisms[this.ID] = this
     }
-    runCells() {
+    run() {
+
+        this.runCells()
+        this.runExpansion()
+    }
+    private runCells() {
 
         this.expansionPositions = new Set()
 
@@ -47,14 +52,15 @@ export class Organism {
 
                 forAdjacentPositions(cell.pos, 
                 pos => {
+                    if (this.game.cellGraph[packPos(pos)]) return
 
                     this.expansionPositions.add(packPos(pos)) 
                 })
             }
         }
     }
-    runExpansion() {
-
+    private runExpansion() {
+        console.log(this)
         const CELL_CLASSES = {
             'solarCell': SolarCell,
             'collectorCell': CollectorCell,
@@ -68,9 +74,8 @@ export class Organism {
             if (this.game.cellGraph[packedPos]) continue
 
             const pos = unpackPos(packedPos)
-
             const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
-            console.log(type)
+
             const cell = new CELL_CLASSES[type]({
                 game: this.game,
                 organism: this,

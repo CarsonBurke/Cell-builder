@@ -71,7 +71,9 @@ export default function App() {
                     <button className="changeButton waveButton" id="changeSpeed">Change</button>
 
                 </form>
+
                 <NetworkFrame />
+
             </div>
           </div>
         </div>

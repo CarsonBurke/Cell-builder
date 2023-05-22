@@ -1,11 +1,11 @@
 import { Game } from "./game"
-import { Texture, Sprite } from '../pixi.js'
+import { Texture, Sprite, Assets } from 'pixi.js'
 import { env } from "../env/env"
 import { packPos } from "./gameUtils"
 
 export class GridPos {
-    static texture = Texture.from('sprites/grass.png')
-    static hoverTexture = Texture.from('sprites/grassHover.png')
+    static texture = Assets.load('sprites/grass.png')
+    static hoverTexture = Assets.load('sprites/grassHover.png')
 
     type = 'gridPos'
     energy = 0
@@ -19,13 +19,21 @@ export class GridPos {
         this.ID = env.newID()
         Object.assign(this, opts)
 
-        this.sprite = new Sprite(GridPos.texture)
-        Object.assign(this.sprite, spriteOpts)
+        this.initSprite().then(() => {
 
-        game.graph[this.packedPos] = this
+            Object.assign(this.sprite, spriteOpts)
 
-        this.initInteractions()
-        this.render()
+            game.graph[this.packedPos] = this
+    
+            this.initInteractions()
+            this.render()
+        })
+    }
+
+    async initSprite() {
+
+        this.sprite = new Sprite(await GridPos.texture)
+        this.sprite.zIndex = 0
     }
 
     initInteractions() {
@@ -38,14 +46,14 @@ export class GridPos {
         this.sprite.on('pointerout', function() { instance.hoverOff() })
     }
 
-    hoverOn() {
+    async hoverOn() {
 
-        this.sprite.texture = GridPos.hoverTexture
+        this.sprite.texture = await GridPos.hoverTexture
     }
 
-    hoverOff() {
+    async hoverOff() {
 
-        this.sprite.texture = GridPos.texture
+        this.sprite.texture = await GridPos.texture
     }
 
     render() {

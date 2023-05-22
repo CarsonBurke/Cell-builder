@@ -1,11 +1,11 @@
 import { env } from '../env/env'
-import { Texture, Sprite } from '../pixi.js'
+import { Texture, Sprite, Assets } from 'pixi.js'
 import { Cell } from './cell'
+import { CellTypes } from '../constants'
 
 export class SolarCell extends Cell {
-    static texture = Texture.from('sprites/solarCell.png')
-    static energyGenerationRate = 1
 
+    energyGenerationRate = 1
     cost = 15
 
     /**
@@ -14,22 +14,14 @@ export class SolarCell extends Cell {
      * @param {*} spriteOpts must contain an x and y
      */
      constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
-        super(opts)
-
+        
+        super()
         this.type = 'solarCell'
 
-        this.initSprite()
-        Object.assign(this.sprite, spriteOpts)
-
-        this.assign()
-    }
-    initSprite() {
-
-        this.sprite = new Sprite(SolarCell.texture)
-        env.container.addChild(this.sprite)
+        this.init(opts, spriteOpts)
     }
     run() {
 
-        this.organism.energy += SolarCell.energyGenerationRate
+        this.organism.energy += this.energyGenerationRate
     }
 }

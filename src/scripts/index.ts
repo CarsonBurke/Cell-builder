@@ -2,9 +2,9 @@ import { MAX_RUNNER_SPEED } from "./constants"
 import { env } from "./env/env"
 import { networkManager } from "./neuralNetwork/networkManager"
 
-export function main() {
+export async function main() {
 
-    env.init()
+    await env.init()
     networkManager.init()
     
     runUPS()
@@ -13,7 +13,7 @@ export function main() {
     
         while (true) {
     
-            env.runUPS()
+            await env.runUPS()
     
             await new Promise((resolve, reject) => {
                 setTimeout(function() {

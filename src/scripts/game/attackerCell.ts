@@ -1,11 +1,10 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
-import { Texture, Sprite } from '../pixi.js'
+import { Texture, Sprite, Assets } from 'pixi.js'
 import { forPositionsAroundRange, packPos } from "./gameUtils"
+import { CellTypes } from "../constants"
 
 export class AttackerCell extends Cell {
-    static texture = Texture.from('sprites/attackerCell.png')
-    static energyGenerationRate = 1
 
     energy = 0
     cost = 45
@@ -18,19 +17,11 @@ export class AttackerCell extends Cell {
      * @param {*} spriteOpts must contain an x and y
      */
     constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
-        super(opts)
 
+        super()
         this.type = 'attackerCell'
 
-        this.initSprite()
-        Object.assign(this.sprite, spriteOpts)
-
-        this.assign()
-    }
-    initSprite() {
-
-        this.sprite = new Sprite(AttackerCell.texture)
-        env.container.addChild(this.sprite)
+        this.init(opts, spriteOpts)
     }
     run() {
 

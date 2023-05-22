@@ -8,7 +8,7 @@ import { packXY } from "./gameUtils"
 import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
-import { Cells } from "./types"
+import { Cells } from "../types"
 
 export class Game {
     ID = env.newID()
@@ -87,15 +87,7 @@ export class Game {
         for (const ID in this.organisms) {
 
             const organism = this.organisms[ID]
-
-            organism.runCells()
-        }
-
-        for (const ID in this.organisms) {
-
-            const organism = this.organisms[ID]
-
-            organism.runExpansion()
+            organism.run()
         }
     }
 }
