@@ -2,10 +2,11 @@ import { env } from '../env/env'
 import { Texture, Sprite, Assets } from 'pixi.js'
 import { Cell } from './cell'
 import { CellTypes } from '../constants'
+import { randomFloat } from './gameUtils'
 
 export class SolarCell extends Cell {
 
-    energyGenerationRate = 1
+    energyGenerationRate = /* 1 */ randomFloat(1, 10)
 
     /**
      * 

@@ -4,7 +4,7 @@ import { AttackerCell } from "./attackerCell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
 import { Game } from "./game"
-import { forAdjacentPositions, packPos, randomHSL, unpackPos } from "./gameUtils"
+import { forAdjacentPositions, packPos, randomFloat, randomHSL, unpackPos } from "./gameUtils"
 import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
 

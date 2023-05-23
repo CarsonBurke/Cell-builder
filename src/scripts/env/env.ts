@@ -105,7 +105,7 @@ class Env {
 
     private runFPS() {
         
-        if (env.lastUpdateTime < env.lastFrameTime) {
+        if (env.lastUpdateTime <= env.lastFrameTime) {
 
             return
         }
@@ -135,7 +135,8 @@ class Env {
         console.log('tick', this.stats.tick)
         let runningGames = 0
 
-        this.graphics.clear()
+        env.graphics.clear()
+
         this.stats.organisms = 0
         this.stats.bestCells = 0
     
