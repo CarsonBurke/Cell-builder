@@ -13,7 +13,7 @@ export default function App() {
           <div className="displayParent">
               <div className="displayChild UIParent">
 
-                  <h1 className="envTitle"><img className="envIcon" src="materials/images/webGineIcon.png" />WebGine with three.js</h1>
+                  <h1 className="envTitle"><img className="envIcon" src={require('../images/logo.png')} />WebGine with three.js</h1>
 
                   <div className="statsParent">
 
