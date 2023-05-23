@@ -37,7 +37,8 @@ export class AttackerCell extends Cell {
             if (cell.organism.ID === this.organism.ID) return
 
             if (this.organism.energy === 0) return
-            this.organism.energy -= 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
+            console.log(Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos), 1.1)))
+            this.organism.energy -= 1 + Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos), 1.1))
             this.organism.energy = Math.max(0, this.organism.energy)
 
             cell.kill()
