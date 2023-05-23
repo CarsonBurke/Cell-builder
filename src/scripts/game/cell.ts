@@ -2,7 +2,7 @@ import { CELLS, CELL_DEATH_ENERGY_MULTIPLIER, CellTypes } from "../constants"
 import { env } from "../env/env"
 import { Sprite } from 'pixi.js'
 import { Game } from "./game"
-import { forAdjacentPositions, packPos } from "./gameUtils"
+import { forAdjacentPositions, forPositionsAroundRange, forPositionsInRange, packPos } from "./gameUtils"
 import { Organism } from "./organism"
 
 
@@ -69,7 +69,8 @@ export class Cell {
 
         // Find expansion coords
 
-        forAdjacentPositions(this.pos, 
+        forPositionsInRange(this.pos, 
+            3,
             pos => {
                 if (this.game.cellGraph[packPos(pos)]) return
 
