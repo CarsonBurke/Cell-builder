@@ -17,6 +17,7 @@ export class Organism {
     ID = env.newID()
     game: Game
     hue = randomHSL()
+    networkID: string
 
     expansionPositions: Set<number> = new Set()
 
