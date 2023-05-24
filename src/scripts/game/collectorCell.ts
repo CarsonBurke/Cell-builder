@@ -32,6 +32,13 @@ export class CollectorCell extends Cell {
             this.organism.energy += gridPos.energy
             this.organism.income += gridPos.energy
             gridPos.energy = 0
+
+            env.graphics.beginFill('rgb(0, 0, 255)')
+            .lineStyle(2, 'rgb(0, 0, 255)', 1)
+            .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
+            .lineTo(gridPos.sprite.position.x + env.posSize / 2, gridPos.sprite.position.y + env.posSize / 2)
+            .closePath()
+            .endFill()
         })
     }
 }

@@ -66,6 +66,16 @@ export class Cell {
 
         this.organism.energy -= upkeep
         this.organism.income -= upkeep
+
+        // Find expansion coords
+
+        forPositionsInRange(this.pos, 
+            3,
+            pos => {
+                if (this.game.cellGraph[packPos(pos)]) return
+
+                this.organism.expansionPositions.add(packPos(pos)) 
+            })
         
         this.customInitialRun()
     }
@@ -77,16 +87,6 @@ export class Cell {
         
     }
     run() {
-
-        // Find expansion coords
-
-        forPositionsInRange(this.pos, 
-            3,
-            pos => {
-                if (this.game.cellGraph[packPos(pos)]) return
-
-                this.organism.expansionPositions.add(packPos(pos)) 
-            })
         
         // Gr
         

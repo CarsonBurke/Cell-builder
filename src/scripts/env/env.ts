@@ -1,16 +1,18 @@
-import { MAX_RUNNER_SPEED } from '../constants'
+import { MAX_RUNNER_SPEED, NETWORK_OUTPUTS } from '../constants'
 import { Game } from '../game/game'
 import { Application, Assets, Container, Graphics } from 'pixi.js'
 import { Textures } from '../types'
 import { Input, NeuralNetwork, Output } from '../neuralNetwork/network'
+import { networkManager } from '../neuralNetwork/networkManager'
 
 class Env {
 
-    gamesAmount = 1
+    gamesQuota: 1
+    organismsQuota = 100
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 100
+    graphSize = 15
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
@@ -91,7 +93,7 @@ class Env {
     
         //
     
-        for (let i = 0; i < this.gamesAmount; i++) {
+        for (let i = 0; i < this.gamesQuota; i++) {
     
             const game = new Game()
             game.init()
@@ -100,36 +102,50 @@ class Env {
 
     private initNetworks() {
 
-        const inputs = [
-            new Input(
-                'X', 
-                [
-                    10,
-                ],
-                [
-                    '1'
-                ],
-            ),
-            new Input(
-                'Y', 
-                [
-                    8,
-                ],
-                [
-                    '2'
-                ],
-            ),
-            ],
-            outputs = [
-                new Output('Z'),
-                new Output('X'),
-            ]
+        networkManager.init()
 
-        for (let i = 0; i < 100; i++) {
+        const inputs  = [
+            // General
+            new Input('Runs left', [0], ['0']),
+            new Input('Income', [0], ['1']),
+            new Input('Energy', [0], ['2']),
+        ]
+
+        // Cells and positions
+
+        for (let x = 0; x < env.graphSize; x += 1) {
+            for (let y = 0; y < env.graphSize; y += 1) {
+                console.log(x, y)
+                inputs.push(
+                    new Input(x + ', ' + y, [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                    ], 
+                    [
+                        '3',
+                        '4',
+                        '5',
+                        '6',
+                        '7',
+                        '8',
+                        '9',
+                        '10',
+                    ])
+                )
+            }
+        } 
+
+        for (let i = 0; i < 1; i++) {
 
             const network = new NeuralNetwork()
-            network.init(inputs, outputs.length)
-            network.createVisuals(inputs, outputs)
+            network.init(inputs, NETWORK_OUTPUTS.length)
+            network.createVisuals(inputs, NETWORK_OUTPUTS)
         }
     }
     

@@ -1,4 +1,4 @@
-import { Assets } from "pixi.js"
+import { Output } from "./neuralNetwork/network"
 
 export const MAX_RUNNER_SPEED = 1000
 export type CellTypes = 'solarCell' | 'collectorCell' | 'attackerCell' | 'cellMembrane'
@@ -56,4 +56,25 @@ export const adjacentOffsets = [
         x: -1,
         y: 0,
     },
+]
+export const MAX_NETWORK_RUNS = 100
+export const NETWORK_OUTPUTS = [
+    // Build
+    new Output('Build X'),
+    new Output('Build X'),
+    new Output('Build Solar'),
+    new Output('Build Attacker'),
+    new Output('Build Collector'),
+    new Output('Build Membrane'),
+    new Output('Build y/n'),
+    // Distribute
+    new Output('Maintain X'),
+    new Output('Maintain Y'),
+    new Output('Maintain y/n'),
+    // Attack
+    new Output('Attack X'),
+    new Output('Attack Y'),
+    new Output('Attack y/n'),
+    // Go again
+    new Output('Go Again y/n')
 ]

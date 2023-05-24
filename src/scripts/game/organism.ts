@@ -1,12 +1,14 @@
-import { CellTypes, CELL_TYPES, CELLS } from "../constants"
+import { CellTypes, CELL_TYPES, CELLS, MAX_NETWORK_RUNS, NETWORK_OUTPUTS } from "../constants"
 import { env } from "../env/env"
 import { AttackerCell } from "./attackerCell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
 import { Game } from "./game"
-import { forAdjacentPositions, packPos, randomFloat, randomHSL, unpackPos } from "./gameUtils"
+import { forAdjacentPositions, packPos, packXY, randomFloat, randomHSL, unpackPos } from "./gameUtils"
 import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
+import { networkManager } from "../neuralNetwork/networkManager"
+import { Input } from "../neuralNetwork/network"
 
 export class Organism {
     cells: Partial<Cells> = {}
@@ -40,15 +42,87 @@ export class Organism {
     }
     run() {
 /*         console.log('run', this.energy.toFixed(2), this.income.toFixed(2)) */
+
         this.income = 0
         this.cellCount = 0
 
         this.initialRunCells()
         if (this.cellCount === 0) this.kill()
 
+        this.runNetwork()
+
         this.runCells()
 
         this.runExpansion()
+    }
+    private runNetwork() {
+
+        let runsLeft = MAX_NETWORK_RUNS
+        const inputs  = [
+            // General
+            new Input('Runs left', [runsLeft], ['0']),
+            new Input('Income', [this.income], ['1']),
+            new Input('Energy', [this.energy], ['2']),
+        ]
+
+        for (; runsLeft > 0; runsLeft -= 1) {
+
+            // Cells and positions
+
+            for (let x = 0; x < env.graphSize; x += 1) {
+                for (let y = 0; y < env.graphSize; y += 1) {
+
+                    const cell = this.game.cellGraph[packXY(x, y)]
+
+                    inputs.push(
+                        new Input(x + ', ' + y, [
+                            x,
+                            y,
+                            // The type as cell as 0 | 1
+                            +(cell ? cell.type === 'solarCell' : false),
+                            +(cell ? cell.type === 'attackerCell' : false),
+                            +(cell ? cell.type === 'collectorCell' : false),
+                            +(cell ? cell.type === 'cellMembrane' : false),
+                            // Wether the cell exists
+                            +cell,
+                            // Wether we own the cell, if it exists
+                            +(cell ? cell.organism.ID === this.ID : false),
+                        ], 
+                        [
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            '10',
+                        ])
+                    )
+                }
+            } 
+
+            // Expansion positions
+
+            for (const packedPos of this.expansionPositions) {
+
+                const pos = unpackPos(packedPos)
+
+                inputs.push(
+                    new Input(pos.x + ', ' + pos.y, [
+                        pos.x,
+                        pos.y,
+                    ], 
+                    [
+                        '11',
+                    ])
+                )
+            }
+
+            const network = networkManager.networks[this.networkID]
+            network.forwardPropagate(inputs)
+            network.updateVisuals(inputs)
+        }
     }
     private initialRunCells() {
 

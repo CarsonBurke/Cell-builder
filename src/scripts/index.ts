@@ -5,7 +5,6 @@ import { networkManager } from "./neuralNetwork/networkManager"
 export async function main() {
 
     await env.init()
-    networkManager.init()
     
     runUPS()
     
