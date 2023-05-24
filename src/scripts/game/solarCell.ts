@@ -6,7 +6,7 @@ import { randomFloat } from './gameUtils'
 
 export class SolarCell extends Cell {
 
-    energyGenerationRate = /* 1 */ randomFloat(1, 10)
+    energyGenerationRate = 1
 
     /**
      * 

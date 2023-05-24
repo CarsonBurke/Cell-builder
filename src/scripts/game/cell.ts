@@ -7,6 +7,8 @@ import { Organism } from "./organism"
 
 
 export class Cell {
+    maxHits = 10
+    hits = this.maxHits
 
     type: CellTypes
     ID: string
@@ -40,6 +42,13 @@ export class Cell {
 
         this.organism.energy -= CELLS[this.type].cost
     }
+    damage(amount: number) {
+/* 
+        this.sprite.alpha = this.hits / this.maxHits
+ */
+        this.hits -= amount
+        if (this.hits <= 0) this.kill()
+    }
     kill() {
         this.game.graph[this.packedPos].energy += CELLS[this.type].cost * CELL_DEATH_ENERGY_MULTIPLIER
 
@@ -53,8 +62,10 @@ export class Cell {
 
         this.organism.cellCount += 1
 
-        this.organism.energy -= CELLS[this.type].upkeep
-        this.organism.income -= CELLS[this.type].upkeep
+        const upkeep = CELLS[this.type].upkeep * Math.pow(Object.keys(this.organism.cells[this.type]).length, 0.2)
+
+        this.organism.energy -= upkeep
+        this.organism.income -= upkeep
         
         this.customInitialRun()
     }

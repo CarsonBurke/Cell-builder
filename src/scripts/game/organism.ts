@@ -18,6 +18,7 @@ export class Organism {
     game: Game
     hue = randomHSL()
     networkID: string
+    nextCellType: CellTypes
 
     expansionPositions: Set<number> = new Set()
 
@@ -43,10 +44,10 @@ export class Organism {
         this.cellCount = 0
 
         this.initialRunCells()
-        if (this.energy < 0) this.kill(true)
         if (this.cellCount === 0) this.kill()
 
         this.runCells()
+
         this.runExpansion()
     }
     private initialRunCells() {
@@ -90,9 +91,12 @@ export class Organism {
             if (this.game.cellGraph[packedPos]) continue
 
             const pos = unpackPos(packedPos)
-            const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
+            const type = this.nextCellType = this.nextCellType || CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
 
             /* if (CELLS[type].cost > this.energy) continue */
+
+            if (CELLS[type].cost + (CELLS[type].upkeep * Object.keys(this.cells[type]).length + 1) > this.energy) break
+            if (this.income - CELLS[type].upkeep * Object.keys(this.cells[type]).length + 1 <= 0) break
 
             const cell = new CELL_CLASSES[type]({
                 game: this.game,
@@ -103,12 +107,11 @@ export class Organism {
                 y: pos.y * env.posSize,
             })
 
+            this.nextCellType = undefined
             this.energy = Math.max(0, this.energy)
         }
     }
     private kill(hasCells?: boolean) {
-
-        console.log('kill')
 
         if (hasCells) this.killCells()
 

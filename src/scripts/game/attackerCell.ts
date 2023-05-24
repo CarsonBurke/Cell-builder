@@ -28,7 +28,10 @@ export class AttackerCell extends Cell {
         this.range = /* Math.floor(Math.pow(this.energy, 1.5)) */ 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
         this.energy = 0
 
+        let targets = 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.2))
+
         forPositionsAroundRange(this.pos, this.range, pos => {
+            if (targets === 0) return
 
             const packedPos = packPos(pos)
 
@@ -37,11 +40,12 @@ export class AttackerCell extends Cell {
             if (cell.organism.ID === this.organism.ID) return
 
             if (this.organism.energy === 0) return
-            console.log(Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos), 1.1)))
-            this.organism.energy -= 1 + Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos), 1.1))
+            // console.log(Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos) / 10, 1.1)))
+/*             
+            this.organism.energy -= 1 + Math.round(Math.pow(getRangeOfPositions(this.pos, cell.pos) / 10, 1.1))
             this.organism.energy = Math.max(0, this.organism.energy)
-
-            cell.kill()
+ */
+            cell.damage(10)
 
             env.graphics.beginFill('rgb(255, 0, 0)')
             .lineStyle(2, 'rgb(255, 0, 0)', 1)
@@ -49,6 +53,9 @@ export class AttackerCell extends Cell {
             .lineTo(cell.sprite.position.x + env.posSize / 2, cell.sprite.position.y + env.posSize / 2)
             .closePath()
             .endFill()
+
+            targets -= 1
+            return
         })
     }
 }

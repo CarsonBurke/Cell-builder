@@ -16,7 +16,7 @@ export async function main() {
             await new Promise((resolve, reject) => {
                 setTimeout(function() {
                     resolve(() => {})
-                }, MAX_RUNNER_SPEED / env.speed)
+                }, MAX_RUNNER_SPEED / env.stats.speed)
             })
 
             await env.runUPS()
@@ -30,7 +30,7 @@ export async function main() {
     function changeSpeed() {
     
         const speedInput = document.getElementById('newSpeed') as HTMLInputElement
-        env.speed = parseInt(speedInput.value) || env.speed
+        env.stats.speed = parseInt(speedInput.value) || env.stats.speed
     }
     
     document.getElementById('reset').addEventListener('click', resetGames)

@@ -2,11 +2,11 @@ import { MAX_RUNNER_SPEED } from '../constants'
 import { Game } from '../game/game'
 import { Application, Assets, Container, Graphics } from 'pixi.js'
 import { Textures } from '../types'
+import { Input, NeuralNetwork, Output } from '../neuralNetwork/network'
 
 class Env {
 
     gamesAmount = 1
-    speed = 1
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
@@ -51,6 +51,7 @@ class Env {
         this.initContainer()
         this.initGraphics()
         this.initGames()
+        this.initNetworks()
 
         this.app.ticker.add(this.runFPS)
     }
@@ -94,6 +95,41 @@ class Env {
     
             const game = new Game()
             game.init()
+        }
+    }
+
+    private initNetworks() {
+
+        const inputs = [
+            new Input(
+                'X', 
+                [
+                    10,
+                ],
+                [
+                    '1'
+                ],
+            ),
+            new Input(
+                'Y', 
+                [
+                    8,
+                ],
+                [
+                    '2'
+                ],
+            ),
+            ],
+            outputs = [
+                new Output('Z'),
+                new Output('X'),
+            ]
+
+        for (let i = 0; i < 100; i++) {
+
+            const network = new NeuralNetwork()
+            network.init(inputs, outputs.length)
+            network.createVisuals(inputs, outputs)
         }
     }
     
