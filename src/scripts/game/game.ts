@@ -4,7 +4,7 @@ import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
-import { findHighestIndexOfScore, findHighestScoreOfKeys, packPos, packXY, randomChance } from "./gameUtils"
+import { findHighestIndexOfScore, findHighestScoreOfKeys, packPos, packXY, randomChance, roundFloat } from "./gameUtils"
 import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
@@ -122,7 +122,9 @@ export class Game {
     }
     private findWinner() {
 
-        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => organism.income * env.stats.tick + organism.energy)
+        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income, 2))
+        if (score > env.stats.bestScore) env.stats.bestScore = score
+
         this.winner = organismID
     }
 }

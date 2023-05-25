@@ -40,6 +40,7 @@ class Env {
         roundTick: 0,
         speed: 1,
         bestCells: 0,
+        bestScore: 0,
         organisms: 0,
     }
 

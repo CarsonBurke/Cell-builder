@@ -56,11 +56,23 @@ export default function App() {
                     </div>
                     <div className="statsChild">
 
+                        <h3 className="statsHeader">Best Score: </h3>
+                        <h3 className="statsAmount" id="bestScore">0</h3>
+
+                    </div>
+                    <div className="statsChild">
+
                     <h3 className="statsHeader">Organisms: </h3>
                     <h3 className="statsAmount" id="organisms">0</h3>
 
                     </div>
                 </div>
+                <form className="changeParent smallGap" id="form">
+
+                    <input className="toggle waveButton" id="renderToggle" type='checkbox' defaultChecked={true} onInput={env.toggleRender} />
+                    <label htmlFor='renderToggle' className='toggleLabel'>Render</label>
+
+                </form>
                 <form className="changeParent" id="form">
 
                     <button className="resetButton waveButton" id="reset">Reset games</button>
@@ -70,12 +82,6 @@ export default function App() {
 
                     <input className="changeInput" type="number" placeholder="Speed" id="newSpeed" />
                     <button className="changeButton waveButton" id="changeSpeed">Change</button>
-
-                </form>
-                <form className="changeParent smallGap" id="form">
-
-                    <input className="toggle waveButton" id="renderToggle" type='checkbox' defaultChecked={true} onInput={env.toggleRender} />
-                    <label htmlFor='renderToggle' className='toggleLabel'>Render</label>
 
                 </form>
 

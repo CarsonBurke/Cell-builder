@@ -197,3 +197,8 @@ export function findHighestScoreOfKeys<T>(obj: {[key: string]: T}, f: (val: T) =
 
     return [highestScore, bestKey]
 }
+
+export function roundFloat(number: number, decimals: number) {
+
+    return parseFloat(number.toFixed(decimals))
+}
