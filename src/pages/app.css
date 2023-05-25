@@ -1,15 +1,3 @@
-/* Util */
-
-.voidHidden {
-    display: none;
-}
-
-.spaceHidden {
-    opacity: 0;
-    user-select: none;
-}
-
-
 /* Game */
 
 
@@ -164,6 +152,18 @@
 
 .changeButton:focus {
     box-shadow: rgba(0, 0, 0, 0.3) 0 12px 20px 0;
+}
+
+.toggle {
+    width: 25px;
+    height: 25px;
+    appearance: auto;
+    cursor: pointer;
+}
+
+.toggleLabel {
+    cursor: pointer;
+    user-select: none;
 }
 
 /* Context menu */

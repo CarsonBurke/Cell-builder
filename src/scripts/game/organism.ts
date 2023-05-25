@@ -230,6 +230,8 @@ export class Organism {
 
         if (hasCells) this.killCells()
 
+        this.income = 0
+        this.energy = 0
         this.dead = true
     }
     killCells() {

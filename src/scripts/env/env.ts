@@ -8,7 +8,7 @@ import { networkManager } from '../neuralNetwork/networkManager'
 class Env {
 
     gamesQuota = 1
-    organismsQuota = 10
+    organismsQuota = 50
     networkVisuals = false
     contextMenu = document.getElementById('contextMenu')
 
@@ -21,6 +21,7 @@ class Env {
     height = this.graphSize * this.posSize
     lastReset = 0
     roundTickLimit = 100
+    enableRender = true
     lastFrameTime = new Date().getTime()
     lastUpdateTime = new Date().getTime()
     app = new Application({ 
@@ -141,7 +142,7 @@ class Env {
                     ])
                 )
             }
-        } 
+        }
 
         for (let i = Object.keys(networkManager.networks).length; i < this.organismsQuota; i++) {
 
@@ -159,6 +160,7 @@ class Env {
     }
 
     private runFPS() {
+        if (!env.enableRender) return
         
         if (env.lastUpdateTime <= env.lastFrameTime) {
 
@@ -274,6 +276,33 @@ class Env {
         this.contextMenu.classList.remove('spaceHidden')
         this.contextMenu.style.top = (event as any).clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'
         this.contextMenu.style.left = (event as any).clientX + 'px'
+    }
+
+    toggleRender() {
+        console.log('toggle')
+
+        if (env.enableRender) {
+
+            // Disalbe rendering
+
+            env.enableRender = false
+
+            for (const sprite of env.container.children) {
+
+                sprite.alpha = 0
+            }
+            
+            return
+        }
+
+        // Enable rendering
+
+        env.enableRender = true
+
+        for (const sprite of env.container.children) {
+
+            sprite.alpha = 1
+        }
     }
 }
 

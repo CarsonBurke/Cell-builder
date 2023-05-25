@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { main } from '../scripts'
 import { NetworkFrame } from '../scripts/neuralNetwork/networkFrame'
 import './app.css'
+import { env } from '../scripts/env/env'
 
 window.onload = main
 export default function App() {
@@ -69,6 +70,12 @@ export default function App() {
 
                     <input className="changeInput" type="number" placeholder="Speed" id="newSpeed" />
                     <button className="changeButton waveButton" id="changeSpeed">Change</button>
+
+                </form>
+                <form className="changeParent smallGap" id="form">
+
+                    <input className="toggle waveButton" id="renderToggle" type='checkbox' defaultChecked={true} onInput={env.toggleRender} />
+                    <label htmlFor='renderToggle' className='toggleLabel'>Render</label>
 
                 </form>
 

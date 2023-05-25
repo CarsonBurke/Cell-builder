@@ -32,6 +32,8 @@ export class Cell {
         env.container.addChild(this.sprite)
 
         Object.assign(this.sprite, spriteOpts)
+
+        if (!env.enableRender) this.sprite.alpha = 0
     }
     private assign() {
         this.sprite.zIndex = 2

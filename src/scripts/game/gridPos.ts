@@ -34,6 +34,8 @@ export class GridPos {
 
         this.sprite = new Sprite(await GridPos.texture)
         this.sprite.zIndex = 0
+
+        if (!env.enableRender) this.sprite.alpha = 0
     }
 
     initInteractions() {

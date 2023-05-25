@@ -6,3 +6,32 @@
 }
 
 .material-icons-outlined {}
+
+.voidHidden {
+    display: none;
+}
+
+.spaceHidden {
+    opacity: 0;
+    user-select: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.smallGap {
+    gap: 5px;
+}
+
+.midGap {
+    gap: 10px;
+}
+
+.largeGap {
+    gap: 20px;
+}
