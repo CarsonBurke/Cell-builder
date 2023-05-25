@@ -55,6 +55,7 @@ export class Organism {
 
         this.income = 0
         this.cellCount = 0
+        this.expansionPositions = new Set()
 
         this.initialRunCells()
         if (this.cellCount === 0) this.kill()
@@ -62,8 +63,9 @@ export class Organism {
         this.runNetwork()
 
         this.runCells()
-
+/* 
         this.runExpansion()
+         */
     }
     private runNetwork() {
 
@@ -180,8 +182,6 @@ export class Organism {
     }
     private runCells() {
 
-        this.expansionPositions = new Set()
-
         for (const key in this.cells) {
             const cellType = key as CellTypes
 
@@ -193,13 +193,6 @@ export class Organism {
         }
     }
     private runExpansion() {
-
-        const CELL_CLASSES = {
-            'solarCell': SolarCell,
-            'collectorCell': CollectorCell,
-            'attackerCell': AttackerCell,
-            'cellMembrane': CellMembrane,
-        }
 
         for (const packedPos of this.expansionPositions) {
 
