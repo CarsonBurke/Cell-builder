@@ -228,6 +228,18 @@ class Env {
         this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
         this.lastUpdateTime = new Date().getTime()
     }
+
+    manualReset() {
+
+        for (const ID in this.games) {
+
+            const game = this.games[ID]
+
+            game.stop()
+        }
+
+        this.reset()
+    }
     
     reset(winners: Set<string> = new Set()) {
     

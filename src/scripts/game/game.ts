@@ -109,7 +109,7 @@ export class Game {
             return
         }
     }
-    private stop() {
+    stop() {
 
         for (const ID in this.organisms) {
 

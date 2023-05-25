@@ -35,8 +35,8 @@ export async function main() {
     document.getElementById('reset').addEventListener('click', resetGames)
     
     function resetGames() {
-    
-        env.reset()
+        
+        env.manualReset()
     }
     
     const elements = document.getElementsByTagName('form')
