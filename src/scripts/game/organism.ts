@@ -31,6 +31,7 @@ export class Organism {
      * Wether the organism's network has at least tried to do an action in its latest run
      */
     tickActioned: boolean
+    dead: boolean
 
     expansionPositions: Set<number> = new Set()
 
@@ -51,6 +52,11 @@ export class Organism {
         this.game.organisms[this.ID] = this
     }
     run() {
+        if (this.dead) return
+
+        this.game.organismsCount += 1
+        env.stats.organisms += 1
+
 /*         console.log('run', this.energy.toFixed(2), this.income.toFixed(2)) */
 
         this.income = 0
@@ -157,7 +163,8 @@ export class Organism {
 
         const type = CELL_TYPES[index]
         if (this.energy < CELLS[type].cost) return
-        console.log(type, index, lastLayer.slice(2, 7))
+
+        console.log(type)
 
         new CELL_CLASSES[type]({
             game: this.game,
@@ -223,9 +230,9 @@ export class Organism {
 
         if (hasCells) this.killCells()
 
-        delete this.game.organisms[this.ID]
+        this.dead = true
     }
-    private killCells() {
+    killCells() {
 
         for (const key in this.cells) {
             const cellType = key as CellTypes

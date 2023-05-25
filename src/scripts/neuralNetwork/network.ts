@@ -22,8 +22,8 @@ export class Output {
     }
 }
 
-type WeightLayers = number[][][]
-type ActivationLayers = number[][]
+export type WeightLayers = number[][][]
+export type ActivationLayers = number[][]
 
 export class NeuralNetwork {
     ID: string

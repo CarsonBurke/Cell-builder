@@ -2,25 +2,25 @@ import { MAX_RUNNER_SPEED, NETWORK_OUTPUTS } from '../constants'
 import { Game } from '../game/game'
 import { Application, Assets, Container, Graphics } from 'pixi.js'
 import { Textures } from '../types'
-import { Input, NeuralNetwork, Output } from '../neuralNetwork/network'
+import { ActivationLayers, Input, NeuralNetwork, Output, WeightLayers } from '../neuralNetwork/network'
 import { networkManager } from '../neuralNetwork/networkManager'
 
 class Env {
 
     gamesQuota = 1
-    organismsQuota = 100
+    organismsQuota = 10
     networkVisuals = false
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 100
+    graphSize = 10
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
     lastReset = 0
-    roundTickLimit = 500
+    roundTickLimit = 100
     lastFrameTime = new Date().getTime()
     lastUpdateTime = new Date().getTime()
     app = new Application({ 
@@ -54,6 +54,7 @@ class Env {
         this.initApp()
         this.initContainer()
         this.initGraphics()
+        networkManager.init()
         this.initNetworks()
         this.initGames()
 
@@ -101,9 +102,7 @@ class Env {
         }
     }
 
-    private initNetworks() {
-
-        networkManager.init()
+    private initNetworks(weightLayers?: WeightLayers, activationLayers?: ActivationLayers) {
 
         const inputs  = [
             // General
@@ -144,10 +143,10 @@ class Env {
             }
         } 
 
-        for (let i = 0; i < this.organismsQuota; i++) {
+        for (let i = Object.keys(networkManager.networks).length; i < this.organismsQuota; i++) {
 
-            const network = new NeuralNetwork()
-            network.init(inputs, NETWORK_OUTPUTS.length)
+            const network = new NeuralNetwork(weightLayers, activationLayers)
+            if (!weightLayers) network.init(inputs, NETWORK_OUTPUTS.length)
             network.mutate()
             if (env.networkVisuals) network.createVisuals(inputs, NETWORK_OUTPUTS)
         }
@@ -195,12 +194,19 @@ class Env {
 
         this.stats.organisms = 0
         this.stats.bestCells = 0
+
+        const winners: Set<string> = new Set()
     
         for (const gameID in this.games) {
     
             const game = this.games[gameID]
-            if (game.running) runningGames += 1
-    
+            if (!game.running) {
+
+                winners.add(game.winner)
+                continue
+            }
+
+            runningGames += 1
             game.run()
         }
     
@@ -213,7 +219,7 @@ class Env {
     
         if (!runningGames) {
     
-            this.reset()
+            this.reset(winners)
         }
 
         const thisUpdateTime = new Date().getTime()
@@ -221,21 +227,26 @@ class Env {
         this.lastUpdateTime = new Date().getTime()
     }
     
-    reset() {
+    reset(winners: Set<string> = new Set()) {
     
         this.lastReset = this.stats.tick
         this.stats.roundTick = 0
+
+        for (const ID in networkManager.networks) {
+
+            if (winners.has(ID)) continue
+
+            delete networkManager.networks[ID]
+        }
+
+        this.initNetworks()
     
         for (const gameID in this.games) {
     
             const game = this.games[gameID]
     
             game.reset()
-            game.init()
         }
-
-        this.container.destroy()
-        this.initContainer()
     }
 
     keyManager(event: Event) {

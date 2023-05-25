@@ -4,7 +4,7 @@ import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
-import { packPos, packXY, randomChance } from "./gameUtils"
+import { findHighestIndexOfScore, findHighestScoreOfKeys, packPos, packXY, randomChance } from "./gameUtils"
 import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
@@ -19,6 +19,11 @@ export class Game {
     organisms: {[ID: string]: Organism}
     cells: Cells
     cellGraph: Cell[]
+    /**
+     * The ID of the organism that won
+     */
+    winner: string
+    organismsCount: number
 
     constructor() {
 
@@ -27,6 +32,7 @@ export class Game {
     init() {
 
         this.running = true
+        this.winner = undefined
         this.graph = []
         this.organisms = {}
         this.cells = {}
@@ -71,18 +77,52 @@ export class Game {
     }
     reset() {
 
+        for (const ID in this.organisms) {
+
+            delete this.organisms[ID]
+        }
+
         this.init()
     }
     run() {
+
+        this.organismsCount = 0
 
         for (const ID in this.organisms) {
 
             const organism = this.organisms[ID]
 
-            env.stats.organisms += 1
             if (organism.cellCount > env.stats.bestCells) env.stats.bestCells = organism.cellCount
 
             organism.run()
         }
+
+        if (this.organismsCount === 1) {
+
+            this.stop()
+            return
+        }
+
+        if (env.stats.tick >= env.roundTickLimit) {
+
+            this.stop()
+            return
+        }
+    }
+    private stop() {
+
+        for (const ID in this.organisms) {
+
+            const organism = this.organisms[ID]
+            organism.killCells()
+        }
+
+        this.findWinner()
+        this.running = false
+    }
+    private findWinner() {
+
+        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => organism.income * env.stats.tick + organism.energy)
+        this.winner = organismID
     }
 }

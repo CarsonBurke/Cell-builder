@@ -181,3 +181,19 @@ export function findHighestIndexOfScore<T>(iter: T[], f: (val: T) => number): [n
 
     return [highestScore, bestIndex]
 }
+
+export function findHighestScoreOfKeys<T>(obj: {[key: string]: T}, f: (val: T) => number): [number, string] {
+    let highestScore = 0
+    let bestKey: string
+
+    for (const key in obj) {
+        
+        const score = f(obj[key])
+        if (score <= highestScore) continue
+
+        bestKey = key
+        highestScore = score
+    }
+
+    return [highestScore, bestKey]
+}
