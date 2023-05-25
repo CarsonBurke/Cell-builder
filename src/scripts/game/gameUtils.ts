@@ -147,8 +147,8 @@ export function randomFloat(min: number, max: number) {
 }
 
 export function randomHSL() {
-    var h = randomFloat(1, 360);
-    var s = randomFloat(0, 100);
-    var l = randomFloat(0, 100);
+    var h = randomFloat(1, 360).toFixed(2)
+    var s = randomFloat(0, 100).toFixed(2)
+    var l = randomFloat(0, 100).toFixed(2)
     return 'hsl(' + h + ',' + s + '%,' + l + '%)';
 }

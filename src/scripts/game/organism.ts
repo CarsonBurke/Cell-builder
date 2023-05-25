@@ -20,7 +20,6 @@ export class Organism {
     game: Game
     hue = randomHSL()
     networkID: string
-    nextCellType: CellTypes
 
     expansionPositions: Set<number> = new Set()
 
@@ -57,22 +56,22 @@ export class Organism {
     }
     private runNetwork() {
 
-        let runsLeft = MAX_NETWORK_RUNS
-        const inputs  = [
-            // General
-            new Input('Runs left', [runsLeft], ['0']),
-            new Input('Income', [this.income], ['1']),
-            new Input('Energy', [this.energy], ['2']),
-        ]
+        for (let runsLeft = /* MAX_NETWORK_RUNS */1; runsLeft > 0; runsLeft -= 1) {
 
-        for (; runsLeft > 0; runsLeft -= 1) {
+            const inputs = [
+                // General
+                new Input('Runs left', [runsLeft], ['0']),
+                new Input('Income', [this.income], ['1']),
+                new Input('Energy', [this.energy], ['2']),
+            ]
 
             // Cells and positions
 
             for (let x = 0; x < env.graphSize; x += 1) {
                 for (let y = 0; y < env.graphSize; y += 1) {
 
-                    const cell = this.game.cellGraph[packXY(x, y)]
+                    const packedPos = packXY(x, y)
+                    const cell = this.game.cellGraph[packedPos]
 
                     inputs.push(
                         new Input(x + ', ' + y, [
@@ -84,9 +83,11 @@ export class Organism {
                             +(cell ? cell.type === 'collectorCell' : false),
                             +(cell ? cell.type === 'cellMembrane' : false),
                             // Wether the cell exists
-                            +cell,
+                            +!!cell,
                             // Wether we own the cell, if it exists
                             +(cell ? cell.organism.ID === this.ID : false),
+                            // Wetjer the pos is an expansion pos
+                            +this.expansionPositions.has(packedPos)
                         ], 
                         [
                             '3',
@@ -97,29 +98,14 @@ export class Organism {
                             '8',
                             '9',
                             '10',
+                            '11',
                         ])
                     )
                 }
-            } 
-
-            // Expansion positions
-
-            for (const packedPos of this.expansionPositions) {
-
-                const pos = unpackPos(packedPos)
-
-                inputs.push(
-                    new Input(pos.x + ', ' + pos.y, [
-                        pos.x,
-                        pos.y,
-                    ], 
-                    [
-                        '11',
-                    ])
-                )
             }
 
             const network = networkManager.networks[this.networkID]
+
             network.forwardPropagate(inputs)
             network.updateVisuals(inputs)
         }
@@ -165,7 +151,7 @@ export class Organism {
             if (this.game.cellGraph[packedPos]) continue
 
             const pos = unpackPos(packedPos)
-            const type = this.nextCellType = this.nextCellType || CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
+            const type = CELL_TYPES[Math.floor(Math.random() * (CELL_TYPES.length))] as CellTypes
 
             /* if (CELLS[type].cost > this.energy) continue */
 
@@ -181,7 +167,6 @@ export class Organism {
                 y: pos.y * env.posSize,
             })
 
-            this.nextCellType = undefined
             this.energy = Math.max(0, this.energy)
         }
     }

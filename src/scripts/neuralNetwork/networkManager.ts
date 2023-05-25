@@ -9,14 +9,13 @@ class NetworkManager {
     hiddenLayersCount = 5
     hiddenPerceptronCount = 5
 
-    IDIndex: number
+    IDIndex = -1
     networks: {[ID: string]: NeuralNetwork}
     visualsParent: Partial<HTMLElement>
 
     constructor() {
 
         this.networks = {}
-        this.IDIndex = 0
     }
 
     init() {

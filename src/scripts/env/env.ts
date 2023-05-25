@@ -7,12 +7,12 @@ import { networkManager } from '../neuralNetwork/networkManager'
 
 class Env {
 
-    gamesQuota: 1
-    organismsQuota = 100
+    gamesQuota = 1
+    organismsQuota = 1
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 15
+    graphSize = 12
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
@@ -52,8 +52,8 @@ class Env {
         this.initApp()
         this.initContainer()
         this.initGraphics()
-        this.initGames()
         this.initNetworks()
+        this.initGames()
 
         this.app.ticker.add(this.runFPS)
     }
@@ -79,7 +79,6 @@ class Env {
 
     private initContainer() {
 
-        
         this.app.stage.addChild(this.container)
     }
     
@@ -92,7 +91,7 @@ class Env {
     private initGames() {
     
         //
-    
+
         for (let i = 0; i < this.gamesQuota; i++) {
     
             const game = new Game()
@@ -115,9 +114,10 @@ class Env {
 
         for (let x = 0; x < env.graphSize; x += 1) {
             for (let y = 0; y < env.graphSize; y += 1) {
-                console.log(x, y)
+
                 inputs.push(
                     new Input(x + ', ' + y, [
+                        0,
                         0,
                         0,
                         0,
@@ -136,6 +136,7 @@ class Env {
                         '8',
                         '9',
                         '10',
+                        '11',
                     ])
                 )
             }
@@ -145,6 +146,7 @@ class Env {
 
             const network = new NeuralNetwork()
             network.init(inputs, NETWORK_OUTPUTS.length)
+            network.mutate()
             network.createVisuals(inputs, NETWORK_OUTPUTS)
         }
     }

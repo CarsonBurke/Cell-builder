@@ -4,11 +4,13 @@ import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
-import { packXY, randomChance } from "./gameUtils"
+import { packPos, packXY, randomChance } from "./gameUtils"
 import { GridPos } from "./gridPos"
 import { Organism } from "./organism"
 import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
+import { networkManager } from "../neuralNetwork/networkManager"
+import { randomPos } from "../../utils"
 
 export class Game {
     ID = env.newID()
@@ -39,22 +41,32 @@ export class Game {
 
                 const gridPos = new GridPos(this, {}, { x: x * env.posSize, y: y * env.posSize })
                 this.graph[packXY( x, y)] = gridPos
-
-                if (randomChance(10)) {
-
-                    const organism = new Organism({
-                        game: this,
-                    })
-                    const solarCell = new SolarCell({
-                        game: this,
-                        organism: organism,
-                    },
-                    {
-                        x: x * env.posSize,
-                        y: y * env.posSize,
-                    })
-                }
             }
+        }
+
+        const networks = Object.values(networkManager.networks)
+
+        for (let i = 0; i < env.organismsQuota; i++) {
+
+            let pos = randomPos()
+
+            while (this.cellGraph[packPos(pos)]) {
+
+                pos = randomPos()
+            }
+
+            const organism = new Organism({
+                game: this
+            })
+            organism.networkID = networks[i].ID
+            const solarCell = new SolarCell({
+                game: this,
+                organism: organism,
+            },
+            {
+                x: pos.x * env.posSize,
+                y: pos.y * env.posSize,
+            })
         }
     }
     reset() {
