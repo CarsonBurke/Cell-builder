@@ -8,17 +8,19 @@ import { networkManager } from '../neuralNetwork/networkManager'
 class Env {
 
     gamesQuota = 1
-    organismsQuota = 1
+    organismsQuota = 100
+    networkVisuals = false
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 12
+    graphSize = 100
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
     lastReset = 0
+    roundTickLimit = 500
     lastFrameTime = new Date().getTime()
     lastUpdateTime = new Date().getTime()
     app = new Application({ 
@@ -142,12 +144,12 @@ class Env {
             }
         } 
 
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < this.organismsQuota; i++) {
 
             const network = new NeuralNetwork()
             network.init(inputs, NETWORK_OUTPUTS.length)
             network.mutate()
-            network.createVisuals(inputs, NETWORK_OUTPUTS)
+            if (env.networkVisuals) network.createVisuals(inputs, NETWORK_OUTPUTS)
         }
     }
     

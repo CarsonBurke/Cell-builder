@@ -58,23 +58,29 @@ export const adjacentOffsets = [
     },
 ]
 export const MAX_NETWORK_RUNS = 100
-export const NETWORK_OUTPUTS = [
+export const NETWORK_OUTPUTS_STRUCTURE = [
     // Build
-    new Output('Build X'),
-    new Output('Build X'),
-    new Output('Build Solar'),
-    new Output('Build Attacker'),
-    new Output('Build Collector'),
-    new Output('Build Membrane'),
-    new Output('Build y/n'),
+    'Build X',
+    'Build Y',
+    'Build Solar',
+    'Build Attacker',
+    'Build Collector',
+    'Build Membrane',
+    'Build y/n',
     // Distribute
-    new Output('Maintain X'),
-    new Output('Maintain Y'),
-    new Output('Maintain y/n'),
+    'Maintain X',
+    'Maintain Y',
+    'Maintain y/n',
     // Attack
-    new Output('Attack X'),
-    new Output('Attack Y'),
-    new Output('Attack y/n'),
+    'Attack X',
+    'Attack Y',
+    'Attack y/n',
     // Go again
-    new Output('Go Again y/n')
+    'Go Again y/n'
 ]
+export const NETWORK_OUTPUTS: Output[] = []
+
+for (const key in NETWORK_OUTPUTS_STRUCTURE) {
+
+    NETWORK_OUTPUTS.push(new Output(NETWORK_OUTPUTS_STRUCTURE[key]))
+}

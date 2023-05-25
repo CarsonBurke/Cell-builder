@@ -152,3 +152,32 @@ export function randomHSL() {
     var l = randomFloat(0, 100).toFixed(2)
     return 'hsl(' + h + ',' + s + '%,' + l + '%)';
 }
+
+export function findHighestScore<T>(iter: T[], f: (val: T) => number): number {
+    let highestScore = 0
+
+    for (const val of iter) {
+        const score = f(val)
+        if (score <= highestScore) continue
+
+        highestScore = score
+    }
+
+    return highestScore
+}
+
+export function findHighestIndexOfScore<T>(iter: T[], f: (val: T) => number): [number, number] {
+    let highestScore = 0
+    let bestIndex = 0
+
+    for (let i = 0; i < iter.length; i++) {
+        
+        const score = f(iter[i])
+        if (score <= highestScore) continue
+
+        bestIndex = i
+        highestScore = score
+    }
+
+    return [highestScore, bestIndex]
+}

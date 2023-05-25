@@ -1,18 +1,25 @@
-import { CellTypes, CELL_TYPES, CELLS, MAX_NETWORK_RUNS, NETWORK_OUTPUTS } from "../constants"
+import { CellTypes, CELL_TYPES, CELLS, MAX_NETWORK_RUNS, NETWORK_OUTPUTS, NETWORK_OUTPUTS_STRUCTURE } from "../constants"
 import { env } from "../env/env"
 import { AttackerCell } from "./attackerCell"
 import { CellMembrane } from "./cellMembrane"
 import { CollectorCell } from "./collectorCell"
 import { Game } from "./game"
-import { forAdjacentPositions, packPos, packXY, randomFloat, randomHSL, unpackPos } from "./gameUtils"
+import { findHighestIndexOfScore, findHighestScore, forAdjacentPositions, packPos, packXY, randomFloat, randomHSL, unpackPos } from "./gameUtils"
 import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
 import { networkManager } from "../neuralNetwork/networkManager"
 import { Input } from "../neuralNetwork/network"
 
+const CELL_CLASSES = {
+    'solarCell': SolarCell,
+    'collectorCell': CollectorCell,
+    'attackerCell': AttackerCell,
+    'cellMembrane': CellMembrane,
+}
+
 export class Organism {
     cells: Partial<Cells> = {}
-    energy = 15
+    energy = 100
     income = 0
     cellCount = 0
     type = 'organism'
@@ -20,6 +27,10 @@ export class Organism {
     game: Game
     hue = randomHSL()
     networkID: string
+    /**
+     * Wether the organism's network has at least tried to do an action in its latest run
+     */
+    tickActioned: boolean
 
     expansionPositions: Set<number> = new Set()
 
@@ -56,7 +67,10 @@ export class Organism {
     }
     private runNetwork() {
 
-        for (let runsLeft = /* MAX_NETWORK_RUNS */1; runsLeft > 0; runsLeft -= 1) {
+        let runsLeft = MAX_NETWORK_RUNS
+        while (true) {
+            this.tickActioned = false
+            runsLeft -= 1
 
             const inputs = [
                 // General
@@ -105,10 +119,52 @@ export class Organism {
             }
 
             const network = networkManager.networks[this.networkID]
-
             network.forwardPropagate(inputs)
-            network.updateVisuals(inputs)
+            
+            // Output actions
+            
+            const lastLayer = network.activationLayers[network.activationLayers.length - 1]
+
+            this.build(lastLayer)
+
+            // Repeat and visuals logic
+
+            // If we should go again
+            if (!this.tickActioned || !lastLayer[14] || runsLeft <= 0) {
+
+                if (env.networkVisuals) network.updateVisuals(inputs)
+                return
+            }
         }
+    }
+    private build(lastLayer: number[]) {
+
+        this.tickActioned = true
+
+        const x = Math.floor(lastLayer[0])
+        const y = Math.floor(lastLayer[1])
+        const packedPos = packXY(x, y)
+
+        if (!this.game.graph[packedPos]) return
+        if (this.game.cellGraph[packedPos]) return 
+        if (!this.expansionPositions.has(packedPos)) return
+
+        const [score, index] = findHighestIndexOfScore(lastLayer.slice(2, 7), (val) => { return val })
+
+        if (index >= CELL_TYPES.length) return
+
+        const type = CELL_TYPES[index]
+        if (this.energy < CELLS[type].cost) return
+        console.log(type, index, lastLayer.slice(2, 7))
+
+        new CELL_CLASSES[type]({
+            game: this.game,
+            organism: this,
+        }, 
+        {
+            x: x * env.posSize,
+            y: y * env.posSize,
+        })
     }
     private initialRunCells() {
 

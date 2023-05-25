@@ -77,6 +77,7 @@
 
 .inputLayer p {
     max-width: 200px;
+    overflow: hidden;
     font-weight: 500;
     height: 54px;
     line-height: 54px;
@@ -95,6 +96,7 @@
 
 .descriptionLayer p {
     max-width: 200px;
+    overflow: hidden;
     font-weight: 500;
     height: 54px;
     line-height: 54px;
