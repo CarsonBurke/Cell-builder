@@ -103,7 +103,7 @@ export class Game {
             return
         }
 
-        if (env.stats.tick >= env.roundTickLimit) {
+        if (env.stats.roundTick >= env.roundTickLimit) {
 
             this.stop()
             return
