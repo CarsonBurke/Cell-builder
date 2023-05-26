@@ -35,37 +35,43 @@ export default function App() {
                 </div>
                 <form className="changeParent smallGap" id="form">
 
-                    <input className="toggle waveButton" id="toggleRender" type='checkbox' defaultChecked={env.enableRender} onInput={env.toggleRender} />
+                    <input className="toggle waveButton" id="toggleRender" type='checkbox' defaultChecked={env.settings.enableRender} onInput={env.toggleRender} />
                     <label htmlFor='toggleRender' className='toggleLabel'>Render</label>
 
                 </form>
                 <form className="changeParent smallGap" id="form">
 
-                    <input className="toggle waveButton" id="toggleNetworkVisuals" type='checkbox' defaultChecked={env.networkVisuals} onInput={env.toggleNetworkVisuals} />
+                    <input className="toggle waveButton" id="toggleNetworkVisuals" type='checkbox' defaultChecked={env.settings.networkVisuals} onInput={env.toggleNetworkVisuals} />
                     <label htmlFor='toggleNetworkVisuals' className='toggleLabel'>Network Visuals</label>
 
                 </form>
                 <form className="changeParent" id="form">
 
-                    <button className="button waveButton" onClick={env.manualReset}>Reset games</button>
+                    <button className="button waveButton" onClick={() => {env.manualReset()}}>Reset games</button>
 
                 </form>
                 <form className="changeParent" id="form">
 
                     <input className="changeInput" type="number" placeholder="Speed" id="newSpeed" />
-                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeSpeed}>Change</button>
+                    <button className="button conjoinedButton waveButton" onClick={env.changeSpeed}>Change</button>
 
                 </form>
                 <form className="changeParent" id="form">
 
                     <input className="changeInput" type="number" placeholder="Games" id='newGames' />
-                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeGames}>Change</button>
+                    <button className="button conjoinedButton waveButton" onClick={env.changeGames}>Change</button>
 
                 </form>
                 <form className="changeParent" id="form">
 
                     <input className="changeInput" type="number" placeholder="Organisms" id='newOrganisms' />
-                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeOrganisms}>Change</button>
+                    <button className="button conjoinedButton waveButton" onClick={env.changeOrganisms}>Change</button>
+
+                </form>
+                <form className="changeParent" id="form">
+
+                    <input className="changeInput" type="number" placeholder="Round tick limit" id='newRoundTickLimit' />
+                    <button className="button conjoinedButton waveButton" onClick={env.changeRoundTickLimit}>Change</button>
 
                 </form>
 

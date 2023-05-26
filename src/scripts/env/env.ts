@@ -7,8 +7,6 @@ import { networkManager } from '../neuralNetwork/networkManager'
 
 class Env {
 
-    organismsQuota = 10
-    networkVisuals = false
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
@@ -18,9 +16,6 @@ class Env {
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
-    lastReset = 0
-    roundTickLimit = 100
-    enableRender = true
     lastFrameTime = new Date().getTime()
     lastUpdateTime = new Date().getTime()
     app = new Application({ 
@@ -33,7 +28,8 @@ class Env {
     graphics = new Graphics()
 
     settings = {
-
+        networkVisuals: false,
+        enableRender: true,
     }
 
     stats = {
@@ -45,7 +41,10 @@ class Env {
         bestCells: 0,
         bestScore: 0,
         organisms: 0,
+        organismsQuota: 10,
         games: 1,
+        roundTickLimit: 100,
+        lastReset: 0,
     }
 
     sprites: Textures
@@ -149,12 +148,12 @@ class Env {
             }
         }
 
-        for (let i = Object.keys(networkManager.networks).length; i < this.organismsQuota; i++) {
+        for (let i = Object.keys(networkManager.networks).length; i < this.stats.organismsQuota; i++) {
 
             const network = new NeuralNetwork(weightLayers, activationLayers)
             if (!weightLayers) network.init(inputs, NETWORK_OUTPUTS.length)
             network.mutate()
-            if (env.networkVisuals) network.createVisuals(inputs, NETWORK_OUTPUTS)
+            if (env.settings.networkVisuals) network.createVisuals(inputs, NETWORK_OUTPUTS)
         }
     }
     
@@ -165,7 +164,7 @@ class Env {
     }
 
     private runFPS() {
-        if (!env.enableRender) return
+        if (!env.settings.enableRender) return
         
         if (env.lastUpdateTime <= env.lastFrameTime) {
 
@@ -194,7 +193,7 @@ class Env {
 
         this.stats.tick += 1
         this.stats.roundTick += 1
-        console.log('tick', this.stats.tick)
+        /* console.log('tick', this.stats.tick) */
         let runningGames = 0
 
         env.graphics.clear()
@@ -248,7 +247,7 @@ class Env {
     
     reset(winners: Set<string> = new Set()) {
     
-        this.lastReset = this.stats.tick
+        this.stats.lastReset = this.stats.tick
         this.stats.roundTick = 0
 
         for (const ID in networkManager.networks) {
@@ -297,11 +296,11 @@ class Env {
 
     toggleRender() {
 
-        if (env.enableRender) {
+        if (env.settings.enableRender) {
 
             // Disalbe rendering
 
-            env.enableRender = false
+            env.settings.enableRender = false
 
             for (const sprite of env.container.children) {
 
@@ -313,7 +312,7 @@ class Env {
 
         // Enable rendering
 
-        env.enableRender = true
+        env.settings.enableRender = true
 
         for (const sprite of env.container.children) {
 
@@ -323,17 +322,17 @@ class Env {
 
     toggleNetworkVisuals() {
 
-        if (env.networkVisuals) {
+        if (env.settings.networkVisuals) {
 
             // Disalbe visuals
 
-            env.networkVisuals = false
+            env.settings.networkVisuals = false
             return
         }
 
         // Enable visuals
 
-        env.networkVisuals = true
+        env.settings.networkVisuals = true
     }
 
     changeSpeed() {
@@ -357,7 +356,15 @@ class Env {
         const element = document.getElementById('newOrganisms') as HTMLInputElement
         if (!element.value) return
 
-        env.organismsQuota = parseInt(element.value)
+        env.stats.organismsQuota = parseInt(element.value)
+    }
+
+    changeRoundTickLimit() {
+
+        const element = document.getElementById('newRoundTickLimit') as HTMLInputElement
+        if (!element.value) return
+
+        env.stats.roundTickLimit = parseInt(element.value)
     }
 }
 

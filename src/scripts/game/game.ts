@@ -52,7 +52,7 @@ export class Game {
 
         const networks = Object.values(networkManager.networks)
 
-        for (let i = 0; i < env.organismsQuota; i++) {
+        for (let i = 0; i < env.stats.organismsQuota; i++) {
 
             let pos = randomPos()
 
@@ -103,7 +103,7 @@ export class Game {
             return
         }
 
-        if (env.stats.roundTick >= env.roundTickLimit) {
+        if (env.stats.roundTick >= env.stats.roundTickLimit) {
 
             this.stop()
             return
