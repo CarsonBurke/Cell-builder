@@ -178,6 +178,8 @@ export class Organism {
             x: x * env.posSize,
             y: y * env.posSize,
         })
+
+        this.expansionPositions.delete(packedPos)
     }
     private initialRunCells() {
 
