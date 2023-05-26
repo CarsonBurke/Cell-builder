@@ -60,21 +60,11 @@ export const adjacentOffsets = [
 export const MAX_NETWORK_RUNS = 100
 export const NETWORK_OUTPUTS_STRUCTURE = [
     // Build
-    'Build X',
-    'Build Y',
     'Build Solar',
     'Build Attacker',
     'Build Collector',
     'Build Membrane',
     'Build y/n',
-    // Distribute
-    'Maintain X',
-    'Maintain Y',
-    'Maintain y/n',
-    // Attack
-    'Attack X',
-    'Attack Y',
-    'Attack y/n',
     // Go again
     'Go Again y/n'
 ]

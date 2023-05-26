@@ -52,6 +52,7 @@ export class Cell {
         if (this.hits <= 0) this.kill()
     }
     kill() {
+
         this.game.graph[this.packedPos].energy += CELLS[this.type].cost * CELL_DEATH_ENERGY_MULTIPLIER
 
         this.sprite.removeFromParent()

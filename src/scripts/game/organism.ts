@@ -138,7 +138,7 @@ export class Organism {
             // Repeat and visuals logic
 
             // If we should go again
-            if (!this.tickActioned || !lastLayer[14] || runsLeft <= 0) {
+            if (!this.tickActioned || !lastLayer[5] || runsLeft <= 0) {
 
                 if (env.settings.networkVisuals) {
 
@@ -151,22 +151,20 @@ export class Organism {
     }
     private build(lastLayer: number[]) {
 
-        this.tickActioned = true
+        const expansionPositionsArray = Array.from(this.expansionPositions)
+        if (!expansionPositionsArray.length) return
 
-        const x = Math.floor(lastLayer[0])
-        const y = Math.floor(lastLayer[1])
-        const packedPos = packXY(x, y)
+        const packedPos = Array.from(this.expansionPositions)[0]
+        const pos = unpackPos(packedPos)
 
-        if (!this.game.graph[packedPos]) return
-        if (this.game.cellGraph[packedPos]) return 
-        if (!this.expansionPositions.has(packedPos)) return
-
-        const [score, index] = findHighestIndexOfScore(lastLayer.slice(2, 7), (val) => { return val })
+        const [score, index] = findHighestIndexOfScore(lastLayer.slice(0, 5), (val) => { return val })
 
         if (index >= CELL_TYPES.length) return
 
         const type = CELL_TYPES[index]
         if (this.energy < CELLS[type].cost) return
+
+        this.tickActioned = true
 
         console.log(type)
 
@@ -175,9 +173,11 @@ export class Organism {
             organism: this,
         }, 
         {
-            x: x * env.posSize,
-            y: y * env.posSize,
+            x: pos.x * env.posSize,
+            y: pos.y * env.posSize,
         })
+
+        this.expansionPositions.delete(packedPos)
     }
     private initialRunCells() {
 
