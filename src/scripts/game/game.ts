@@ -122,7 +122,7 @@ export class Game {
     }
     private findWinner() {
 
-        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income, 2))
+        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income + organism.energy / env.stats.roundTick, 2))
         if (score > env.stats.bestScore) env.stats.bestScore = score
 
         this.winner = organismID

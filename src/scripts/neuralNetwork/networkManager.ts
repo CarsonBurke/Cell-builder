@@ -4,7 +4,7 @@ import { NeuralNetwork } from "./network"
 class NetworkManager {
     activationColor = 'rgb(0, 137, 236)'
     negativeColor = 'rgb(241, 0, 19)'
-    learningRate = 0.1
+    learningRate = 1
     bias = 0
     hiddenLayersCount = 5
     hiddenPerceptronCount = 5
