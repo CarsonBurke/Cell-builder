@@ -3,6 +3,19 @@ import { main } from '../scripts'
 import { NetworkFrame } from '../scripts/neuralNetwork/networkFrame'
 import './app.css'
 import { env } from '../scripts/env/env'
+import Stat from '../components/stat'
+
+function initStats() {
+
+    const stats: JSX.Element[] = []
+
+    for (const key in env.stats) {
+
+        stats.push(<Stat key={key} name={key} value={env.stats[key as keyof typeof env.stats]} />)
+    }
+
+    return stats
+}
 
 window.onload = main
 export default function App() {
@@ -18,70 +31,41 @@ export default function App() {
 
                   <div className="statsParent">
 
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">Tick: </h3>
-                        <h3 className="statsAmount" id="tick">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">Round Tick: </h3>
-                        <h3 className="statsAmount" id="roundTick">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">Speed: </h3>
-                        <h3 className="statsAmount" id="speed">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">FPS: </h3>
-                        <h3 className="statsAmount" id="fps">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">UPS: </h3>
-                        <h3 className="statsAmount" id="ups">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">Best Cells: </h3>
-                        <h3 className="statsAmount" id="bestCells">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                        <h3 className="statsHeader">Best Score: </h3>
-                        <h3 className="statsAmount" id="bestScore">0</h3>
-
-                    </div>
-                    <div className="statsChild">
-
-                    <h3 className="statsHeader">Organisms: </h3>
-                    <h3 className="statsAmount" id="organisms">0</h3>
-
-                    </div>
+                    {initStats()}
                 </div>
                 <form className="changeParent smallGap" id="form">
 
-                    <input className="toggle waveButton" id="renderToggle" type='checkbox' defaultChecked={true} onInput={env.toggleRender} />
-                    <label htmlFor='renderToggle' className='toggleLabel'>Render</label>
+                    <input className="toggle waveButton" id="toggleRender" type='checkbox' defaultChecked={env.enableRender} onInput={env.toggleRender} />
+                    <label htmlFor='toggleRender' className='toggleLabel'>Render</label>
+
+                </form>
+                <form className="changeParent smallGap" id="form">
+
+                    <input className="toggle waveButton" id="toggleNetworkVisuals" type='checkbox' defaultChecked={env.networkVisuals} onInput={env.toggleNetworkVisuals} />
+                    <label htmlFor='toggleNetworkVisuals' className='toggleLabel'>Network Visuals</label>
 
                 </form>
                 <form className="changeParent" id="form">
 
-                    <button className="resetButton waveButton" id="reset">Reset games</button>
+                    <button className="button waveButton" onClick={env.manualReset}>Reset games</button>
 
                 </form>
                 <form className="changeParent" id="form">
 
                     <input className="changeInput" type="number" placeholder="Speed" id="newSpeed" />
-                    <button className="changeButton waveButton" id="changeSpeed">Change</button>
+                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeSpeed}>Change</button>
+
+                </form>
+                <form className="changeParent" id="form">
+
+                    <input className="changeInput" type="number" placeholder="Games" id='newGames' />
+                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeGames}>Change</button>
+
+                </form>
+                <form className="changeParent" id="form">
+
+                    <input className="changeInput" type="number" placeholder="Organisms" id='newOrganisms' />
+                    <button className="button conjoinedButton waveButton" id="changeSpeed" onClick={env.changeOrganisms}>Change</button>
 
                 </form>
 

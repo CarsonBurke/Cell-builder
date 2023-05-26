@@ -22,23 +22,6 @@ export async function main() {
         }
     }
     
-    document.getElementById('changeSpeed').addEventListener('click', changeSpeed)
-    
-    changeSpeed()
-    
-    function changeSpeed() {
-    
-        const speedInput = document.getElementById('newSpeed') as HTMLInputElement
-        env.stats.speed = parseInt(speedInput.value) || env.stats.speed
-    }
-    
-    document.getElementById('reset').addEventListener('click', resetGames)
-    
-    function resetGames() {
-        
-        env.manualReset()
-    }
-    
     const elements = document.getElementsByTagName('form')
     for (const el of elements) {
     

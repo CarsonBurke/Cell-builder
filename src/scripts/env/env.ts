@@ -7,8 +7,7 @@ import { networkManager } from '../neuralNetwork/networkManager'
 
 class Env {
 
-    gamesQuota = 1
-    organismsQuota = 50
+    organismsQuota = 10
     networkVisuals = false
     contextMenu = document.getElementById('contextMenu')
 
@@ -33,6 +32,10 @@ class Env {
     container = new Container()
     graphics = new Graphics()
 
+    settings = {
+
+    }
+
     stats = {
         tick: 0,
         fps: '0',
@@ -42,6 +45,7 @@ class Env {
         bestCells: 0,
         bestScore: 0,
         organisms: 0,
+        games: 1,
     }
 
     sprites: Textures
@@ -97,7 +101,7 @@ class Env {
     
         //
 
-        for (let i = 0; i < this.gamesQuota; i++) {
+        for (let i = 0; i < this.stats.games; i++) {
     
             const game = new Game()
             game.init()
@@ -292,7 +296,6 @@ class Env {
     }
 
     toggleRender() {
-        console.log('toggle')
 
         if (env.enableRender) {
 
@@ -316,6 +319,45 @@ class Env {
 
             sprite.alpha = 1
         }
+    }
+
+    toggleNetworkVisuals() {
+
+        if (env.networkVisuals) {
+
+            // Disalbe visuals
+
+            env.networkVisuals = false
+            return
+        }
+
+        // Enable visuals
+
+        env.networkVisuals = true
+    }
+
+    changeSpeed() {
+
+        const element = document.getElementById('newSpeed') as HTMLInputElement
+        if (!element.value) return
+
+        env.stats.speed = parseInt(element.value)
+    }
+
+    changeGames() {
+
+        const element = document.getElementById('newGames') as HTMLInputElement
+        if (!element.value) return
+
+        env.stats.games = parseInt(element.value)
+    }
+
+    changeOrganisms() {
+
+        const element = document.getElementById('newOrganisms') as HTMLInputElement
+        if (!element.value) return
+
+        env.organismsQuota = parseInt(element.value)
     }
 }
 

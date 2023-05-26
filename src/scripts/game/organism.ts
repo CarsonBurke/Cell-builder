@@ -140,7 +140,11 @@ export class Organism {
             // If we should go again
             if (!this.tickActioned || !lastLayer[14] || runsLeft <= 0) {
 
-                if (env.networkVisuals) network.updateVisuals(inputs)
+                if (env.networkVisuals) {
+
+                    if (!network.visualsParent) network.createVisuals(inputs, NETWORK_OUTPUTS)
+                    network.updateVisuals(inputs)
+                }
                 return
             }
         }
