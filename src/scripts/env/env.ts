@@ -10,7 +10,7 @@ class Env {
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 50
+    graphSize = 20
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
