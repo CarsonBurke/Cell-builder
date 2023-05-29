@@ -41,9 +41,9 @@ class Env {
         bestCells: 0,
         bestScore: 0,
         organisms: 0,
-        organismsQuota: 10,
+        organismsQuota: 50,
         games: 1,
-        roundTickLimit: 100,
+        roundTickLimit: 250,
         lastReset: 0,
     }
 

@@ -25,10 +25,10 @@ export class AttackerCell extends Cell {
     customRun() {
         if (this.organism.energy === 0) return
 
-        this.range = /* Math.floor(Math.pow(this.energy, 1.5)) */ 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
+        this.range = /* Math.floor(Math.pow(this.energy, 1.5)) */ Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
         this.energy = 0
 
-        let targets = 1 + Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.2))
+        let targets = Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.2))
 
         forPositionsAroundRange(this.pos, this.range, pos => {
             if (targets === 0) return

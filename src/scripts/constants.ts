@@ -4,7 +4,7 @@ export const MAX_RUNNER_SPEED = 1000
 export type CellTypes = 'solarCell' | 'collectorCell' | 'attackerCell' | 'cellMembrane'
 export const CELL_TYPES: CellTypes[] = ['solarCell', 'collectorCell', 'attackerCell', 'cellMembrane']
 export const GAME_OBJECT_TYPES = ['gridPos', 'organism', ...CELL_TYPES]
-export const CELL_DEATH_ENERGY_MULTIPLIER = 0.9
+export const CELL_DEATH_ENERGY_MULTIPLIER = 0.5
 export const CELLS = {
     'solarCell': {
         cost: 15,
