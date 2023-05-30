@@ -28,7 +28,7 @@ export class AttackerCell extends Cell {
         this.range = /* Math.floor(Math.pow(this.energy, 1.5)) */ Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
         this.energy = 0
 
-        let targets = Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.2))
+        let targets = Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.5))
 
         forPositionsAroundRange(this.pos, this.range, pos => {
             if (targets === 0) return

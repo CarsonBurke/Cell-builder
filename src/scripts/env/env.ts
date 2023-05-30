@@ -111,6 +111,7 @@ class Env {
 
         const inputs  = [
             // General
+            new Input('Last energy', [0], ['-1']),
             new Input('Runs left', [0], ['0']),
             new Input('Income', [0], ['1']),
             new Input('Energy', [0], ['2']),

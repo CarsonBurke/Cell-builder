@@ -19,6 +19,7 @@ const CELL_CLASSES = {
 
 export class Organism {
     cells: Partial<Cells> = {}
+    lastEnergy = 0
     energy = 100
     income = 0
     cellCount = 0
@@ -72,6 +73,8 @@ export class Organism {
 /* 
         this.runExpansion()
          */
+
+        this.lastEnergy = this.energy
     }
     private runNetwork() {
 
@@ -82,6 +85,7 @@ export class Organism {
 
             const inputs = [
                 // General
+                new Input('Last energy', [this.lastEnergy], ['-1']),
                 new Input('Runs left', [runsLeft], ['0']),
                 new Input('Income', [this.income], ['1']),
                 new Input('Energy', [this.energy], ['2']),
