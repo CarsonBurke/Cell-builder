@@ -107,7 +107,7 @@ class Env {
         }
     }
 
-    private initNetworks(weightLayers?: WeightLayers, activationLayers?: ActivationLayers) {
+    private initNetworks() {
 
         const inputs  = [
             // General
@@ -151,10 +151,19 @@ class Env {
 
         for (let i = Object.keys(networkManager.networks).length; i < this.stats.organismsQuota; i++) {
 
-            const network = new NeuralNetwork(weightLayers, activationLayers)
-            if (!weightLayers) network.init(inputs, NETWORK_OUTPUTS.length)
+            const network = new NeuralNetwork()
             network.mutate()
             if (env.settings.networkVisuals) network.createVisuals(inputs, NETWORK_OUTPUTS)
+        }
+    }
+
+    private cloneNetworks(network: NeuralNetwork) {
+        
+        for (let i = Object.keys(networkManager.networks).length; i < this.stats.organismsQuota; i++) {
+
+            const newNetwork = network.clone()
+            newNetwork.mutate()
+            /* if (env.settings.networkVisuals) newNetwork.createVisuals(inputs, NETWORK_OUTPUTS) */
         }
     }
     
@@ -258,7 +267,13 @@ class Env {
             delete networkManager.networks[ID]
         }
 
-        this.initNetworks()
+        const winnerID = Array.from(winners)[0]
+        if (winnerID) {
+
+            const winner = networkManager.networks[winnerID]
+            this.initNetworks(winner.weightLayers, winner.activationLayers, winner.inputWeightLayers, winner.weightsByID)
+        }
+        else this.initNetworks()
     
         for (const gameID in this.games) {
     

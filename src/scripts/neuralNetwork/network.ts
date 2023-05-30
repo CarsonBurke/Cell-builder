@@ -24,6 +24,12 @@ export class Output {
 
 export type WeightLayers = number[][][]
 export type ActivationLayers = number[][]
+interface NetworkArgs {
+    weightLayers: WeightLayers
+    activationLayers: ActivationLayers
+    inputWeightLayers: string[][]
+    weightsByID: {[ID: string]: number}
+}
 
 export class NeuralNetwork {
     ID: string
@@ -45,10 +51,17 @@ export class NeuralNetwork {
     linesParent: SVGElement
     lineLayers: SVGElement[][][]
 
-    constructor(weightLayers: WeightLayers = [], activationLayers: ActivationLayers = []) {
+    constructor(
+        weightLayers?: WeightLayers,
+        activationLayers?: ActivationLayers,
+        inputWeightLayers?: string[][],
+        weightsByID?: {[ID: string]: number}
+        ) {
 
         this.weightLayers = weightLayers
         this.activationLayers = activationLayers
+        this.inputWeightLayers = inputWeightLayers
+        this.weightsByID = weightsByID
 
         this.ID = networkManager.newID()
         networkManager.networks[this.ID] = this
@@ -114,9 +127,12 @@ export class NeuralNetwork {
     
     clone() {
     
-        const network = this
-    
-        return new NeuralNetwork(Array.from(network.weightLayers), Array.from(network.activationLayers))
+        return new NeuralNetwork(
+            this.weightLayers, 
+            this.activationLayers,
+            this.inputWeightLayers,
+            this.weightsByID,
+        )
     }
     
     forwardPropagate(inputs: Input[]) {
