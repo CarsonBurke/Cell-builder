@@ -20,7 +20,7 @@ export class Game {
     cells: Cells
     cellGraph: Cell[]
     /**
-     * The ID of the organism that won
+     * The ID of the network of the organism that won
      */
     winner: string
     organismsCount: number
@@ -125,6 +125,6 @@ export class Game {
         const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income + organism.energy / env.stats.roundTick, 2))
         if (score > env.stats.bestScore) env.stats.bestScore = score
 
-        this.winner = organismID
+        this.winner = this.organisms[organismID].networkID
     }
 }
