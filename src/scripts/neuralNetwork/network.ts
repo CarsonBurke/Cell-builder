@@ -42,7 +42,7 @@ export class NeuralNetwork {
      * An input perceptron by input value weight of ids to find the input's weight
      */
     inputWeightLayers: string[][] = []
-    activationLayers: ActivationLayers
+    activationLayers: ActivationLayers = []
     visualsParent: HTMLElement
     inputLayerVisuals: HTMLElement[]
     inputLayer: HTMLElement
@@ -51,17 +51,9 @@ export class NeuralNetwork {
     linesParent: SVGElement
     lineLayers: SVGElement[][][]
 
-    constructor(
-        weightLayers?: WeightLayers,
-        activationLayers?: ActivationLayers,
-        inputWeightLayers?: string[][],
-        weightsByID?: {[ID: string]: number}
-        ) {
+    constructor(args?: NetworkArgs) {
 
-        this.weightLayers = weightLayers
-        this.activationLayers = activationLayers
-        this.inputWeightLayers = inputWeightLayers
-        this.weightsByID = weightsByID
+        Object.assign(this, structuredClone(args))
 
         this.ID = networkManager.newID()
         networkManager.networks[this.ID] = this
@@ -127,16 +119,16 @@ export class NeuralNetwork {
     
     clone() {
     
-        return new NeuralNetwork(
-            this.weightLayers, 
-            this.activationLayers,
-            this.inputWeightLayers,
-            this.weightsByID,
-        )
+        return new NeuralNetwork({
+            weightLayers: this.weightLayers, 
+            activationLayers: this.activationLayers,
+            inputWeightLayers: this.inputWeightLayers,
+            weightsByID: this.weightsByID,
+        })
     }
     
     forwardPropagate(inputs: Input[]) {
-    
+        console.log(this.activationLayers)
         // First layer using inputs
     
         for (let i = 0; i < inputs.length; i++) {
