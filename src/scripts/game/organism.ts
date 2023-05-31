@@ -32,6 +32,10 @@ export class Organism {
      * Wether the organism's network has at least tried to do an action in its latest run
      */
     tickActioned: boolean
+    /**
+     * Wether or not the organism should try to attack this tick
+     */
+    tickAttack: boolean
     dead: boolean
 
     expansionPositions: Set<number> = new Set()
@@ -57,6 +61,7 @@ export class Organism {
 
         this.game.organismsCount += 1
         env.stats.organisms += 1
+        this.tickActioned = false
 
 /*         console.log('run', this.energy.toFixed(2), this.income.toFixed(2)) */
 
@@ -138,6 +143,8 @@ export class Organism {
             const lastLayer = network.activationLayers[network.activationLayers.length - 1]
 
             this.build(lastLayer)
+
+            this.tickAttack = !!lastLayer[6]
 
             // Repeat and visuals logic
 

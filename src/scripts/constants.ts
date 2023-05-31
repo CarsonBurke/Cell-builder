@@ -11,11 +11,11 @@ export const CELLS = {
         upkeep: 0.01,
     }, 
     'collectorCell': {
-        cost: 20,
+        cost: 18,
         upkeep: 0.05,
     }, 
     'attackerCell': {
-        cost: 45,
+        cost: 35,
         upkeep: 0.1,
     }, 
     'cellMembrane': {
@@ -66,7 +66,9 @@ export const NETWORK_OUTPUTS_STRUCTURE = [
     'Build Membrane',
     'Build y/n',
     // Go again
-    'Go Again y/n'
+    'Go Again y/n',
+    //
+    'Attack y/n'
 ]
 export const NETWORK_OUTPUTS: Output[] = []
 

@@ -128,7 +128,7 @@ export class NeuralNetwork {
     }
     
     forwardPropagate(inputs: Input[]) {
-        console.log(this.activationLayers)
+
         // First layer using inputs
     
         for (let i = 0; i < inputs.length; i++) {
