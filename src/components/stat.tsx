@@ -1,7 +1,8 @@
+import { env } from 'process'
 import './stat.css'
 
 interface StatArgs {
-    name: string
+    name: keyof typeof env.stats
     value: any
 }
 
