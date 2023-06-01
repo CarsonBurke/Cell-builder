@@ -7,35 +7,38 @@ export class GridPos {
     static texture = Assets.load('sprites/grass.png')
     static hoverTexture = Assets.load('sprites/grassHover.png')
 
-    type = 'gridPos'
+    type = 'gridPos' as 'gridPos'
     energy = 0
 
     game: Game
     ID: string
     sprite: Sprite
-    constructor(game: Game, opts: any, spriteOpts: any) {
+    constructor(opts: {[key: string]: any}, spriteOpts: {[key: string]: any}) {
 
-        this.game = game
-        this.ID = env.newID()
         Object.assign(this, opts)
 
-        this.initSprite().then(() => {
+        this.ID = env.newID()
 
-            Object.assign(this.sprite, spriteOpts)
-
-            game.graph[this.packedPos] = this
-    
-            this.initInteractions()
-            this.render()
-        })
+        this.initSprite(spriteOpts)
+        this.initInteractions()
+        this.assign()
     }
 
-    async initSprite() {
+    initSprite(spriteOpts: {[key: string]: any}) {
 
-        this.sprite = new Sprite(await GridPos.texture)
-        this.sprite.zIndex = 0
+        this.sprite = new Sprite(env.textures[this.type])
+        this.sprite.width = env.posSize
+        this.sprite.height = env.posSize
+        Object.assign(this.sprite, spriteOpts)
 
-        if (!env.settings.enableRender) this.sprite.alpha = 0
+        if (!this.game.enableRender) return
+
+        env.background.addChild(this.sprite)
+    }
+
+    private assign() {
+
+        this.game.graph[this.packedPos] = this
     }
 
     initInteractions() {
@@ -56,13 +59,6 @@ export class GridPos {
     async hoverOff() {
 
         this.sprite.texture = await GridPos.texture
-    }
-
-    render() {
-
-        env.container.addChild(this.sprite)
-        this.sprite.width = env.posSize
-        this.sprite.height = env.posSize
     }
 
     get pos() {

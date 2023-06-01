@@ -7,7 +7,7 @@ export const GAME_OBJECT_TYPES = ['gridPos', 'organism', ...CELL_TYPES]
 export const CELL_DEATH_ENERGY_MULTIPLIER = 0.5
 export const CELLS = {
     'solarCell': {
-        cost: 15,
+        cost: 20,
         upkeep: 0.01,
     }, 
     'collectorCell': {
@@ -19,7 +19,7 @@ export const CELLS = {
         upkeep: 0.1,
     }, 
     'cellMembrane': {
-        cost: 4,
+        cost: 6,
         upkeep: 0.001,
     }
 }

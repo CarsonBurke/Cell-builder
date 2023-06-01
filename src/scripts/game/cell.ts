@@ -28,15 +28,14 @@ export class Cell {
     }
     private initSprite(spriteOpts: {[key: string]: any}) {
 
-        this.sprite = new Sprite(env.sprites[this.type])
-        env.container.addChild(this.sprite)
-
+        this.sprite = new Sprite(env.textures[this.type])
         Object.assign(this.sprite, spriteOpts)
 
-        if (!env.settings.enableRender) this.sprite.alpha = 0
+        if (!this.game.enableRender) return
+
+        env.foreground.addChild(this.sprite)
     }
     private assign() {
-        this.sprite.zIndex = 2
 
         this.organism.cells[this.type][this.ID] = this
         this.game.cells[this.type][this.ID] = this

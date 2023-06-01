@@ -20,7 +20,7 @@ const CELL_CLASSES = {
 export class Organism {
     cells: Partial<Cells> = {}
     lastEnergy = 0
-    energy = 100
+    energy = 10
     income = 0
     cellCount = 0
     type = 'organism'
@@ -177,7 +177,7 @@ export class Organism {
 
         this.tickActioned = true
 
-        console.log(type)
+        /* console.log(type) */
 
         new CELL_CLASSES[type]({
             game: this.game,

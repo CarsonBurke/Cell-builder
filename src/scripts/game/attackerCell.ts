@@ -3,6 +3,7 @@ import { Cell } from "./cell"
 import { Texture, Sprite } from 'pixi.js'
 import { forPositionsAroundRange, getRange, getRangeOfPositions, packPos, randomChance, randomFloat } from "./gameUtils"
 import { CellTypes } from "../constants"
+import { Pos } from "../types"
 
 export class AttackerCell extends Cell {
 
@@ -46,15 +47,21 @@ export class AttackerCell extends Cell {
  */
             cell.damage(10)
 
-            env.graphics.beginFill('rgb(255, 0, 0)')
-            .lineStyle(2, 'rgb(255, 0, 0)', 1)
-            .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
-            .lineTo(cell.sprite.position.x + env.posSize / 2, cell.sprite.position.y + env.posSize / 2)
-            .closePath()
-            .endFill()
+            this.targetGraphic(cell.sprite.position)
 
             targets -= 1
             return
         })
+    }
+    private targetGraphic(targetPos: Pos) {
+
+        if (!this.game.enableRender) return
+
+        env.graphics.beginFill('rgb(255, 0, 0)')
+        .lineStyle(2, 'rgb(255, 0, 0)', 1)
+        .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
+        .lineTo(targetPos.x + env.posSize / 2, targetPos.y + env.posSize / 2)
+        .closePath()
+        .endFill()
     }
 }

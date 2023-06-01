@@ -23,8 +23,9 @@ class Env {
         /* antialias: true, */
         width: this.width, 
         height: this.height,
-    }) as any
-    container = new Container()
+    })
+    foreground = new Container()
+    background = new Container()
     graphics = new Graphics()
 
     settings = {
@@ -47,7 +48,7 @@ class Env {
         lastReset: 0,
     }
 
-    sprites: Textures
+    textures: Textures
 
     constructor() {
 
@@ -62,38 +63,46 @@ class Env {
         networkManager.init()
         this.initNetworks()
         this.initGames()
+        env.app.stage.children.sort((a, b) => a.zIndex - b.zIndex)
 
         this.app.ticker.add(this.runFPS)
     }
 
     private async initSprites() {
 
-        this.sprites = {
+        this.textures = {
             'cellMembrane': await Assets.load('sprites/cellMembrane.png'),
             'solarCell': await Assets.load('sprites/solarCell.png'),
             'collectorCell': await Assets.load('sprites/collectorCell.png'),
             'attackerCell': await Assets.load('sprites/attackerCell.png'),
+            'gridPos': await Assets.load('sprites/grass.png'),
         }
     }
 
     private initApp() {
 
-        this.app.view.classList.add('env')
-        this.app.view.id = 'env'
-        document.getElementById('envParent').appendChild(this.app.view)
+        const view = this.app.view as unknown as HTMLElement
+
+        view.classList.add('env')
+        view.id = 'env'
+        document.getElementById('envParent').appendChild(view)
 
         this.app.stage.eventMode = 'dynamic'
     }
 
     private initContainer() {
 
-        this.app.stage.addChild(this.container)
+        this.foreground.zIndex = 2
+        this.app.stage.addChild(this.foreground)
+
+        this.background.zIndex = 0
+        this.app.stage.addChild(this.background)
     }
     
     private initGraphics() {
 
         this.graphics.zIndex = 1
-        this.container.addChild(this.graphics)
+        this.foreground.addChild(this.graphics)
     }
 
     private initGames() {
@@ -189,14 +198,6 @@ class Env {
         if (env.lastUpdateTime <= env.lastFrameTime) {
 
             return
-        }
-
-        env.container.children.sort((a, b) => a.zIndex - b.zIndex)
-    
-        for (const gameID in env.games) {
-    
-            const game = env.games[gameID]
-    
         }
     
         for (const statName in env.stats) {
@@ -322,43 +323,11 @@ class Env {
 
     toggleRender() {
 
-        if (env.settings.enableRender) {
-
-            // Disalbe rendering
-
-            env.settings.enableRender = false
-
-            for (const sprite of env.container.children) {
-
-                sprite.alpha = 0
-            }
-            
-            return
-        }
-
-        // Enable rendering
-
-        env.settings.enableRender = true
-
-        for (const sprite of env.container.children) {
-
-            sprite.alpha = 1
-        }
+        env.settings.enableRender = !env.settings.enableRender
     }
 
     toggleNetworkVisuals() {
-
-        if (env.settings.networkVisuals) {
-
-            // Disalbe visuals
-
-            env.settings.networkVisuals = false
-            return
-        }
-
-        // Enable visuals
-
-        env.settings.networkVisuals = true
+        env.settings.networkVisuals = !env.settings.networkVisuals
     }
 
     changeSpeed() {

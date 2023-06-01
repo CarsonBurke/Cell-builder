@@ -24,6 +24,7 @@ export class Game {
      */
     winner: string
     organismsCount: number
+    enableRender: boolean
 
     constructor() {
 
@@ -31,6 +32,7 @@ export class Game {
     }
     init() {
 
+        this.enableRender = env.settings.enableRender
         this.running = true
         this.winner = undefined
         this.graph = []
@@ -45,7 +47,7 @@ export class Game {
         for (let x = 0; x < env.graphSize; x++) {
             for (let y = 0; y < env.graphSize; y++) {
 
-                const gridPos = new GridPos(this, {}, { x: x * env.posSize, y: y * env.posSize })
+                const gridPos = new GridPos({ game: this }, { x: x * env.posSize, y: y * env.posSize })
                 this.graph[packXY( x, y)] = gridPos
             }
         }
@@ -77,9 +79,16 @@ export class Game {
     }
     reset() {
 
-        for (const ID in this.organisms) {
+        for (let x = 0; x < env.graphSize; x++) {
+            for (let y = 0; y < env.graphSize; y++) {
 
-            delete this.organisms[ID]
+                const packedPos = packXY(x, y)
+                const gridPos = this.graph[packedPos]
+                gridPos.sprite.removeFromParent()
+
+                const cell = this.cellGraph[packedPos]
+                if (cell) cell.sprite.removeFromParent()
+            }
         }
 
         this.init()

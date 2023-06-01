@@ -3,6 +3,7 @@ import { env } from '../env/env'
 import { Texture, Sprite, Assets } from 'pixi.js'
 import { Cell } from './cell'
 import { forPositionsAroundRange, packPos } from './gameUtils'
+import { Pos } from '../types'
 
 export class CollectorCell extends Cell {
 
@@ -33,12 +34,18 @@ export class CollectorCell extends Cell {
             this.organism.income += gridPos.energy
             gridPos.energy = 0
 
-            env.graphics.beginFill('rgb(0, 0, 255)')
-            .lineStyle(2, 'rgb(0, 0, 255)', 1)
-            .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
-            .lineTo(gridPos.sprite.position.x + env.posSize / 2, gridPos.sprite.position.y + env.posSize / 2)
-            .closePath()
-            .endFill()
+            this.targetGraphic(gridPos.sprite.position)
         })
+    }
+    private targetGraphic(targetPos: Pos) {
+
+        if (!this.game.enableRender) return
+
+        env.graphics.beginFill('rgb(0, 0, 255)')
+        .lineStyle(2, 'rgb(0, 0, 255)', 1)
+        .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
+        .lineTo(targetPos.x + env.posSize / 2, targetPos.y + env.posSize / 2)
+        .closePath()
+        .endFill()
     }
 }

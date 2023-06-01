@@ -1,5 +1,5 @@
 import { Sprite } from "pixi.js"
-import { CellTypes } from "./constants"
+import { CellTypes, CELL_TYPES } from "./constants"
 import { AttackerCell } from "./game/attackerCell"
 import { Cell } from "./game/cell"
 import { CellMembrane } from "./game/cellMembrane"
@@ -11,4 +11,5 @@ export interface Pos {
     y: number
 }
 export type Cells = Partial<{[key in CellTypes]: {[ID: string]: Cell}}>
-export type Textures = {[key in CellTypes]: any }
+type TextureKeys = CellTypes | 'gridPos'
+export type Textures = {[key in TextureKeys]: any }
