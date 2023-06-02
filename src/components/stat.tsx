@@ -1,4 +1,5 @@
-import { env } from 'process'
+
+import { env } from '../scripts/env/env'
 import './stat.css'
 
 interface StatArgs {

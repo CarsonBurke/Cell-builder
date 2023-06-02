@@ -15,7 +15,7 @@ export async function main() {
             await new Promise((resolve, reject) => {
                 setTimeout(function() {
                     resolve(() => {})
-                }, MAX_RUNNER_SPEED / env.stats.speed)
+                }, MAX_RUNNER_SPEED / env.settings.speed)
             })
 
             await env.runUPS()

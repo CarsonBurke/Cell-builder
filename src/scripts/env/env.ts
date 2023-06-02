@@ -31,6 +31,10 @@ class Env {
     settings = {
         networkVisuals: false,
         enableRender: true,
+        speed: 1,
+        roundTickLimit: 250,
+        organismsQuota: 50,
+        games: 1,
     }
 
     stats = {
@@ -38,13 +42,9 @@ class Env {
         fps: '0',
         ups: '0',
         roundTick: 0,
-        speed: 1,
         bestCells: 0,
         bestScore: 0,
         organisms: 0,
-        organismsQuota: 50,
-        games: 1,
-        roundTickLimit: 250,
         lastReset: 0,
     }
 
@@ -109,7 +109,7 @@ class Env {
     
         //
 
-        for (let i = 0; i < this.stats.games; i++) {
+        for (let i = 0; i < this.settings.games; i++) {
     
             const game = new Game()
             game.init()
@@ -165,7 +165,7 @@ class Env {
 
         const inputs = this.findInputs()
 
-        for (let i = Object.keys(networkManager.networks).length; i < this.stats.organismsQuota; i++) {
+        for (let i = Object.keys(networkManager.networks).length; i < this.settings.organismsQuota; i++) {
 
             const network = new NeuralNetwork()
             network.init(inputs, NETWORK_OUTPUTS.length)
@@ -178,7 +178,7 @@ class Env {
 
         const inputs = this.findInputs()
         
-        for (let i = Object.keys(networkManager.networks).length; i < this.stats.organismsQuota; i++) {
+        for (let i = Object.keys(networkManager.networks).length; i < this.settings.organismsQuota; i++) {
 
             const newNetwork = network.clone()
             newNetwork.mutate()
@@ -319,47 +319,6 @@ class Env {
         this.contextMenu.classList.remove('spaceHidden')
         this.contextMenu.style.top = (event as any).clientY + Math.abs(document.body.getBoundingClientRect().top) + 'px'
         this.contextMenu.style.left = (event as any).clientX + 'px'
-    }
-
-    toggleRender() {
-
-        env.settings.enableRender = !env.settings.enableRender
-    }
-
-    toggleNetworkVisuals() {
-        env.settings.networkVisuals = !env.settings.networkVisuals
-    }
-
-    changeSpeed() {
-
-        const element = document.getElementById('newSpeed') as HTMLInputElement
-        if (!element.value) return
-
-        env.stats.speed = parseInt(element.value)
-    }
-
-    changeGames() {
-
-        const element = document.getElementById('newGames') as HTMLInputElement
-        if (!element.value) return
-
-        env.stats.games = parseInt(element.value)
-    }
-
-    changeOrganisms() {
-
-        const element = document.getElementById('newOrganisms') as HTMLInputElement
-        if (!element.value) return
-
-        env.stats.organismsQuota = parseInt(element.value)
-    }
-
-    changeRoundTickLimit() {
-
-        const element = document.getElementById('newRoundTickLimit') as HTMLInputElement
-        if (!element.value) return
-
-        env.stats.roundTickLimit = parseInt(element.value)
     }
 }
 
