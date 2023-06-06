@@ -56,11 +56,9 @@ export class Organism {
 
         this.game.organisms[this.ID] = this
     }
-    run() {
+    run(lastOrganism: boolean) {
         if (this.dead) return
 
-        this.game.organismsCount += 1
-        env.stats.organisms += 1
         this.tickActioned = false
 
 /*         console.log('run', this.energy.toFixed(2), this.income.toFixed(2)) */
@@ -70,16 +68,17 @@ export class Organism {
         this.expansionPositions = new Set()
 
         this.initialRunCells()
-        if (this.cellCount === 0) this.kill()
-
+        if (this.killIfViable(lastOrganism)) return
+        
         this.runNetwork()
-
         this.runCells()
 /* 
         this.runExpansion()
          */
 
         this.lastEnergy = this.energy
+        this.game.organismsCount += 1
+        env.stats.organisms += 1
     }
     private runNetwork() {
 
@@ -240,6 +239,14 @@ export class Organism {
 
             this.energy = Math.max(0, this.energy)
         }
+    }
+    private killIfViable(lastOrganism: boolean) {
+
+        if (this.game.organismsCount === 1 && lastOrganism) return false
+        if (this.cellCount > 0) return false
+
+        this.kill()
+        return true
     }
     private kill(hasCells?: boolean) {
 

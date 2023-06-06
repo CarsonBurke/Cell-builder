@@ -96,14 +96,14 @@ export class Game {
     run() {
 
         this.organismsCount = 0
+        const organismsArray = Object.values(this.organisms)
 
-        for (const ID in this.organisms) {
+        for (let i = 0; i < organismsArray.length; i++) {
 
-            const organism = this.organisms[ID]
-
+            const organism = organismsArray[i]
             if (organism.cellCount > env.stats.bestCells) env.stats.bestCells = organism.cellCount
 
-            organism.run()
+            organism.run(i === organismsArray.length - 1)
         }
 
         if (this.organismsCount === 1) {

@@ -1,6 +1,6 @@
 import { env } from "../env/env"
 import { Cell } from "./cell"
-import { Texture, Sprite } from 'pixi.js'
+import { Sprite } from 'pixi.js'
 import { forPositionsAroundRange, getRange, getRangeOfPositions, packPos, randomChance, randomFloat } from "./gameUtils"
 import { CellTypes } from "../constants"
 import { Pos } from "../types"
@@ -26,9 +26,9 @@ export class AttackerCell extends Cell {
     customRun() {
         if (!this.organism.tickAttack) return
 
-        this.range = Math.floor(Math.pow(this.organism.energy / 10, 0.5))/* Math.floor(Math.pow(this.energy, 1.5)) */ /* Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.3)) */
+        this.range = Math.floor(Math.pow(this.organism.energy / 3, 0.5))/* Math.floor(Math.pow(this.energy, 1.5)) */ /* Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.3)) */
 
-        let targets = Math.floor(Math.pow(this.organism.energy / 10, 1))
+        let targets = Math.floor(Math.pow(this.organism.energy * 2, 1))
 
         forPositionsAroundRange(this.pos, this.range, pos => {
             if (targets === 0) return
