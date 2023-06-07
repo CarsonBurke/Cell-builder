@@ -20,7 +20,7 @@ const CELL_CLASSES = {
 export class Organism {
     cells: Partial<Cells> = {}
     lastEnergy = 0
-    energy = 10
+    energy = 100
     income = 0
     cellCount = 0
     type = 'organism'
@@ -161,7 +161,7 @@ export class Organism {
         const x = Math.floor(lastLayer[0])
         const y = Math.floor(lastLayer[1])
         const packedPos = packXY(x, y)
-
+        console.log(lastLayer[0], lastLayer[1])
         if (!this.expansionPositions.has(packedPos)) return
 
         const [score, index] = findHighestIndexOfScore(lastLayer.slice(2, 7), (val) => { return val })

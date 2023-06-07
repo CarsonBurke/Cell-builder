@@ -268,6 +268,8 @@ class Env {
     }
     
     reset(winners: Set<string> = new Set()) {
+
+        console.log('reset ---------------')
     
         this.stats.lastReset = this.stats.tick
         this.stats.roundTick = 0
