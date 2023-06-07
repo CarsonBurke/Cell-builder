@@ -10,7 +10,7 @@ class Env {
     contextMenu = document.getElementById('contextMenu')
 
     games: {[ID: string]: Game } = {}
-    graphSize = 20
+    graphSize = 10
     graphLength = this.graphSize * this.graphSize
     posSize = 8
     IDIndex = 0
@@ -32,8 +32,8 @@ class Env {
         networkVisuals: false,
         enableRender: true,
         speed: 1,
-        roundTickLimit: 250,
-        organismsQuota: 50,
+        roundTickLimit: 100,
+        organismsQuota: 10,
         games: 1,
     }
 
@@ -227,6 +227,8 @@ class Env {
         for (const gameID in this.games) {
     
             const game = this.games[gameID]
+            game.run()
+
             if (!game.running) {
 
                 winners.add(game.winner)
@@ -234,7 +236,6 @@ class Env {
             }
 
             runningGames += 1
-            game.run()
         }
     
         for (const statName in this.stats) {

@@ -94,6 +94,7 @@ export class Game {
         this.init()
     }
     run() {
+        if (!this.running) return
 
         this.organismsCount = 0
         const organismsArray = Object.values(this.organisms)
