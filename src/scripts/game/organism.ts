@@ -32,10 +32,6 @@ export class Organism {
      * Wether the organism's network has at least tried to do an action in its latest run
      */
     tickActioned: boolean
-    /**
-     * Wether or not the organism should try to attack this tick
-     */
-    tickAttack: boolean
     dead: boolean
 
     expansionPositions: Set<number> = new Set()
@@ -116,7 +112,7 @@ export class Organism {
                             +!!cell,
                             // Wether we own the cell, if it exists
                             +(cell ? cell.organism.ID === this.ID : false),
-                            // Wetjer the pos is an expansion pos
+                            // Wether the pos is an expansion pos
                             +this.expansionPositions.has(packedPos)
                         ], 
                         [
@@ -143,12 +139,10 @@ export class Organism {
 
             this.build(lastLayer)
 
-            this.tickAttack = !!lastLayer[6]
-
             // Repeat and visuals logic
 
             // If we should go again
-            if (!this.tickActioned || !lastLayer[5] || runsLeft <= 0) {
+            if (!this.tickActioned || !lastLayer[14] || runsLeft <= 0) {
 
                 if (env.settings.networkVisuals) {
 
@@ -164,10 +158,13 @@ export class Organism {
         const expansionPositionsArray = Array.from(this.expansionPositions)
         if (!expansionPositionsArray.length) return
 
-        const packedPos = Array.from(this.expansionPositions)[0]
-        const pos = unpackPos(packedPos)
+        const x = Math.floor(lastLayer[0])
+        const y = Math.floor(lastLayer[1])
+        const packedPos = packXY(x, y)
 
-        const [score, index] = findHighestIndexOfScore(lastLayer.slice(0, 5), (val) => { return val })
+        if (!this.expansionPositions.has(packedPos)) return
+
+        const [score, index] = findHighestIndexOfScore(lastLayer.slice(2, 7), (val) => { return val })
 
         if (index >= CELL_TYPES.length) return
 
@@ -176,15 +173,15 @@ export class Organism {
 
         this.tickActioned = true
 
-        /* console.log(type) */
+        console.log(type)
 
         new CELL_CLASSES[type]({
             game: this.game,
             organism: this,
         }, 
         {
-            x: pos.x * env.posSize,
-            y: pos.y * env.posSize,
+            x: x * env.posSize,
+            y: y * env.posSize,
         })
 
         this.expansionPositions.delete(packedPos)

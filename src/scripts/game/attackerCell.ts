@@ -24,11 +24,11 @@ export class AttackerCell extends Cell {
         this.init(opts, spriteOpts)
     }
     customRun() {
-        if (!this.organism.tickAttack) return
 
-        this.range = Math.floor(Math.pow(this.organism.energy / 3, 0.5))/* Math.floor(Math.pow(this.energy, 1.5)) */ /* Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.3)) */
+        const solarCount = Object.keys(this.organism.cells.solarCell).length
+        this.range = Math.floor(Math.pow(solarCount, 0.5))/* Math.floor(Math.pow(this.energy, 1.5)) */ /* Math.round(Math.pow(Object.keys(this.organism.cells.solarCell).length, 0.3)) */
 
-        let targets = Math.floor(Math.pow(this.organism.energy * 2, 1))
+        let targets = Math.floor(Math.pow(solarCount * 2, 1))
 
         forPositionsAroundRange(this.pos, this.range, pos => {
             if (targets === 0) return
