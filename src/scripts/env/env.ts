@@ -33,7 +33,7 @@ class Env {
         enableRender: true,
         speed: 1,
         roundTickLimit: 100,
-        organismsQuota: 10,
+        organismsQuota: 1,
         games: 1,
     }
 

@@ -399,6 +399,16 @@ export class NeuralNetwork {
             }
         }
     
+        // Input descriptions
+    
+        for (let activationsIndex = 0; activationsIndex < network.activationLayers[0].length; activationsIndex++) {
+    
+            const inputVisual = network.inputLayerVisuals[activationsIndex],
+                activation = inputs[activationsIndex].values
+    
+            inputVisual.innerText = activation.toString()
+        }
+
         // Lines
     
         for (let layerIndex = 1; layerIndex < network.activationLayers.length; layerIndex++) {

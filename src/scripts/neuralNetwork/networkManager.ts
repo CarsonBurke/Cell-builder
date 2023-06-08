@@ -5,7 +5,7 @@ class NetworkManager {
     activationColor = 'rgb(0, 137, 236)'
     negativeColor = 'rgb(241, 0, 19)'
     learningRate = 0.01
-    bias = 0
+    bias = 1
     hiddenLayersCount = 5
     hiddenPerceptronCount = 5
 

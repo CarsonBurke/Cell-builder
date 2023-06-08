@@ -132,7 +132,7 @@ export class Organism {
 
             const network = networkManager.networks[this.networkID]
             network.forwardPropagate(inputs)
-            
+
             // Output actions
             
             const lastLayer = network.activationLayers[network.activationLayers.length - 1]
