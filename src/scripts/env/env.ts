@@ -18,15 +18,6 @@ class Env {
     height = this.graphSize * this.posSize
     lastFrameTime = new Date().getTime()
     lastUpdateTime = new Date().getTime()
-    app = new Application({ 
-        backgroundAlpha: 0,
-        /* antialias: true, */
-        width: this.width, 
-        height: this.height,
-    })
-    foreground = new Container()
-    background = new Container()
-    graphics = new Graphics()
 
     settings = {
         networkVisuals: false,
@@ -57,15 +48,9 @@ class Env {
     async init() {
 
         await this.initSprites()
-        this.initApp()
-        this.initContainer()
-        this.initGraphics()
         networkManager.init()
         this.initNetworks()
         this.initGames()
-        env.app.stage.children.sort((a, b) => a.zIndex - b.zIndex)
-
-        this.app.ticker.add(this.runFPS)
     }
 
     private async initSprites() {
@@ -77,32 +62,6 @@ class Env {
             'attackerCell': await Assets.load('sprites/attackerCell.png'),
             'gridPos': await Assets.load('sprites/grass.png'),
         }
-    }
-
-    private initApp() {
-
-        const view = this.app.view as unknown as HTMLElement
-
-        view.classList.add('env')
-        view.id = 'env'
-        document.getElementById('envParent').appendChild(view)
-
-        this.app.stage.eventMode = 'dynamic'
-    }
-
-    private initContainer() {
-
-        this.foreground.zIndex = 2
-        this.app.stage.addChild(this.foreground)
-
-        this.background.zIndex = 0
-        this.app.stage.addChild(this.background)
-    }
-    
-    private initGraphics() {
-
-        this.graphics.zIndex = 1
-        this.foreground.addChild(this.graphics)
     }
 
     private initGames() {
@@ -190,69 +149,6 @@ class Env {
     
         this.IDIndex += 1
         return this.IDIndex.toString()
-    }
-
-    private runFPS() {
-        if (!env.settings.enableRender) return
-        
-        if (env.lastUpdateTime <= env.lastFrameTime) {
-
-            return
-        }
-    
-        for (const statName in env.stats) {
-    
-            document.getElementById(statName).innerText = env.stats[statName as keyof typeof env.stats].toString()
-        }
-
-        const thisFrameTime = new Date().getTime()
-        env.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime - env.lastFrameTime)).toFixed(2)
-        env.lastFrameTime = new Date().getTime()
-    }
-
-    async runUPS() {
-
-        this.stats.tick += 1
-        this.stats.roundTick += 1
-        /* console.log('tick', this.stats.tick) */
-        let runningGames = 0
-
-        env.graphics.clear()
-
-        this.stats.organisms = 0
-        this.stats.bestCells = 0
-
-        const winners: Set<string> = new Set()
-    
-        for (const gameID in this.games) {
-    
-            const game = this.games[gameID]
-            game.run()
-
-            if (!game.running) {
-
-                winners.add(game.winner)
-                continue
-            }
-
-            runningGames += 1
-        }
-    
-        for (const statName in this.stats) {
-    
-            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
-        }
-    
-        //
-    
-        if (!runningGames) {
-    
-            this.reset(winners)
-        }
-
-        const thisUpdateTime = new Date().getTime()
-        this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
-        this.lastUpdateTime = new Date().getTime()
     }
 
     manualReset() {

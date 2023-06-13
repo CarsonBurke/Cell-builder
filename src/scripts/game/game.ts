@@ -1,4 +1,4 @@
-import { CellTypes, CELL_TYPES } from "../constants"
+import { CellTypes, CELL_TYPES, MAX_RUNNER_SPEED } from "../constants"
 import { env } from "../env/env"
 import { AttackerCell } from "./attackerCell"
 import { Cell } from "./cell"
@@ -11,6 +11,7 @@ import { SolarCell } from "./solarCell"
 import { Cells } from "../types"
 import { networkManager } from "../neuralNetwork/networkManager"
 import { randomPos } from "../../utils"
+import { Application, Container, Graphics } from "pixi.js"
 
 export class Game {
     ID = env.newID()
@@ -25,12 +26,39 @@ export class Game {
     winner: string
     organismsCount: number
     enableRender: boolean
+    app = new Application({ 
+        backgroundAlpha: 0,
+        /* antialias: true, */
+        width: env.width, 
+        height: env.height,
+    })
+    foreground = new Container()
+    background = new Container()
+    graphics = new Graphics()
+    stats = {
+        tick: 0,
+        roundTick: 0,
+        organisms: 0,
+        bestCells: 0,
+        fps: '0',
+        ups: '0',
+    }
+    lastUpdateTime = 0
+    lastFrameTime = 0
+
 
     constructor() {
 
         env.games[this.ID] = this
     }
     init() {
+        this.app.stage.children.sort((a, b) => a.zIndex - b.zIndex)
+
+        this.app.ticker.add(this.runFPS)
+
+        this.initApp()
+        this.initContainer()
+        this.initGraphics()
 
         this.enableRender = env.settings.enableRender
         this.running = true
@@ -77,6 +105,31 @@ export class Game {
             })
         }
     }
+    private initApp() {
+
+        const view = this.app.view as unknown as HTMLElement
+
+        view.classList.add('env')
+        view.id = 'env'
+        document.getElementById('envParent').appendChild(view)
+
+        this.app.stage.eventMode = 'dynamic'
+    }
+
+    private initContainer() {
+
+        this.foreground.zIndex = 2
+        this.app.stage.addChild(this.foreground)
+
+        this.background.zIndex = 0
+        this.app.stage.addChild(this.background)
+    }
+    
+    private initGraphics() {
+
+        this.graphics.zIndex = 1
+        this.foreground.addChild(this.graphics)
+    }
     reset() {
 
         for (let x = 0; x < env.graphSize; x++) {
@@ -92,6 +145,60 @@ export class Game {
         }
 
         this.init()
+    }
+    private runFPS() {
+        if (!env.settings.enableRender) return
+        
+        if (env.lastUpdateTime <= env.lastFrameTime) {
+
+            return
+        }
+    
+        for (const statName in env.stats) {
+    
+            document.getElementById(statName).innerText = env.stats[statName as keyof typeof env.stats].toString()
+        }
+
+        const thisFrameTime = new Date().getTime()
+        env.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime - env.lastFrameTime)).toFixed(2)
+        env.lastFrameTime = new Date().getTime()
+    }
+
+    async runUPS() {
+
+        this.stats.tick += 1
+        this.stats.roundTick += 1
+        console.log('tick', this.stats.tick)
+
+        this.graphics.clear()
+
+        this.stats.organisms = 0
+        this.stats.bestCells = 0
+
+        this.run()
+        if (!this.running) return false
+    
+        for (const statName in this.stats) {
+    
+            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
+        }
+
+        const thisUpdateTime = new Date().getTime()
+        this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
+        this.lastUpdateTime = new Date().getTime()
+    }
+    async start() {
+
+        while (true) {
+    
+            await new Promise((resolve, reject) => {
+                setTimeout(function() {
+                    resolve(() => {})
+                }, MAX_RUNNER_SPEED / env.settings.speed)
+            })
+
+            if (!await this.runUPS()) break
+        }
     }
     run() {
         if (!this.running) return
