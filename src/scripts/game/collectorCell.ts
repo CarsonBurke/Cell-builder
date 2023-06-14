@@ -41,7 +41,7 @@ export class CollectorCell extends Cell {
 
         if (!this.game.enableRender) return
 
-        env.graphics.beginFill('rgb(0, 0, 255)')
+        this.game.graphics.beginFill('rgb(0, 0, 255)')
         .lineStyle(2, 'rgb(0, 0, 255)', 1)
         .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
         .lineTo(targetPos.x + env.posSize / 2, targetPos.y + env.posSize / 2)

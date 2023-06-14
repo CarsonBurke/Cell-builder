@@ -57,7 +57,7 @@ export class AttackerCell extends Cell {
 
         if (!this.game.enableRender) return
 
-        env.graphics.beginFill('rgb(255, 0, 0)')
+        this.game.graphics.beginFill('rgb(255, 0, 0)')
         .lineStyle(2, 'rgb(255, 0, 0)', 1)
         .moveTo(this.sprite.position.x + env.posSize / 2, this.sprite.position.y + env.posSize / 2)
         .lineTo(targetPos.x + env.posSize / 2, targetPos.y + env.posSize / 2)

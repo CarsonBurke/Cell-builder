@@ -29,13 +29,14 @@ export class Cell {
     private initSprite(spriteOpts: {[key: string]: any}) {
 
         this.sprite = new Sprite(env.textures[this.type])
+        this.game.background.addChild(this.sprite)
+
         Object.assign(this.sprite, spriteOpts)
 
-        if (!this.game.enableRender) return
-
-        env.foreground.addChild(this.sprite)
+        if (!env.settings.enableRender) this.sprite.alpha = 0
     }
     private assign() {
+        this.sprite.zIndex = 2
 
         this.organism.cells[this.type][this.ID] = this
         this.game.cells[this.type][this.ID] = this
@@ -51,7 +52,6 @@ export class Cell {
         if (this.hits <= 0) this.kill()
     }
     kill() {
-
         this.game.graph[this.packedPos].energy += CELLS[this.type].cost * CELL_DEATH_ENERGY_MULTIPLIER
 
         this.sprite.removeFromParent()

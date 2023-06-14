@@ -33,7 +33,7 @@ export class GridPos {
 
         if (!this.game.enableRender) return
 
-        env.background.addChild(this.sprite)
+        this.game.background.addChild(this.sprite)
     }
 
     private assign() {

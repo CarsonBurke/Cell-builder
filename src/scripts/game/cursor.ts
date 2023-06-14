@@ -17,10 +17,11 @@ export class Cursor {
 /* 
         this.sprite = new Sprite(await Cursor.texture)
         Object.assign(this.sprite, spriteOpts)
- */
+ 
         this.render()
+        */
     }
-
+/* 
     render() {
 
         const defaultIcon = "url('sprites/cursor.png'),auto"
@@ -29,4 +30,5 @@ export class Cursor {
         env.app.renderer.events.cursorStyles.default = defaultIcon
         env.app.renderer.events.cursorStyles.hover = hoverIcon
     }
+     */
 }

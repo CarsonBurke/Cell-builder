@@ -189,6 +189,8 @@ export class Game {
     }
     async start() {
 
+        this.app.ticker.add(this.runFPS)
+
         while (true) {
     
             await new Promise((resolve, reject) => {
@@ -227,6 +229,8 @@ export class Game {
         }
     }
     stop() {
+
+        this.app.ticker.remove(this.runFPS)
 
         for (const ID in this.organisms) {
 
