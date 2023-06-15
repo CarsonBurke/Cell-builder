@@ -3,8 +3,8 @@ import { main } from '../scripts'
 import { NetworkFrame } from '../scripts/neuralNetwork/networkFrame'
 import './app.css'
 import { env } from '../scripts/env/env'
-import Stat from '../components/stat'
-import Setting from '../components/setting'
+import EnvStat from '../components/envStat'
+import EnvSetting from '../components/envSetting'
 
 function generateSettings() {
 
@@ -12,7 +12,7 @@ function generateSettings() {
 
     for (const key in env.settings) {
 
-        stats.push(<Setting key={key} name={key as keyof typeof env.settings} value={env.settings[key as keyof typeof env.settings]} />)
+        stats.push(<EnvSetting key={key} name={key as keyof typeof env.settings} value={env.settings[key as keyof typeof env.settings]} />)
     }
 
     return stats
@@ -24,7 +24,7 @@ function generateStats() {
 
     for (const key in env.stats) {
 
-        stats.push(<Stat key={key} name={key as keyof typeof env.stats} value={env.stats[key as keyof typeof env.stats]} />)
+        stats.push(<EnvStat key={key} name={key as keyof typeof env.stats} value={env.stats[key as keyof typeof env.stats]} />)
     }
 
     return stats

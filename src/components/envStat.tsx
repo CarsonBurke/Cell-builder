@@ -1,13 +1,12 @@
 
 import { env } from '../scripts/env/env'
-import './stat.css'
 
-interface StatArgs {
+interface EnvStatArgs {
     name: keyof typeof env.stats
     value: any
 }
 
-export default function Stat(args: StatArgs) {
+export default function EnvStat(args: EnvStatArgs) {
 
     return (
         <div className="statsChild">

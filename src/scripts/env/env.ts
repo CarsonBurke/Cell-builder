@@ -16,26 +16,20 @@ class Env {
     IDIndex = 0
     width = this.graphSize * this.posSize
     height = this.graphSize * this.posSize
-    lastFrameTime = new Date().getTime()
-    lastUpdateTime = new Date().getTime()
 
     settings = {
         networkVisuals: false,
         enableRender: true,
         speed: 1,
         roundTickLimit: 100,
-        organismsQuota: 1,
-        games: 1,
+        organismsQuota: 2,
+        games: 10,
     }
 
     stats = {
-        tick: 0,
-        fps: '0',
-        ups: '0',
-        roundTick: 0,
+        generations: 0,
         bestCells: 0,
         bestScore: 0,
-        organisms: 0,
         lastReset: 0,
     }
 
@@ -151,6 +145,23 @@ class Env {
         return this.IDIndex.toString()
     }
 
+    async run() {
+
+        await this.runGames()
+
+        
+    }
+
+    async runGames() {
+
+        for (const ID in this.games) {
+
+            this.games[ID].start()
+        }
+
+
+    }
+
     manualReset() {
 
         for (const ID in this.games) {
@@ -167,8 +178,7 @@ class Env {
 
         console.log('reset ---------------')
     
-        this.stats.lastReset = this.stats.tick
-        this.stats.roundTick = 0
+        this.stats.generations += 1
 
         for (const ID in networkManager.networks) {
 

@@ -1,12 +1,11 @@
 import { env } from '../scripts/env/env'
-import './stat.css'
 
-interface SettingArgs {
+interface EnvSettingArgs {
     name: keyof typeof env.settings
     value: boolean | string | number
 }
 
-function textInputUpdate(args: SettingArgs) {
+function textInputUpdate(args: EnvSettingArgs) {
 
     const input = document.getElementById(args.name) as HTMLInputElement
     const value = input.value as never
@@ -20,7 +19,7 @@ function textInputUpdate(args: SettingArgs) {
     input.placeholder = value
 }
 
-function generateInput(args: SettingArgs) {
+function generateInput(args: EnvSettingArgs) {
 
     if (args.value === true || args.value === false) {
 
@@ -46,7 +45,7 @@ function generateInput(args: SettingArgs) {
 }
 
 
-export default function Setting(args: SettingArgs) {
+export default function EnvSetting(args: EnvSettingArgs) {
 
     return (
         <div className="settingsParent">

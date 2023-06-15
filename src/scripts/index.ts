@@ -6,22 +6,6 @@ export async function main() {
 
     await env.init()
     
-    runUPS()
-    
-    async function runUPS() {
-    
-        while (true) {
-    
-            await new Promise((resolve, reject) => {
-                setTimeout(function() {
-                    resolve(() => {})
-                }, MAX_RUNNER_SPEED / env.settings.speed)
-            })
-
-            await env.runUPS()
-        }
-    }
-    
     const elements = document.getElementsByTagName('form')
     for (const el of elements) {
     
@@ -35,4 +19,6 @@ export async function main() {
     
     document.addEventListener('click', event => { env.clickManager(event) })
     document.addEventListener('contextmenu', event => { env.onContextMenu(event) })
+
+    env.run()
 }

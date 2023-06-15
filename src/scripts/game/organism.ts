@@ -74,7 +74,6 @@ export class Organism {
 
         this.lastEnergy = this.energy
         this.game.organismsCount += 1
-        env.stats.organisms += 1
     }
     private runNetwork() {
 

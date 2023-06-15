@@ -12,6 +12,7 @@ import { Cells } from "../types"
 import { networkManager } from "../neuralNetwork/networkManager"
 import { randomPos } from "../../utils"
 import { Application, Container, Graphics } from "pixi.js"
+import GameStat, { initStats } from "../../components/gameStat"
 
 export class Game {
     ID = env.newID()
@@ -43,8 +44,8 @@ export class Game {
         fps: '0',
         ups: '0',
     }
-    lastUpdateTime = 0
-    lastFrameTime = 0
+    lastFrameTime = new Date().getTime()
+    lastUpdateTime = new Date().getTime()
 
 
     constructor() {
@@ -54,11 +55,10 @@ export class Game {
     init() {
         this.app.stage.children.sort((a, b) => a.zIndex - b.zIndex)
 
-        this.app.ticker.add(this.runFPS)
-
         this.initApp()
         this.initContainer()
         this.initGraphics()
+        initStats(this)
 
         this.enableRender = env.settings.enableRender
         this.running = true
@@ -107,11 +107,15 @@ export class Game {
     }
     private initApp() {
 
+        const gameParent = document.createElement('div')
+        gameParent.id = this.ID
+        document.getElementById('envParent').appendChild(gameParent)
+
         const view = this.app.view as unknown as HTMLElement
 
-        view.classList.add('env')
-        view.id = 'env'
-        document.getElementById('envParent').appendChild(view)
+        view.classList.add('game')
+        view.id = 'game'
+        gameParent.appendChild(view)
 
         this.app.stage.eventMode = 'dynamic'
     }
@@ -146,10 +150,10 @@ export class Game {
 
         this.init()
     }
-    private runFPS() {
+    private runFPS(game: Game) {
         if (!env.settings.enableRender) return
-        
-        if (env.lastUpdateTime <= env.lastFrameTime) {
+
+        if (game.lastUpdateTime <= game.lastFrameTime) {
 
             return
         }
@@ -160,8 +164,8 @@ export class Game {
         }
 
         const thisFrameTime = new Date().getTime()
-        env.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime - env.lastFrameTime)).toFixed(2)
-        env.lastFrameTime = new Date().getTime()
+        game.stats.fps = (MAX_RUNNER_SPEED / (thisFrameTime - game.lastFrameTime)).toFixed(2)
+        game.lastFrameTime = new Date().getTime()
     }
 
     async runUPS() {
@@ -180,16 +184,18 @@ export class Game {
     
         for (const statName in this.stats) {
     
-            document.getElementById(statName).innerText = this.stats[statName as keyof typeof this.stats].toString()
+            document.getElementById(statName + this.ID).innerText = this.stats[statName as keyof typeof this.stats].toString()
         }
 
         const thisUpdateTime = new Date().getTime()
         this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)
         this.lastUpdateTime = new Date().getTime()
+        
+        return true
     }
     async start() {
 
-        this.app.ticker.add(this.runFPS)
+        this.app.ticker.add(() => { this.runFPS(this) })
 
         while (true) {
     
@@ -201,6 +207,9 @@ export class Game {
 
             if (!await this.runUPS()) break
         }
+
+        console.log('end game', this.ID, this.winner)
+        return this.winner
     }
     run() {
         if (!this.running) return
@@ -222,7 +231,7 @@ export class Game {
             return
         }
 
-        if (env.stats.roundTick >= env.settings.roundTickLimit) {
+        if (this.stats.roundTick >= env.settings.roundTickLimit) {
 
             this.stop()
             return
@@ -230,7 +239,7 @@ export class Game {
     }
     stop() {
 
-        this.app.ticker.remove(this.runFPS)
+        this.app.ticker.remove(() => { this.runFPS(this) })
 
         for (const ID in this.organisms) {
 
@@ -243,7 +252,7 @@ export class Game {
     }
     private findWinner() {
 
-        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income + organism.energy / env.stats.roundTick, 2))
+        const [score, organismID] = findHighestScoreOfKeys(this.organisms, (organism) => roundFloat(organism.income + organism.energy / this.stats.roundTick, 2))
         if (score > env.stats.bestScore) env.stats.bestScore = score
 
         this.winner = this.organisms[organismID].networkID
