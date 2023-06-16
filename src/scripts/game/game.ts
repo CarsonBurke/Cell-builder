@@ -109,6 +109,7 @@ export class Game {
 
         const gameParent = document.createElement('div')
         gameParent.id = this.ID
+        gameParent.classList.add('gameParent', 'flex', 'column')
         document.getElementById('envParent').appendChild(gameParent)
 
         const view = this.app.view as unknown as HTMLElement
@@ -118,6 +119,13 @@ export class Game {
         gameParent.appendChild(view)
 
         this.app.stage.eventMode = 'dynamic'
+
+        //
+
+        const statsParent = document.createElement('div')
+        statsParent.id = 'statsParent' + this.ID
+        statsParent.classList.add('flex', 'column')
+        gameParent.appendChild(statsParent)
     }
 
     private initContainer() {
@@ -158,9 +166,9 @@ export class Game {
             return
         }
     
-        for (const statName in env.stats) {
+        for (const statName in game.stats) {
     
-            document.getElementById(statName).innerText = env.stats[statName as keyof typeof env.stats].toString()
+            document.getElementById(statName + game.ID).innerText = game.stats[statName as keyof typeof game.stats].toString()
         }
 
         const thisFrameTime = new Date().getTime()
@@ -181,11 +189,6 @@ export class Game {
 
         this.run()
         if (!this.running) return false
-    
-        for (const statName in this.stats) {
-    
-            document.getElementById(statName + this.ID).innerText = this.stats[statName as keyof typeof this.stats].toString()
-        }
 
         const thisUpdateTime = new Date().getTime()
         this.stats.ups = (MAX_RUNNER_SPEED / (thisUpdateTime - this.lastUpdateTime)).toFixed(2)

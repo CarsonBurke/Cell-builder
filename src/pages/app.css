@@ -14,13 +14,19 @@
     min-width: 100%;
 }
 
-.env {
-    box-shadow: rgba(0, 0, 0, 0.3) 0 0 80px 0;
-    background: var(--secondary);
-    z-index: 1;
-    height: fit-content;
+.gameParent {
     position: sticky;
     top: 20px;
+    height: fit-content;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 0 80px 0;
+    background: var(--secondary);
+    padding: 10px;
+}
+
+.game {
+    z-index: 1;
+    width: fit-content;
     user-select: none;
 }
 

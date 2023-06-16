@@ -1,6 +1,8 @@
 
 import { env } from '../scripts/env/env'
 import { Game } from '../scripts/game/game'
+import createRoute from 'react-dom'
+import './stats.css'
 
 interface GameStatArgs {
     gameID: string
@@ -11,7 +13,7 @@ interface GameStatArgs {
 export default function GameStat(args: GameStatArgs) {
 
     return (
-        <div className="statsChild">
+        <div className="statsChild flex">
 
             <h3 className="statsHeader">{args.name}: </h3>
             <h3 className="statsAmount" id={args.name + args.gameID}>{args.value}</h3>
@@ -26,6 +28,8 @@ export function initStats(game: Game) {
 
     for (const key in game.stats) {
 
-        document.getElementById(game.ID).appendChild(<GameStat gameID={game.ID} key={key} name={key as keyof typeof env.stats} value={env.stats[key as keyof typeof env.stats]} /> as unknown as Node)
+        stats.push(<GameStat gameID={game.ID} key={key} name={key as keyof typeof env.stats} value={env.stats[key as keyof typeof env.stats]} />)
     }
+
+    createRoute.render(stats, document.getElementById('statsParent' + game.ID))
 }
